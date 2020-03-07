@@ -142,155 +142,6 @@ def string_name(dwarf):
         return f'{dwarf.name}'
 
 
-def parallax_histogram(dwarf):
-    """Create a histogram of parallax values."""
-    cols = 2
-    rows = len(dwarf.gaia_data)//2 + len(dwarf.gaia_data) % 2
-
-    fig, axs = plot_setup(rows, cols, d=len(dwarf.gaia_data))
-
-    for ax, table in zip(axs.flatten(), dwarf.gaia_data):
-        parallax = dwarf.gaia_data[table]['parallax']
-
-        bins = np.linspace(parallax.min(), parallax.max(), num=30)
-        ax.hist(parallax, bins=bins)
-
-        ax.set_title(rf'radius=${table}^\circ$')
-        ax.set_xlabel('Parallax [mas]')
-        ax.set_ylabel('Bin counts')
-
-    fig.suptitle(f'Parallax histograms for {string_name(dwarf)}')
-    fig.savefig(f'{dwarf.path}/plots/parallax_plot.pdf', bbox_inches='tight')
-
-
-def quiver_plot(dwarf):
-    """Create quiver plot of stellar position and proper motion."""
-    cols = 2
-    rows = len(dwarf.gaia_data)//2 + len(dwarf.gaia_data) % 2
-
-    fig, axs = plot_setup(rows, cols, d=len(dwarf.gaia_data))
-
-    for ax, table in zip(axs.flatten(), dwarf.gaia_data):
-        ra = dwarf.gaia_data[table]['ra']
-        dec = dwarf.gaia_data[table]['dec']
-        pmra = dwarf.gaia_data[table]['pmra']
-        pmdec = dwarf.gaia_data[table]['pmdec']
-
-        pm_mag = np.hypot(pmra, pmdec)
-        pmra = pmra / pm_mag
-        pmdec = pmdec / pm_mag
-
-        cmap = cm.viridis
-        arrows = ax.quiver(ra, dec, pmra, pmdec, color=cmap(pm_mag), clim=(0, pm_mag.max()), units='xy', pivot='tail', width=0.01, headwidth=2, headlength=3, minlength=0.01)
-        cbar = colorbar_for_subplot(fig, ax, cmap, image=arrows)
-        ax.set_facecolor('xkcd:black')
-
-        ax.set_title(f'radius={table}, density={np.round(len(ra)/(np.pi * table**2), 2)}')
-
-        ax.set_xlabel(r"Right ascension [$^\circ$]")
-        ax.set_ylabel(r"Declination [$^\circ$]")
-        cbar.ax.set_ylabel("Proper motion magnitude [mas/yr]", rotation=270, labelpad=10)
-
-    fig.suptitle(f'Quiver plots for {string_name(dwarf)}')
-    fig.savefig(f'{dwarf.path}/plots/quiver_plot.pdf', bbox_inches='tight')
-
-
-def pm_histogram(dwarf):
-    """Create 2d histogram of proper motions from GAIA search."""
-    bound = 5
-    bins = np.linspace(-bound, bound, num=20*bound)
-
-    cols = 2
-    rows = len(dwarf.gaia_data)//2 + len(dwarf.gaia_data) % 2
-
-    fig, axs = plot_setup(rows, cols, d=len(dwarf.gaia_data))
-
-    for ax, table in zip(axs.flatten(), dwarf.gaia_data):
-        pmra = dwarf.gaia_data[table]['pmra']
-        pmdec = dwarf.gaia_data[table]['pmdec']
-
-        counts, _, _, im = ax.hist2d(pmra, pmdec, bins=(bins, bins), vmin=0, cmap='gnuplot')
-        title = f'radius={table}, max count={str(counts.max())}'
-
-        ax.set_title(title)
-        ax.set_xlabel(r"Right ascension pm [mas/yr])")
-        ax.set_ylabel(r"Declination pm [mas/yr]")
-
-        cbar = colorbar_for_subplot(fig, ax, cm.gnuplot, image=im)
-        cbar.ax.set_ylabel("Bin counts", rotation=270, labelpad=10)
-
-    fig.suptitle(f'Proper motion histogram for {string_name(dwarf)}')
-    fig.savefig(f'{dwarf.path}/plots/pmhisto_plot.pdf', bbox_inches='tight')
-
-
-def mag_v_color(dwarf):
-    """Create color magnitude diagram."""
-    cols = 2
-    rows = len(dwarf.gaia_data)//2 + len(dwarf.gaia_data) % 2
-
-    fig, axs = plot_setup(rows, cols, d=len(dwarf.gaia_data))
-
-    for ax, table in zip(axs.flatten(), dwarf.gaia_data):
-        color = dwarf.gaia_data[table]['bp_rp']
-        mag = dwarf.gaia_data[table]['phot_g_mean_mag']
-
-        lines = ax.scatter(color, mag, c=color, cmap=cm.cool)
-        title = f'radius={table}, color-mag diagram'
-
-        ax.set_title(title)
-        ax.set_xlabel(r"BpRp [mag]")
-        ax.set_ylabel(r"photGMeanMag [mag]")
-
-    fig.suptitle(f'Color magnitude diagrams for {string_name(dwarf)}')
-    fig.savefig(f'{dwarf.path}/plots/colormag.pdf', bbox_inches='tight')
-
-
-def all_sky():
-    """Create all sky plot of dwarf candidates."""
-    from mw_plot import MWSkyMap
-    from astropy import units as u
-
-    # setup a MWSkyMap instance
-    fig = MWSkyMap(projection='hammer')
-    # fig, axs = plt.subplots()
-
-    # alpha value for the milkyway image
-    fig.imalpha = 1.
-
-    # setup colormap
-    fig.cmap = 'jet'
-
-    colors = ['xkcd:mauve', 'xkcd:coral', 'xkcd:pinkish purple', 'xkcd:tangerine', 'xkcd:vermillion', 'xkcd:tomato']
-
-    known = np.loadtxt('./dsph_search/the_search/tuning/tuning_known_dwarfs.txt', delimiter=',', dtype=str)
-
-    ra_known = known[:, 1].astype(np.float)
-    dec_known = known[:, 2].astype(np.float)
-
-    for color, file in zip(colors, glob.glob('./dsph_search/region_candidates/*632*.txt')):
-        candidate_list = np.loadtxt(file, delimiter=" ")
-        print(len(candidate_list))
-        file = file.split('_')
-        ra = float(file[3].strip('ra'))/100
-        dec = float(file[4].strip('dec'))/100
-        radius = float(file[5].strip('rad'))/100
-        print( ra, dec, radius)
-        circle_points = get_points_of_circle(ra, dec, radius)
-
-        # use mw_scatter instead of scatter because we want a background
-        fig.s = 1
-        fig.mw_scatter(circle_points[:, 0]*u.degree, circle_points[:, 1]*u.degree, lighten_color(color, amount=1.5))
-
-        if len(candidate_list) > 0:
-            fig.s = 1
-            fig.mw_scatter(candidate_list[:, 0]*u.degree, candidate_list[:, 1]*u.degree, color)
-
-    fig.s = 10
-    fig.mw_scatter(ra_known*u.degree, dec_known*u.degree, 'xkcd:light grey blue')
-
-    fig.savefig('./dsph_search/all_sky_candidates.pdf')
-
-
 def new_all_sky(success_files, region_radius, near_plane_files=[]):
     """Plot candidates without Milky Way background."""
     ##############################
@@ -368,24 +219,10 @@ def new_all_sky(success_files, region_radius, near_plane_files=[]):
     ##############################
     # PLOT ALL CANDIDATES
     ##############################
-    # Look for files of candidate coordinates
-    # print("searching", f'./region_candidates/*rad{round(region_radius*100, 2):3.0d}*.txt')
-    # if FLAG_regions_from_file is True:
-    #     file_list = []
-    #     for success_file in success_files:
-    #         suc_coords = np.loadtxt(success_file, dtype=np.float, delimiter=" ")
-    #         file_list += [f'./region_candidates/region_ra{int(round(ra*100))}_dec{int(round(dec*100))}_rad{region_rad_str}_candidates.txt' for (ra, dec) in suc_coords]
-    # else:
-    #     file_list = glob.glob(f'./region_candidates/*rad{region_rad_str}*.txt')
-    # print("found", len(file_list), "file(s)")
-    # print(file_list[1].split("_"))
-
-    # Grab colors to spice up the plots
-    # colors = [cm.Wistia(i) for i in np.linspace(0, 1, num=len(file_list))]
-
-    # Plot the number of candidates
+   # Plot the number of candidates
     ax.text(-150, -52, f"No. of candidates: {len(success_files)}")
 
+    # Get all the files with candidates
     file_list = success_files + near_plane_files
     colors = ['xkcd:coral']*len(success_files) + ['xkcd:steel gray']*len(near_plane_files)
 
@@ -404,20 +241,6 @@ def new_all_sky(success_files, region_radius, near_plane_files=[]):
         dec = float(file[2].strip('dec'))/100
         radius = float(file[3].strip('rad'))/100
         # print(ra, dec, radius)
-
-        # if FLAG_plot_region is True:
-        #     region_radius = 10 + 3.16
-        #     region_line = np.arange(-region_radius, region_radius, 0.7)
-        #     region_constant = np.ones(len(region_line)) * region_radius
-        #     x_region = np.concatenate((region_line, region_line, region_constant, -region_constant))
-        #     y_region = np.concatenate((region_constant, -region_constant, region_line, region_line))
-        #     # get center of circle region
-        #     ra = coord.Angle(x_region*u.degree)
-        #     ra = ra.wrap_at(180*u.degree)
-        #     dec = coord.Angle(y_region*u.degree)
-        #
-        #     # plot circular region
-        #     ax.scatter(ra.radian, dec.radian, color="xkcd:steel gray", s=0.05, zorder=-10)
 
         if FLAG_plot_circles is True:
             # get circle region around candidate
@@ -445,9 +268,9 @@ def new_all_sky(success_files, region_radius, near_plane_files=[]):
 
     # save plot
     try:
-        fig.savefig(f'./all_sky_candidates_{region_rad_str}.{file_type}')
+        fig.savefig(f'./candidates/all_sky_candidates_{region_rad_str}.{file_type}')
     except OSError:
-        fig.savefig(f'./dsph_search/all_sky_candidates_{region_rad_str}.{file_type}')
+        fig.savefig(f'./dsph_search/candidates/all_sky_candidates_{region_rad_str}.{file_type}')
 
 
 def get_points_of_circle(ra_center, dec_center, radius):
