@@ -19,10 +19,11 @@ from the_search.utils import generate_full_sky_cones
 # dec_known = known[:, 2].astype(np.float) + np.random.randint(-2, 3, size=len(ra_known))
 # ##
 region_radius = 3.16
+cone_directory='./candidates/region_list/'
 
-generate_full_sky_cones(region_radius, galactic_plane=15, hemi='south', output_directory='./region_list/')
+generate_full_sky_cones(region_radius, galactic_plane=15, hemi='south', output_directory=cone_directory)
 
-file_list = glob.glob("./region_list/*.txt")
+file_list = glob.glob(cone_directory)
 radii = [1.0, 0.316, 0.1, 0.0316, 0.01]
 
 for infile in file_list:
