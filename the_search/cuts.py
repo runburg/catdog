@@ -15,7 +15,15 @@ except ModuleNotFoundError:
 
 
 def histogram_overdensity_test(convolved_data, histo_shape, region_ra, region_dec, outfile, mask, num_sigma=2, repetition=2):
-    """Return coordinates with overdensities for all convolutions."""
+    """Return coordinates with overdensities for all convolutions.
+
+    Look for overdensities by looking for large bin counts above the average (background).
+
+
+    Inputs:
+        - convolved_data: list of tuples (radius, convolved_array) where radius is radius in degrees of convolution kernel and convolved array is the result
+        - histo_shape: shape of histogrammed data
+        - region_ra: right ascension in """
     # Create zero array to search for overdensities
     passing = np.zeros(histo_shape)
 
@@ -29,7 +37,7 @@ def histogram_overdensity_test(convolved_data, histo_shape, region_ra, region_de
             print("Error with normalization")
             print(f"Potential boundary issue at ({region_ra}, {region_dec})")
             print(hist_data)
-            mean = 0
+            mean = midpoints[len(midpoints)//2]
         sd = np.sqrt(np.average((midpoints - mean)**2, weights=hist_data))
 
         # Add the overdensities to the test array
@@ -57,7 +65,8 @@ def pm_overdensity_test(convolved_data, histo_shape, region_ra, region_dec, outf
         except ZeroDivisionError:
             print("Error with normalization")
             print(hist_data)
-            mean = 0
+            mean = midpoints[len(midpoints)//2]
+
         sd = np.sqrt(np.average((midpoints - mean)**2, weights=hist_data))
 
         # Add the overdensities to the test array
