@@ -20,11 +20,27 @@ except ModuleNotFoundError:
 
 
 def colorbar_for_subplot(fig, axs, cmap, image):
-    """Place a colorbar by each plot."""
+    """Place a colorbar by each plot.
+
+    Helper function to place a color bar with nice spacing by the plot.
+
+
+    Inputs:
+        - fig: figure with the relevant axes
+        - axs: axs to place the colorbar next to
+        - cmap: color map for the colorbar
+        - image: image for the colorbar
+
+    Returns:
+        - the colorbar object
+    """
     from mpl_toolkits.axes_grid1 import make_axes_locatable
 
     divider = make_axes_locatable(axs)
+    # Create the axis for the colorbar 
     cax = divider.append_axes('right', size='5%', pad=0.05)
+
+    # Create the colorbar
     cbar = fig.colorbar(image, cax=cax)
     # cm.ScalarMappable(norm=None, cmap=cmap),
 
@@ -32,7 +48,18 @@ def colorbar_for_subplot(fig, axs, cmap, image):
 
 
 def trim_axes(axes, N):
-    """Trim the axes list to proper length."""
+    """Trim the axes list to proper length.
+
+    Helper function if too many subplots are present.
+
+
+    Input:
+        - axes: list of axes of the subplots
+        - N: the number of subplots to keep
+
+    Return:
+        - list of retained axes
+    """
     if N > 1:
         axes = axes.flat
         for ax in axes[N:]:
@@ -43,20 +70,41 @@ def trim_axes(axes, N):
 
 
 def plot_setup(rows, cols, d=0, buffer=(0.4, 0.4)):
-    """Set mpl parameters for beautification."""
+    """Set mpl parameters for beautification.
+
+    Make matplotlib pretty again!
+
+
+    Input:
+        - rows: number of rows of subplots
+        - cols: number of columns of subplots
+        - d: number of total subplots needed
+        - buffer: tuple of white space around each subplot
+
+    Returns:
+        - figure object, list of subplot axes
+    """
     # setup plot
     plt.close('all')
+
+    # Format label sizes
     mpl.rcParams['axes.labelsize'] = 'medium'
     mpl.rcParams['ytick.labelsize'] = 'xx-small'
     mpl.rcParams['xtick.labelsize'] = 'xx-small'
+
+    # Set white spaces
     mpl.rcParams['figure.subplot.wspace'] = buffer[0]
     mpl.rcParams['figure.subplot.hspace'] = buffer[1]
 
+    # Choose font
     plt.rc('text', usetex=True)
     plt.rc('font', family='serif')
 
+    # Create figure
     figsize = (4 * cols + buffer[0], 3.5 * rows + buffer[1])
     fig, axs = plt.subplots(nrows=rows, ncols=cols, figsize=figsize)
+
+    # Trim unnecessary axes
     if d != 0:
         axs = trim_axes(axs, d)
 
@@ -64,11 +112,25 @@ def plot_setup(rows, cols, d=0, buffer=(0.4, 0.4)):
 
 
 def convolved_histograms(convolved_data, histo_data, passingxy=None, name='dwarf', region_radius=0):
-    """Make 2d histogram of convolved data."""
+    """Make 2d histograms of convolved data.
+
+    Create histograms of the objects in a given region as they are convolved.
+    Meant to visualize the result of successful regions.
+
+
+    Inputs:
+        - convolved_data: list of tuples (radius, convolved_array) of the radius of the convolution kernel and the resulting array
+        - histo_data: tuple (X, Y, histo) from unconvolved histogram
+        - passingxy: list [passingx, passingy] of coordinates that pass the given test
+        - name: name of dwarf/region
+        - region_radius: radius in degrees of the region
+    """
     from matplotlib import cm, colors
 
+    # Unpack histogram data
     X, Y, histo = histo_data
 
+    # Setup plot structure
     cols = 2
     d = len(convolved_data) + 1
     rows = d//2 + d % 2
@@ -76,37 +138,59 @@ def convolved_histograms(convolved_data, histo_data, passingxy=None, name='dwarf
     fig, axs = plot_setup(rows, cols, d)
     # fig.tight_layout()
 
+    # Set bounds for color map
     vmin = 0
     vmax = np.amax(histo)
     cmap = cm.magma
     normalize = colors.Normalize(vmin=vmin, vmax=vmax)
 
+    # Loop through the convolved data and plot
     for ax, (radius, convolved_array) in zip(axs, convolved_data):
         ax.pcolormesh(X, Y, convolved_array.T, norm=normalize, cmap=cmap)
+
+        # Label plot
         ax.set_title(f"2D tophat, width={2*radius}")
         ax.set_xlabel("Relative ra [deg]")
         ax.set_ylabel("Relative dec [deg]")
 
+        # Overlay passing coordinates if any
         if passingxy is not None:
             ax.scatter(passingxy[0], passingxy[1], s=1, color='xkcd:bright teal')
 
+    # Make the last plot the unconvolved histogram
     axs.flatten()[-1].pcolormesh(X, Y, histo.T, norm=normalize, cmap=cmap)
     axs.flatten()[-1].set_title("2D histogram, not convolved")
 
+    # Add colorbars
     fig.suptitle(f"Convolved histogram for {name}")
     fig.colorbar(cm.ScalarMappable(norm=normalize, cmap=cmap), ax=axs.ravel().tolist())
-    outfile = f'./dwarf_histos/{name}_histo_{round(region_radius*100)}.png'
+
+    # Save plot
+    outfile = f'./candidates/histos/{name}_histo_{round(region_radius*100)}.png'
     fig.savefig(outfile)
 
     print("saved to", outfile)
 
 
 def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None, region_radius=0):
-    """Make 2d histogram of convolved data."""
+    """Make 1d histogram of convolved data.
+
+    Make plots of the 1d histogram of convolved data to visualize the overdensity.
+
+
+    Inputs:
+        - convolved_data: list of tuples (radius, convolved_array) of the radius of the convolution kernel and the resulting array
+        - histo_data: tuple (X, Y, histo) from unconvolved histogram
+        - name: name of dwarf/region
+        - mask: mask array of bins to ignore in finding overdensitites
+        - region_radius: radius in degrees of the region
+    """
     from matplotlib import cm, colors
 
+    # Unpack histogram data
     X, Y, histo = histo_data
 
+    # Setup plot
     cols = 2
     d = len(convolved_data) + 1
     rows = d//2 + d % 2
@@ -114,32 +198,30 @@ def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None,
     fig, axs = plot_setup(rows, cols, d)
     # fig.tight_layout()
 
+    # Set bounds for colormap
     vmin = 0
     vmax = np.amax(histo)/10
     cmap = cm.magma
     normalize = colors.Normalize(vmin=vmin, vmax=vmax)
 
+    # Loop through data and plot
     for ax, (radius, convolved_array) in zip(axs, convolved_data):
         hist_data, bins, _ = ax.hist(convolved_array.flatten()[mask.flatten()], density=False, bins=101)
+
+        # Label plot
         ax.set_yscale('log')
         ax.set_title(f"Bin counts,  conv. width={2*radius}")
         ax.set_ylabel("Frequency of counts")
         ax.set_xlabel("2d bin counts")
 
+    # Plot the unconvolved histogram
     axs.flatten()[-1].pcolormesh(X, Y, histo.T, norm=normalize, cmap=cmap)
-    axs.flatten()[-1].set_title("2D histogram, not convolved")
+    axs.flatten()[-1].set_title("1D histogram, not convolved")
 
     fig.suptitle(f"1D Histogram for {name}")
-    fig.savefig(f'./dwarf_histos/{name}_histo_1d_{round(region_radius*100)}.png')
 
-
-def string_name(dwarf):
-    """Give a string rep of name."""
-    try:
-        ra, _, dec = dwarf.name.partition('_')
-        return f'({round(float(ra)/100, 2)}, {round(float(dec)/100, 2)})'
-    except ValueError:
-        return f'{dwarf.name}'
+    # Save figure
+    fig.savefig(f'./candidates/histos/{name}_histo_1d_{round(region_radius*100)}.png')
 
 
 def new_all_sky(success_files, region_radius, near_plane_files=[]):
@@ -219,7 +301,7 @@ def new_all_sky(success_files, region_radius, near_plane_files=[]):
     ##############################
     # PLOT ALL CANDIDATES
     ##############################
-   # Plot the number of candidates
+    # Plot the number of candidates
     ax.text(-150, -52, f"No. of candidates: {len(success_files)}")
 
     # Get all the files with candidates
@@ -267,10 +349,7 @@ def new_all_sky(success_files, region_radius, near_plane_files=[]):
             ax.scatter(ra.radian, dec.radian, color=color, s=2, zorder=500)
 
     # save plot
-    try:
-        fig.savefig(f'./candidates/all_sky_candidates_{region_rad_str}.{file_type}')
-    except OSError:
-        fig.savefig(f'./dsph_search/candidates/all_sky_candidates_{region_rad_str}.{file_type}')
+    fig.savefig(f'./candidates/all_sky_candidates_{region_rad_str}.{file_type}')
 
 
 def get_points_of_circle(ra_center, dec_center, radius):
