@@ -16,24 +16,15 @@ from astroquery.gaia import Gaia
 import numpy as np
 
 
-def gaia_search(ra, dec, name, output_path, radius=0.5, sigma=3, pm_threshold=5, bp_rp_threshold=2, dump_to_file=True):
-    """Given coordinates, return gaia cone search around object."""
-    warnings.filterwarnings("ignore", module='astropy.*')
-    coords = SkyCoord(ra=ra, dec=dec, unit='deg', frame='icrs')
-    job = Gaia.launch_job_async(f"SELECT TOP 500000 \
-                                gaia_source.source_id,gaia_source.ra,gaia_source.ra_error,gaia_source.dec, \
-                                gaia_source.dec_error,gaia_source.parallax,gaia_source.parallax_error, \
-                                gaia_source.pmra,gaia_source.pmra_error,gaia_source.pmdec,gaia_source.pmdec_error, \
-                                gaia_source.bp_rp, gaia_source.phot_g_mean_mag \
-                                FROM gaiadr2.gaia_source \
-                                WHERE \
-                                CONTAINS(POINT('ICRS',gaiadr2.gaia_source.ra,gaiadr2.gaia_source.dec),BOX('ICRS',{coords.ra.degree},{coords.dec.degree},{2*radius},{2*radius}))=1 AND  (gaiadr2.gaia_source.parallax - gaiadr2.gaia_source.parallax_error * {sigma} <= 0) AND (gaiadr2.gaia_source.bp_rp <= {bp_rp_threshold})", dump_to_file=dump_to_file, output_file=f'{output_path}/vots/{name}_{round(radius*100)}.vot', verbose=True)
-
-    return job
-
-
 def convolve_spatial_histo(gaia_table, region_radius, radii):
-    """Convolve the spatial histogram of GAIA data with bin sizes given in radii."""
+    """Convolve the spatial histogram of GAIA data with bin sizes given in radii.
+
+
+    Inputs:
+        - gaia_table: table of gaia data
+        - region_radius: radius of region in degrees
+        - radii: list of radii in degrees
+    """
     from astropy import convolution
 
     # Bin data at finest resolution
@@ -64,7 +55,14 @@ def convolve_spatial_histo(gaia_table, region_radius, radii):
 
 
 def convolve_pm_histo(gaia_table, region_radius, radii):
-    """Convolve the pm histogram of GAIA data with bin sizes given in radii."""
+    """Convolve the pm histogram of GAIA data with bin sizes given in radii.
+
+
+    Inputs:
+        - gaia_table: table of gaia data
+        - region_radius: radius of region in degrees
+        - radii: list of radii in degrees
+    """
     from astropy import convolution
 
     # Bin data at finest resolution
@@ -90,45 +88,23 @@ def convolve_pm_histo(gaia_table, region_radius, radii):
     return convolved_data, xedges, yedges, X, Y, histo, histo_mask
 
 
-def get_window_function(spa_dim, pm_dim):
-    """Return a window function for a 4d convolution."""
-    # ensure int
-    spa_dim = int(spa_dim)
-    pm_dim = int(pm_dim)
-
-    # create 4d ellipse in histogram space
-    a = np.ones((spa_dim*2+1, spa_dim*2+1, pm_dim*2+1, pm_dim*2+1))
-    for i in np.arange(-spa_dim, 1+spa_dim):
-        for j in np.arange(-spa_dim, spa_dim+1):
-            for k in np.arange(-pm_dim, pm_dim+1):
-                for l in np.arange(-pm_dim, pm_dim+1):
-                    if (i/spa_dim)**2 + (j/spa_dim)**2 + (k/pm_dim)**2 + (l/pm_dim)**2 > 1:
-                        a[i+spa_dim, j+spa_dim, k+pm_dim, l+pm_dim] = 0
-
-    return a
+def gaia_region_search(ra, dec, outfile, radius=10, sigma=3, pm_threshold=5, bp_rp_threshold=2, dump_to_file=True):
+    """Given coordinates, search gaia around a region and populate cones within that region.
 
 
-def random_cones_outside_galactic_plane(limit=15):
-    """Check if in plane and return new coordinates if not."""
-    # galactic longitude
-    l = random() * 360
-    # galactic latitude
-    b = (random() - 0.5) * (90 - limit) * 2
-    # check that no galactic latitudes are within limit deg of galactic plane
+    Inputs:
+        - ra: right ascension of region in degrees
+        - dec: declination of region in degrees
+        - outfile: file to dump results to
+        - radius: radius of region (half of side length of a box) in degrees
+        - sigma: number of sigma to check parallax consistency with zero (far away)
+        - pm_threshold: maximum magnitude of proper motion in mas/yr
+        - bp_rp_threshold: maximum value of bp_rp
+        - dump_to_file: boolean to save file
 
-    if b < 0:
-        b -= limit
-    else:
-        b += limit
-
-    c_gal = SkyCoord(l, b, unit='deg', frame='galactic')
-    icrs_coords = (c_gal.icrs.ra.value, c_gal.icrs.dec.value)
-
-    return icrs_coords
-
-
-def gaia_region_search(ra, dec, outfile, radius=10, sigma=3, pm_threshold=5, bp_rp_threshold=2, limit=15,  dump_to_file=True):
-    """Given coordinates, search gaia around a region and populate cones within that region."""
+    Return:
+        - Asynchronous job query
+    """
     warnings.filterwarnings("ignore", module='astropy.*')
     coords = SkyCoord(ra, dec, frame='icrs', unit='deg')
     job = Gaia.launch_job_async(f"SELECT TOP 10000000 \
@@ -144,7 +120,19 @@ def gaia_region_search(ra, dec, outfile, radius=10, sigma=3, pm_threshold=5, bp_
 
 
 def azimuthal_equidistant_coordinates(gaia_table, region_ra, region_dec):
-    """Return cartesian coordinates from GAIA table using azimuthal equidistant projection."""
+    """Return cartesian coordinates from GAIA table using azimuthal equidistant projection.
+
+    Project the sphere onto a 2D surface without distorting the regions near the center of projection too much. 
+
+
+    Inputs:
+        - gaia_table: data_table from gaia
+        - region_ra: right ascension of region in degrees
+        = region_dec: declination of region in degrees
+
+    Returns:
+        - x, y the projections of ra, dec"""
+    # Use the notation given here:
     # http://mathworld.wolfram.com/AzimuthalEquidistantProjection.html
 
     ra_rad = np.deg2rad(region_ra)
@@ -164,7 +152,17 @@ def azimuthal_equidistant_coordinates(gaia_table, region_ra, region_dec):
 
 
 def inverse_azimuthal_equidistant_coordinates(x, y, ra_rad, dec_rad):
-    """Given (x, y) positions from AEP, return (ra, dec) in deg."""
+    """Given (x, y) positions from AEP, return (ra, dec) in deg.
+
+
+    Inputs:
+        - x: projected cartesian coordinates
+        - y: projected cartesian coordinates
+        - ra_rad: region ra in radians
+        - dec_rad: region dec in radians
+
+    Returns:
+        - ra, dec in degrees"""
     # http://mathworld.wolfram.com/AzimuthalEquidistantProjection.html
     c = np.sqrt(x**2 + y**2)
 
@@ -180,7 +178,21 @@ def inverse_azimuthal_equidistant_coordinates(x, y, ra_rad, dec_rad):
 
 
 def generate_full_sky_cones(cone_radius, galactic_plane=15, hemi='north', out_to_file=True, output_directory='./region_list/'):
-    """Generate full sky coverage of candidate cones."""
+    """Generate full sky coverage of candidate cones.
+    
+    Distribute points over the full sky and write them to a file.
+
+
+    Inputs:
+        - cone_radius: radius of the cone in degrees
+        - galactic_plane: galactic latitude of the galactic plane (i.e. the symmetric band about 0 to exclude) in degrees
+        - hemi: hemisphere to consider [values are 'both', 'north', 'south']
+        - out_to_file: boolean whether to save to file
+        - output_directory: path to save file
+
+    Returns:
+        - ra, dec of cones if not output to file
+    """
     angle = 90 - galactic_plane
     deg_values = np.arange(-angle, angle, cone_radius)
     x, y = np.meshgrid(deg_values, deg_values)
@@ -232,7 +244,17 @@ def icrs_to_galactic(ra_icrs, dec_icrs):
 
 
 def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True, far_file=None, near_file=None):
-    """Reduce candidate list by separating out regions near the galactic plane."""
+    """Reduce candidate list by separating out regions near the galactic plane.
+
+    
+    Inputs:
+        - ra: list of ra of candidates
+        - dec: list of dec of candidates
+        - latitude: minimum absolut value of galactic latitude (the region to cut out)
+        - output: boolean whether to dump filtered candidates to file
+        - far_file: file for candidates outside of excluded region
+        - near_file: file for candidates near excluded region
+    """
     l_gal, b_gal = icrs_to_galactic(ra, dec)
 
     indices_too_close_to_plane = np.logical_and(np.less(b_gal.value, latitude), np.less(-latitude, b_gal.value))
@@ -252,91 +274,6 @@ def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True
             np.savetxt(outfile, np.array([ra_close, dec_close]).T, delimiter=" ")
 
     return ra_far, dec_far, ra_close, dec_close
-
-
-def get_cone_in_region(ra, dec, region_radius, max_radius=1, limit=15, num_cones=10000):
-    """Generate cones given a circular region of region_radius that won't bleed out of the region."""
-    sample_region_size = int(np.sqrt(num_cones))
-    sample_range_locations = np.linspace(-region_radius+max_radius, region_radius+max_radius, num=sample_region_size)
-
-    x_center = np.sin(np.deg2rad(dec))*np.cos(np.deg2rad(ra))
-    y_center = np.sin(np.deg2rad(dec))*np.sin(np.deg2rad(ra))
-    z_center = np.cos(np.deg2rad(dec))
-
-    x_locations = x_center + sample_range_locations
-    y_locations = y_center + sample_range_locations
-    z_locations = np.sqrt((max_radius-region_radius)**2-x_locations**2-y_locations**2)
-
-    theta = np.rad2deg(np.arccos(z_locations/np.sqrt(x_locations**2+y_locations**2+z_locations**2)))
-    phi = np.rad2deg(np.arctan2(y_locations, x_locations))
-
-    print([(ph, th) for ph, th in zip(theta, phi)])
-    # for point in range(num_cones):
-    #     if point % 1000000 == 0:
-    #         print(f"At cone {point}")
-    #     point += 0.5
-    #
-    #     # equally spaced coordinates in degrees
-    #     theta = 180/np.pi * (np.arccos(1 - 2 * point / num_cones) - np.pi/2)
-    #     phi = (180 * (1 + 5**0.5) * point) % 360
-    #
-    #     # if out of declination range, continue
-    #     if abs(dec - theta) > region_radius - max_radius:
-    #         continue
-    #     else:
-    #         ang_dist = angular_distance(ra, dec, phi, theta)
-    #         # if outside region, continue
-    #         if ang_dist > (region_radius - max_radius) * np.pi/180:
-    #             continue
-    #         elif outside_of_galactic_plane(phi, theta) is True:
-    #             # if outside of galactic plane
-    #             yield (phi, theta)
-
-
-def outside_of_galactic_plane(ra, dec, limit=15):
-    """Check that coordinates are outside (up to limit) the galactic plane."""
-    c_icrs = SkyCoord(ra, dec, unit='deg', frame='icrs')
-    return np.abs(c_icrs.galactic.b.value) > limit
-
-
-def angular_distance(ra, dec, ra_cone, dec_cone):
-    """For two sets of coordinates, find angular_distance between them in radians."""
-    import astropy.coordinates as coord
-    from astropy import units as u
-    ra_diff = ra - ra_cone
-    # for i, dif in enumerate(ra_diff):
-    ra_diff = coord.Angle(ra_diff, unit='deg').wrap_at(360*u.degree).value
-    # using vincenty formula from https://en.wikipedia.org/wiki/Great-circle_distance
-    ra_diff_rad = abs(np.deg2rad(ra_diff))
-    dec_rad = np.deg2rad(dec)
-    dec_cone_rad = np.deg2rad(dec_cone)
-    # # ang_dist = np.arctan(np.sqrt((np.cos(dec_cone_rad) * np.sin(ra_diff_rad))**2 + (np.cos(dec_rad)*np.sin(dec_cone_rad)-np.sin(dec_rad)*np.cos(dec_cone_rad)*np.cos(ra_diff_rad))**2) /(np.sin(dec_rad)*np.sin(dec_cone_rad)+np.cos(dec_rad)*np.cos(dec_cone_rad)*np.cos(ra_diff_rad)))
-    ang_dist = np.arccos(np.sin(dec_rad)*np.sin(dec_cone_rad) + np.cos(dec_rad)*np.cos(dec_cone_rad)*np.cos(ra_diff_rad))
-
-    return ang_dist
-
-
-def unmask(data):
-    """Return an unmasked table for cuts."""
-    data = data[[~obj.mask for obj in data]]
-
-    return data
-
-
-def try_until(func, max_tries=6, sleep_time=30):
-    """Try to fetch GAIA data max_tries times."""
-    for _ in range(0, max_tries):
-        try:
-            return func()
-        except:
-            sleep(sleep_time)
-    raise GaiaResultsNotReturnedError()
-
-
-class GaiaResultsNotReturnedError(Exception):
-    """Error for when GAIA is taking too long to return data."""
-
-    pass
 
 
 def fibonnaci_sphere(num_points, limit=16, point_start=0, point_end=None):
