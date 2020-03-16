@@ -29,7 +29,7 @@ def convolve_spatial_histo(gaia_table, region_radius, radii):
 
     # Bin data at finest resolution
     min_radius = min(radii)
-    histo, xedges, yedges = np.histogram2d(gaia_table['x'], gaia_table['y'], bins=region_radius//min_radius)
+    histo, xedges, yedges = np.histogram2d(gaia_table['x'], gaia_table['y'], bins=int(region_radius/min_radius))
     # print(histo.shape)
     # put bins in degrees
     xedges *= 180/np.pi
@@ -39,11 +39,15 @@ def convolve_spatial_histo(gaia_table, region_radius, radii):
     X, Y = np.meshgrid(xedges, yedges)
     histo_mask = np.less(X[:-1, :-1]**2 + Y[:-1, :-1]**2, region_radius**2)
 
+    print("Convolving spatial")
+
     # Convolve the histogram with different size tophats
     convolved_data = []
     for radius in radii:
         convolution_kernel = convolution.Tophat2DKernel(radius//min_radius)
         histo_mask = np.less(X[:-1, :-1]**2 + Y[:-1, :-1]**2, region_radius**2)
+        histo_mask = np.ones(X[:-1, :-1].shape, dtype=int)
+
         convolved_array = np.multiply(convolution.convolve(histo, convolution_kernel), histo_mask)
 
         # All convolved data is stored here
@@ -67,11 +71,13 @@ def convolve_pm_histo(gaia_table, region_radius, radii):
 
     # Bin data at finest resolution
     min_radius = min(radii)
-    histo, xedges, yedges = np.histogram2d(gaia_table['pmra'], gaia_table['pmdec'], bins=5//min_radius)
+    histo, xedges, yedges = np.histogram2d(gaia_table['pmra'], gaia_table['pmdec'], bins=int(5/min_radius))
 
     # Set bins for plotting
     X, Y = np.meshgrid(xedges, yedges)
     histo_mask = np.less(X[:-1, :-1]**2 + Y[:-1, :-1]**2, region_radius**2)
+
+    print("Convolving pm")
 
     # Convolve the histogram with different size tophats
     convolved_data = []
@@ -241,6 +247,38 @@ def icrs_to_galactic(ra_icrs, dec_icrs):
 
     coords = SkyCoord(ra_icrs, dec_icrs, unit='deg', frame='icrs')
     return coords.galactic.l, coords.galactic.b
+
+
+def outside_of_galactic_plane(ra, dec, limit=15):
+    """Check that coordinates are outside (up to limit) the galactic plane.
+
+
+    Inputs:
+        - ra: list of ra of GAIA objects
+        - dec: lists of dec of GAIA objects
+        - limit: band of galactic plane in degrees
+
+    Returns:
+        - GAIA objects outside galactic plane
+    """
+    c_icrs = SkyCoord(ra, dec, unit='deg', frame='icrs')
+    return np.abs(c_icrs.galactic.b.value) > limit
+
+
+def angular_distance(ra, dec, ra_cone, dec_cone):
+    """For two sets of coordinates, find angular_distance between them in radians."""
+    ra_diff = ra - ra_cone
+    # for i, dif in enumerate(ra_diff):
+    if ra_diff < 0:
+        ra_diff += 360
+    # using vincenty formula from https://en.wikipedia.org/wiki/Great-circle_distance
+    ra_diff_rad = abs(np.deg2rad(ra_diff))
+    dec_rad = np.deg2rad(dec)
+    dec_cone_rad = np.deg2rad(dec_cone)
+    # # ang_dist = np.arctan(np.sqrt((np.cos(dec_cone_rad) * np.sin(ra_diff_rad))**2 + (np.cos(dec_rad)*np.sin(dec_cone_rad)-np.sin(dec_rad)*np.cos(dec_cone_rad)*np.cos(ra_diff_rad))**2) /(np.sin(dec_rad)*np.sin(dec_cone_rad)+np.cos(dec_rad)*np.cos(dec_cone_rad)*np.cos(ra_diff_rad)))
+    ang_dist = np.arccos(np.sin(dec_rad)*np.sin(dec_cone_rad) + np.cos(dec_rad)*np.cos(dec_cone_rad)*np.cos(ra_diff_rad))
+
+    return ang_dist
 
 
 def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True, far_file=None, near_file=None):

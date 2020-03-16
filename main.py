@@ -7,15 +7,15 @@ Date: 22-08-2019 14:03
 
 """
 
-import glob
 import warnings
 import numpy as np
-import sys, os
+import sys
+import os
 from zipfile import ZipFile, ZIP_DEFLATED
 from astropy.table import Table
 from the_search import cuts
-from the_search.utils import fibonnaci_sphere, get_cone_in_region, gaia_region_search, outside_of_galactic_plane, azimuthal_equidistant_coordinates, inverse_azimuthal_equidistant_coordinates, get_window_function, convolve_spatial_histo, convolve_pm_histo
-from the_search.plots import get_points_of_circle, convolved_histograms, convolved_histograms_1d, new_all_sky
+from the_search.utils import gaia_region_search, azimuthal_equidistant_coordinates, inverse_azimuthal_equidistant_coordinates, convolve_spatial_histo, convolve_pm_histo, outside_of_galactic_plane
+from the_search.plots import convolved_histograms, convolved_histograms_1d, new_all_sky
 
 warnings.filterwarnings("ignore")
 
@@ -23,7 +23,6 @@ warnings.filterwarnings("ignore")
 def filter_then_plot(infiles):
     """Create all sky plot and filter candidates."""
     from the_search.utils import cut_out_candidates_close_to_plane_and_slmc
-    from the_search.plots import new_all_sky
 
     region_rad = 3.16
     coord_list = np.concatenate([np.loadtxt(infile, delimiter=" ") for infile in infiles])
@@ -78,7 +77,7 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
     convolved_data, xedges, yedges, X, Y, histo, histo_mask = convolve_spatial_histo(gaia_table, region_radius, radii)
 
     # Get passing candidate coordinates in projected (non-sky) coordinates
-    passing_indices_x, passing_indices_y = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, outfile, histo_mask, num_sigma=(sigma_threshhold-1), repetition=minimum_count)
+    passing_indices_x, passing_indices_y = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, outfile, histo_mask, num_sigma=sigma_threshhold, repetition=minimum_count)
 
     min_radius = min(radii)
     passing_x = xedges[passing_indices_x] + min_radius/2  # coordinate of center of bins
@@ -145,7 +144,7 @@ def main(param_args):
                      "sigma_threshhold": 3,
                      "name": name,
                      "FLAG_search_pm_space": True,
-                     "FLAG_plot": False
+                     "FLAG_plot": True
                      }
 
         sp_pass, pm_pass = cone_search(**main_args)
