@@ -30,14 +30,14 @@ def convolve_spatial_histo(gaia_table, region_radius, radii):
     # Bin data at finest resolution
     min_radius = min(radii)
     histo, xedges, yedges = np.histogram2d(gaia_table['x'], gaia_table['y'], bins=int(region_radius/min_radius))
-    # print(histo.shape)
+
     # put bins in degrees
     xedges *= 180/np.pi
     yedges *= 180/np.pi
 
     # Set bins for plotting
     X, Y = np.meshgrid(xedges, yedges)
-    histo_mask = np.less(X[:-1, :-1]**2 + Y[:-1, :-1]**2, region_radius**2)
+    histo_mask = ~np.less(X[:-1, :-1]**2 + Y[:-1, :-1]**2, region_radius**2)
 
     print("Convolving spatial")
 
@@ -45,10 +45,20 @@ def convolve_spatial_histo(gaia_table, region_radius, radii):
     convolved_data = []
     for radius in radii:
         convolution_kernel = convolution.Tophat2DKernel(radius//min_radius)
-        histo_mask = np.less(X[:-1, :-1]**2 + Y[:-1, :-1]**2, region_radius**2)
-        histo_mask = np.ones(X[:-1, :-1].shape, dtype=int)
+        
+        # histo_mask = ~np.less(X[:-1, :-1]**2 + Y[:-1, :-1]**2, region_radius**2)
+        # histo_mask = np.ones(histo.shape)
+        # histo_mask[histo_mask == 0] *= np.nan
+        # histo_mask[(X[:-1, :-1]**2 + Y[:-1, :-1]**2) > region_radius**2] = np.nan
 
-        convolved_array = np.multiply(convolution.convolve(histo, convolution_kernel), histo_mask)
+        # histo_mask = np.ones(X[:-1, :-1].shape, dtype=int)
+        # histo_mask = np.nan * ~histo_mask + histo_mask
+        # print(histo_mask)
+        # histo = np.multiply(histo_mask, histo)
+
+        convolved_array = convolution.convolve(histo, convolution_kernel, mask=histo_mask, preserve_nan=True, normalize_kernel=False)
+        # print(np.sum(~np.isnan(convolved_array)))
+        # print(convolved_array)
 
         # All convolved data is stored here
         convolved_data.append((radius, convolved_array))
@@ -72,6 +82,7 @@ def convolve_pm_histo(gaia_table, region_radius, radii):
     # Bin data at finest resolution
     min_radius = min(radii)
     histo, xedges, yedges = np.histogram2d(gaia_table['pmra'], gaia_table['pmdec'], bins=int(5/min_radius))
+    # print(histo)
 
     # Set bins for plotting
     X, Y = np.meshgrid(xedges, yedges)
@@ -269,8 +280,6 @@ def angular_distance(ra, dec, ra_cone, dec_cone):
     """For two sets of coordinates, find angular_distance between them in radians."""
     ra_diff = ra - ra_cone
     # for i, dif in enumerate(ra_diff):
-    if ra_diff < 0:
-        ra_diff += 360
     # using vincenty formula from https://en.wikipedia.org/wiki/Great-circle_distance
     ra_diff_rad = abs(np.deg2rad(ra_diff))
     dec_rad = np.deg2rad(dec)

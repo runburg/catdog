@@ -206,7 +206,7 @@ def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None,
 
     # Loop through data and plot
     for ax, (radius, convolved_array) in zip(axs, convolved_data):
-        hist_data, bins, _ = ax.hist(convolved_array.flatten()[mask.flatten()], density=False, bins=101)
+        hist_data, bins, _ = ax.hist(convolved_array.flatten()[(~np.isnan(convolved_array)).flatten()], density=False, bins=101, range=(0, np.nanmax(convolved_array)))
 
         # Label plot
         ax.set_yscale('log')

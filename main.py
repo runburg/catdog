@@ -38,7 +38,7 @@ def filter_then_plot(infiles):
     new_all_sky(far_file_list, region_rad, near_plane_files=near_file_list)
 
 
-def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=None, minimum_count=3, sigma_threshhold=3, FLAG_search_pm_space=True, FLAG_plot=True):
+def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=None, minimum_count_spatial=3, sigma_threshhold_spatial=3, minimum_count_pm=3, sigma_threshhold_pm=3, FLAG_search_pm_space=True, FLAG_plot=True):
     """Search region of sky."""
     # Give a default name based on position
     if name is None:
@@ -75,9 +75,9 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
 
     # Get the convolved data for all radii
     convolved_data, xedges, yedges, X, Y, histo, histo_mask = convolve_spatial_histo(gaia_table, region_radius, radii)
-
+    
     # Get passing candidate coordinates in projected (non-sky) coordinates
-    passing_indices_x, passing_indices_y = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, outfile, histo_mask, num_sigma=sigma_threshhold, repetition=minimum_count)
+    passing_indices_x, passing_indices_y = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, outfile, histo_mask, num_sigma=sigma_threshhold_spatial, repetition=minimum_count_spatial)
 
     min_radius = min(radii)
     passing_x = xedges[passing_indices_x] + min_radius/2  # coordinate of center of bins
@@ -89,18 +89,13 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
 
     # Perform search in pm space if desired
     pm_test_result = True
-    if FLAG_search_pm_space & od_test_result:
+    if FLAG_search_pm_space:
         convolved_data_pm, _, _, _, _, histog, histog_mask = convolve_pm_histo(gaia_table, region_radius, radii)
-        pm_test_result = cuts.pm_overdensity_test(convolved_data_pm, histog.shape, region_ra, region_dec, outfile, histog_mask, num_sigma=sigma_threshhold, repetition=minimum_count)
+        pm_test_result = cuts.pm_overdensity_test(convolved_data_pm, histog.shape, region_ra, region_dec, outfile, histog_mask, num_sigma=sigma_threshhold_pm, repetition=minimum_count_pm)
 
-    if pm_test_result is True:
+    if pm_test_result is True & od_test_result is True:
         # Coordinate transform back to coordinates on the sky
         passing_ra, passing_dec = inverse_azimuthal_equidistant_coordinates(np.deg2rad(passing_x), np.deg2rad(passing_y), np.deg2rad(region_ra), np.deg2rad(region_dec))
-
-        # plot the convolved data
-        if FLAG_plot is True:
-            convolved_histograms(convolved_data, (X, Y, histo), passingxy=[passing_x, passing_y], name=name, region_radius=region_radius)
-            convolved_histograms_1d(convolved_data, (X, Y, histo), name=name, mask=histo_mask, region_radius=region_radius)
 
         # Create output file
         with open(outfile, 'w') as fil:
@@ -110,6 +105,11 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
         with open(outfile, 'a') as outfl:
             for ra, dec in zip(passing_ra, passing_dec):
                 outfl.write(f"{ra} {dec}\n")
+
+    # plot the convolved data
+    if FLAG_plot is True:
+        convolved_histograms(convolved_data, (X, Y, histo), passingxy=[passing_x, passing_y], name=name, region_radius=region_radius)
+        convolved_histograms_1d(convolved_data, (X, Y, histo), name=name, mask=histo_mask, region_radius=region_radius)
 
     return od_test_result, pm_test_result
 
@@ -128,20 +128,29 @@ def main(param_args):
     count_pass_both = 0
     count_total = 0
 
+    known_dwarf_names = np.loadtxt("./the_search/tuning/tuning_known_dwarfs.txt", delimiter=",", dtype=str)[:, 0]
+
     dwarfs = np.loadtxt(input_file, delimiter=" ", dtype=np.float64, comments='#')
     print(dwarfs)
+
+    passing_dwarfs = []
+
     for i, (ra, dec) in enumerate(dwarfs[:]):
         ra = float(ra)
         dec = float(dec)
         name = f"({ra}, {dec})"
+        if input_file == 'the_search/tuning/tuning_known_dwarfs_no_name.txt':
+            name = known_dwarf_names[i]
 
         main_args = {"region_ra": ra,
                      "region_dec": dec,
                      "region_radius": region_radius,
                      "radii": radii,
                      "pm_radii": radii,
-                     "minimum_count": 3,
-                     "sigma_threshhold": 3,
+                     "minimum_count_spatial": 3,
+                     "sigma_threshhold_spatial": 3,
+                     "minimum_count_pm": 3,
+                     "sigma_threshhold_pm": 3,
                      "name": name,
                      "FLAG_search_pm_space": True,
                      "FLAG_plot": True
@@ -161,11 +170,18 @@ def main(param_args):
 
         if pm_pass is True and sp_pass is True:
             count_pass_both += 1
+            passing_dwarfs.append(name)
             print(f"Success: both tests passed")
             with open("./candidates/successful_candidates.txt", 'a') as outfile:
                 outfile.write(f"{ra} {dec}\n")
         count_total += 1
         print(f"finished with dwarf {name}\n\n\n")
+
+    print("Search parameters:")
+    print("spatial count:", main_args["minimum_count_spatial"], "; spatial sigma:", main_args["sigma_threshhold_spatial"], "; pm count:", main_args["minimum_count_pm"], "; pm sigma:", main_args["sigma_threshhold_pm"])
+
+    print("Passing dwarfs:")
+    print(passing_dwarfs)
 
     print("Dwarf pass rate is")
     print(f"spatial {count_pass_spatial}/{count_total} = {count_pass_spatial/count_total}")
@@ -177,5 +193,5 @@ def main(param_args):
 
 if __name__ == "__main__":
     main(sys.argv)
-    filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
+    # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
 

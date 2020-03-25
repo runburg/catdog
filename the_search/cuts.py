@@ -29,7 +29,8 @@ def histogram_overdensity_test(convolved_data, histo_shape, region_ra, region_de
 
     # For every radius probed, calculate the mean and sd of the histogram bins.
     for radius, convolved_array in convolved_data:
-        hist_data, bins = np.histogram(convolved_array.flatten()[mask.flatten()], density=False, bins=101)
+        hist_data, bins = np.histogram(convolved_array.flatten()[(~np.isnan(convolved_array)).flatten()], density=False, bins=101, range=(0, np.nanmax(convolved_array)))
+        # print(hist_data)
         midpoints = 0.5*(bins[1:] + bins[:-1])
         try:
             mean = np.average(midpoints, weights=hist_data)
