@@ -45,7 +45,11 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
         name = f"({region_ra}, {region_dec})"
 
     # Set input/output paths
-    infile = f'candidates/regions/region_ra{round(region_ra*100)}_dec{round(region_dec*100)}_rad{round(region_radius*100)}.vot'
+    prefix = './'
+    # For HPC temp storage
+    prefix = '/mnt/scratch/nfs_fs02/runburg/'
+
+    infile = prefix + f'candidates/regions/region_ra{round(region_ra*100)}_dec{round(region_dec*100)}_rad{round(region_radius*100)}.vot'
     outfile = f'candidates/region_candidates/region_ra{round(region_ra*100)}_dec{round(region_dec*100)}_rad{round(region_radius*100)}_candidates.txt'
 
     # first try to find existing input file
@@ -178,7 +182,7 @@ def main(param_args):
         print(f"finished with dwarf {name}\n\n\n")
 
     print("Search parameters:")
-    print("spatial count:", main_args["minimum_count_spatial"], "; spatial sigma:", main_args["sigma_threshhold_spatial"], "; pm count:", main_args["minimum_count_pm"], "; pm sigma:", main_args["sigma_threshhold_pm"])
+    print(f'spatial count: {main_args["minimum_count_spatial"]}; spatial sigma: {main_args["sigma_threshhold_spatial"]}; pm count: {main_args["minimum_count_pm"]}; pm sigma: {main_args["sigma_threshhold_pm"]}')
 
     print("Passing dwarfs:")
     print(passing_dwarfs)
