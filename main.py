@@ -46,7 +46,7 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
     # Set input/output paths
     prefix = './'
     # For HPC temp storage
-    prefix = '/mnt/scratch/nfs_fs02/runburg/'
+    prefix = '/home/runburg/nfs_fs02/runburg/'
 
     infile = prefix + f'candidates/regions/region_ra{round(region_ra*100)}_dec{round(region_dec*100)}_rad{round(region_radius*100)}.vot'
     outfile = f'candidates/region_candidates/region_ra{round(region_ra*100)}_dec{round(region_dec*100)}_rad{round(region_radius*100)}_candidates.txt'
@@ -156,7 +156,7 @@ def main(param_args):
                      "sigma_threshhold_pm": 3,
                      "name": name,
                      "FLAG_search_pm_space": True,
-                     "FLAG_plot": True
+                     "FLAG_plot": False
                      }
 
         sp_pass, pm_pass = cone_search(**main_args)
