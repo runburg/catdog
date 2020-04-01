@@ -40,6 +40,11 @@ def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15):
     new_all_sky(far_file_list, region_rad, near_plane_files=near_file_list, gal_plane_setting=gal_plane_setting, prefix=prefix)
 
 
+def get_gaia_ids():
+    """Find and write GAIA ids of candidate objects."""
+    pass
+
+
 def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=None, minimum_count_spatial=3, sigma_threshhold_spatial=3, minimum_count_pm=3, sigma_threshhold_pm=3, FLAG_search_pm_space=True, FLAG_plot=True, candidate_file_prefix='./candidates/', data_table_prefix='./candidates/regions'):
     """Search region of sky."""
     # Set file paths
