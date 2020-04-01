@@ -18,13 +18,13 @@ from the_search.utils import generate_full_sky_cones
 # ra_known = known[:, 1].astype(np.float) + np.random.randint(-2, 3, size=len(known))
 # dec_known = known[:, 2].astype(np.float) + np.random.randint(-2, 3, size=len(ra_known))
 # ##
-region_radius = 3.16
+region_radius = 1 
 cone_directory='./candidates/region_list/'
 
 generate_full_sky_cones(region_radius, galactic_plane=18, hemi='both', output_directory=cone_directory)
 
 file_list = glob.glob(cone_directory + '*.txt')
-radii = [1.0, 0.316, 0.1, 0.0316, 0.01]
+radii = [0.316, 0.1, 0.0316, 0.01, 0.00316]
 
 for infile in file_list:
     name = infile.split("/")[-1].strip(".txt")
