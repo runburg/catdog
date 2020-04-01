@@ -191,7 +191,7 @@ def main(input_file):
             with open(main_args['candidate_file_prefix'] + "successful_candidates.txt", 'a') as outfile:
                 outfile.write(f"{ra} {dec}\n")
         count_total += 1
-        print(f"finished with dwarf {name}\t\t ({i}/{len(dwarfs)})\n\n\n")
+        print(f"finished with dwarf {name}\t\t ({i}/{len(dwarfs)}) \n\n\n")
 
     print("Search parameters:")
     print(f'spatial count: {main_args["minimum_count_spatial"]}; spatial sigma: {main_args["sigma_threshhold_spatial"]}; pm count: {main_args["minimum_count_pm"]}; pm sigma: {main_args["sigma_threshhold_pm"]}')
