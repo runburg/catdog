@@ -42,10 +42,7 @@ def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15):
 
 def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=None, minimum_count_spatial=3, sigma_threshhold_spatial=3, minimum_count_pm=3, sigma_threshhold_pm=3, FLAG_search_pm_space=True, FLAG_plot=True, candidate_file_prefix='./candidates/', data_table_prefix='./candidates/regions'):
     """Search region of sky."""
-    # Give a default name based on position
-    if name is None:
-        name = f"({region_ra}, {region_dec})"
-
+    # Set file paths
     infile = data_table_prefix + f'regions/region_ra{round(region_ra*100)}_dec{round(region_dec*100)}_rad{round(region_radius*100)}.vot'
     outfile = candidate_file_prefix + f'region_candidates/region_ra{round(region_ra*100)}_dec{round(region_dec*100)}_rad{round(region_radius*100)}_candidates.txt'
 
@@ -81,8 +78,8 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
     passing_indices_x, passing_indices_y = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, outfile, histo_mask, num_sigma=sigma_threshhold_spatial, repetition=minimum_count_spatial)
 
     min_radius = min(radii)
-    passing_x = xedges[passing_indices_x] + min_radius/2  # coordinate of center of bins
-    passing_y = yedges[passing_indices_y] + min_radius/2
+    passing_x = xedges[passing_indices_x] + min_radius / 2  # coordinate of center of bins
+    passing_y = yedges[passing_indices_y] + min_radius / 2
 
     od_test_result = False
     if len(passing_indices_x) > 0:
@@ -194,7 +191,7 @@ def main(input_file):
             with open(main_args['candidate_file_prefix'] + "successful_candidates.txt", 'a') as outfile:
                 outfile.write(f"{ra} {dec}\n")
         count_total += 1
-        print(f"finished with dwarf {name}\n\n\n")
+        print(f"finished with dwarf {name}\t\t ({i}/{len(dwarfs)})\n\n\n")
 
     print("Search parameters:")
     print(f'spatial count: {main_args["minimum_count_spatial"]}; spatial sigma: {main_args["sigma_threshhold_spatial"]}; pm count: {main_args["minimum_count_pm"]}; pm sigma: {main_args["sigma_threshhold_pm"]}')
