@@ -43,7 +43,7 @@ def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15):
 def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=None, minimum_count_spatial=3, sigma_threshhold_spatial=3, minimum_count_pm=3, sigma_threshhold_pm=3, FLAG_search_pm_space=True, FLAG_plot=True, candidate_file_prefix='./candidates/', data_table_prefix='./candidates/regions'):
     """Search region of sky."""
     # Set file paths
-    infile = data_table_prefix + f'regions/region_ra{round(region_ra*100)}_dec{round(region_dec*100)}_rad{round(region_radius*100)}.vot'
+    infile = data_table_prefix + f'region_ra{round(region_ra*100)}_dec{round(region_dec*100)}_rad{round(region_radius*100)}.vot'
     outfile = candidate_file_prefix + f'region_candidates/region_ra{round(region_ra*100)}_dec{round(region_dec*100)}_rad{round(region_radius*100)}_candidates.txt'
 
     # first try to find existing input file
@@ -112,7 +112,7 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
     return od_test_result, pm_test_result
 
 
-def main(input_file):
+def main(main_args, input_file):
     """Search for dsph candidates."""
     import time
     start_time = time.time()
@@ -129,25 +129,8 @@ def main(input_file):
 
     passing_dwarfs = []
 
-    main_args = {
-                    "region_radius": 1.0,
-                    "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
-                    "pm_radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
-                    "minimum_count_spatial": 3,
-                    "sigma_threshhold_spatial": 3,
-                    "minimum_count_pm": 3,
-                    "sigma_threshhold_pm": 3,
-                    "FLAG_search_pm_space": True,
-                    "FLAG_plot": False,
-                    "data_table_prefix": '/home/runburg/nfs_fs02/runburg/regions'
-                }
-
-    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}/"
-
     try:
         os.mkdir(main_args['candidate_file_prefix'])
-    except IOError:
-        main_args['candidate_file_prefix'] = './candidates/'
     except OSError:
         pass
 
@@ -208,16 +191,26 @@ def main(input_file):
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
-    return(main_args["candidate_file_prefix"])
-
 
 if __name__ == "__main__":
-    prefix = main(sys.argv[1])
+    main_args = {
+                    "region_radius": 1.0,
+                    "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
+                    "pm_radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
+                    "minimum_count_spatial": 3,
+                    "sigma_threshhold_spatial": 3,
+                    "minimum_count_pm": 3,
+                    "sigma_threshhold_pm": 3,
+                    "FLAG_search_pm_space": True,
+                    "FLAG_plot": False,
+                    "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
+                }
 
-    if len(sys.argv) > 2:
-        gal_plane_setting = sys.argv[2]
-    else:
-        gal_plane_setting = 15
+    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}/"
+
+    main(main_args, sys.argv[1])
+
+    gal_plane_setting = 18
     # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
-    filter_then_plot(['successful_candidates.txt'], prefix=prefix, gal_plane_setting=gal_plane_setting)
+    # filter_then_plot(['successful_candidates.txt'], prefix=main_args['candidate_file_prefix', gal_plane_setting=gal_plane_setting)
 
