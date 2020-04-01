@@ -153,7 +153,7 @@ def main(param_args):
                      "minimum_count_spatial": 3,
                      "sigma_threshhold_spatial": 3,
                      "minimum_count_pm": 3,
-                     "sigma_threshhold_pm": 3,
+                     "sigma_threshhold_pm": 2,
                      "name": name,
                      "FLAG_search_pm_space": True,
                      "FLAG_plot": False
