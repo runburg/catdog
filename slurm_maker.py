@@ -18,18 +18,14 @@ from the_search.utils import generate_full_sky_cones
 # ra_known = known[:, 1].astype(np.float) + np.random.randint(-2, 3, size=len(known))
 # dec_known = known[:, 2].astype(np.float) + np.random.randint(-2, 3, size=len(ra_known))
 # ##
-region_radius = 1 
 cone_directory='./candidates/region_list/'
 
 generate_full_sky_cones(region_radius, galactic_plane=18, hemi='both', output_directory=cone_directory)
 
 file_list = glob.glob(cone_directory + '*.txt')
-radii = [0.316, 0.1, 0.0316, 0.01, 0.00316]
 
 for infile in file_list:
     name = infile.split("/")[-1].strip(".txt")
-    args = [infile, region_radius] + radii
-    args_string = " ".join([str(arg) for arg in args])
 
     with open(f'./searchslurm{name}.slurm', 'w') as outfile:
         outfile.write(f'''#!/bin/bash
@@ -61,4 +57,4 @@ pip3 install --user astropy
 pip3 install --user astroquery --upgrade
 echo "Finished installing packages"
 ''')
-        outfile.write(f"python3 -u main.py {args_string}")
+        outfile.write("python3 -u main.py" + infile)

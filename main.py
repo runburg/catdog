@@ -115,14 +115,10 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
     return od_test_result, pm_test_result
 
 
-def main(param_args):
+def main(input_file):
     """Search for dsph candidates."""
     import time
     start_time = time.time()
-
-    _, input_file, region_radius, *radii = param_args
-    radii = [float(radius) for radius in radii]
-    region_radius = float(region_radius)
 
     count_pass_spatial = 0
     count_pass_pm = 0
@@ -137,26 +133,36 @@ def main(param_args):
     passing_dwarfs = []
 
     main_args = {
-                    "region_radius": region_radius,
-                    "radii": radii,
-                    "pm_radii": radii,
+                    "region_radius": 3.16,
+                    "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
+                    "pm_radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
                     "minimum_count_spatial": 3,
                     "sigma_threshhold_spatial": 3,
                     "minimum_count_pm": 3,
                     "sigma_threshhold_pm": 3,
                     "FLAG_search_pm_space": True,
-                    "FLAG_plot": False
+                    "FLAG_plot": False,
+                    "data_table_prefix": '/home/runburg/nfs_fs02/runburg/regions'
                 }
 
-    main_args["data_table_prefix"] = '/home/runburg/nfs_fs02/runburg/regions'
-    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm)}{str(sigma_threshhold_pm'])}_rad{str(round(region_radius*100))}/"
+    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}/"
+
+    try:
+        os.mkdir(main_args['candidate_file_prefix'])
+    except IOError:
+        main_args['candidate_file_prefix'] = './candidates/'
+    except OSError:
+        pass
 
     try:
         os.mkdir(main_args['data_table_prefix'])
-        os.mkdir(main_args['candidate_file_prefix'])
+    except OSError:
+        pass
+
+    try:
         os.mkdir(main_args['candidate_file_prefix'] + 'region_candidates/')
-    except IOError:
-        main_args['candidate_file_prefix'] = './candidates/'
+    except OSError:
+        pass
 
     for i, (ra, dec) in enumerate(dwarfs[:]):
         ra = float(ra)
@@ -201,11 +207,20 @@ def main(param_args):
     print(f"PM count {count_pass_pm}/{count_total} = {count_pass_pm/count_total}")
     print(f"Both count {count_pass_both}/{count_total} = {count_pass_both/count_total}")
 
+    print(f'\n\nAll results saved in {main_args["candidate_file_prefix"]}')
+
     print("--- %s seconds ---" % (time.time() - start_time))
+
+    return(main_args["candidate_file_prefix"])
 
 
 if __name__ == "__main__":
-    # main(sys.argv)
+    prefix = main(sys.argv[1])
+
+    if len(sys.argv) > 2:
+        gal_plane_setting = sys.argv[2]
+    else:
+        gal_plane_setting = 15
     # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
-    filter_then_plot(['successful_candidates.txt'], prefix='./candidates/trial3333_rad316/', gal_plane_setting=18)
+    filter_then_plot(['successful_candidates.txt'], prefix=prefix, gal_plane_setting=gal_plane_setting)
 

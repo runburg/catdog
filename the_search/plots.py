@@ -8,6 +8,8 @@ Date: 11-09-2019 11:16
 
 """
 import numpy as np
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib as mpl
