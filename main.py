@@ -130,7 +130,7 @@ def main(input_file):
     passing_dwarfs = []
 
     main_args = {
-                    "region_radius": 3.16,
+                    "region_radius": 1.0,
                     "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
                     "pm_radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
                     "minimum_count_spatial": 3,

@@ -20,7 +20,9 @@ from the_search.utils import generate_full_sky_cones
 # ##
 cone_directory='./candidates/region_list/'
 
-generate_full_sky_cones(region_radius, galactic_plane=18, hemi='both', output_directory=cone_directory)
+region_radius = 1.0
+galactic_plane = 18
+generate_full_sky_cones(region_radius, galactic_plane=galactic_plane, hemi='both', output_directory=cone_directory)
 
 file_list = glob.glob(cone_directory + '*.txt')
 
@@ -57,4 +59,4 @@ pip3 install --user astropy
 pip3 install --user astroquery --upgrade
 echo "Finished installing packages"
 ''')
-        outfile.write("python3 -u main.py" + infile)
+        outfile.write(f"python3 -u main.py {infile} {int(galactic_plane)}")
