@@ -78,7 +78,4 @@ def pm_overdensity_test(convolved_data, histo_shape, region_ra, region_dec, outf
     # Passing candidates occur {repetition} times in the convolved data
     passing_indices_x, passing_indices_y = np.argwhere(passing > repetition).T
 
-    if len(passing_indices_x) > 0:
-        return True
-
-    return False
+    return passing_indices_x, passing_indices_y

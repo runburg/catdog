@@ -40,9 +40,26 @@ def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15):
     new_all_sky(far_file_list, region_rad, near_plane_files=near_file_list, gal_plane_setting=gal_plane_setting, prefix=prefix)
 
 
-def get_gaia_ids():
+def get_gaia_ids(gaia_table, passing_spatial_x, passing_spatial_y, passing_pm_x, passing_pm_y, bin_size_spatial, bin_size_pm):
     """Find and write GAIA ids of candidate objects."""
-    pass
+    ids = gaia_table['source_id']
+    gaia_x = gaia_table['x'] * 180 / np.pi
+    gaia_y = gaia_table['y'] * 180 / np.pi
+    pm_ra = gaia_table['pmra']
+    pm_dec = gaia_table['pmdec']
+
+    good_indices_spatial = np.zeros(len(ids))
+    good_indices_pm = np.ones(len(ids))
+
+    for x, y in zip(passing_spatial_x, passing_spatial_y):
+        good_indices_spatial = good_indices_spatial | ((gaia_x > passing_spatial_x) & (gaia_x < passing_spatial_x + bin_size_spatial) & (gaia_y > passing_spatial_y) & (gaia_y < passing_spatial_y + bin_size_spatial))
+
+    for x, y in zip(passing_pm_x, passing_pm_y):
+        good_indices_pm = good_indices_pm | ((pm_ra > passing_pm_x) & (pm_ra < passing_pm_x + bin_size_pm) & (pm_dec > passing_pm_y) & (pm_dec < passing_pm_y + bin_size_pm))
+
+    good_indices = good_indices_spatial & good_indices_pm
+
+    return good_indices
 
 
 def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=None, minimum_count_spatial=3, sigma_threshhold_spatial=3, minimum_count_pm=3, sigma_threshhold_pm=3, FLAG_search_pm_space=True, FLAG_plot=True, candidate_file_prefix='./candidates/', data_table_prefix='./candidates/regions'):
@@ -78,23 +95,29 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
 
     # Get the convolved data for all radii
     convolved_data, xedges, yedges, X, Y, histo, histo_mask = convolve_spatial_histo(gaia_table, region_radius, radii)
-    
+
     # Get passing candidate coordinates in projected (non-sky) coordinates
     passing_indices_x, passing_indices_y = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, outfile, histo_mask, num_sigma=sigma_threshhold_spatial, repetition=minimum_count_spatial)
-
-    min_radius = min(radii)
-    passing_x = xedges[passing_indices_x] + min_radius / 2  # coordinate of center of bins
-    passing_y = yedges[passing_indices_y] + min_radius / 2
 
     od_test_result = False
     if len(passing_indices_x) > 0:
         od_test_result = True
 
     # Perform search in pm space if desired
-    pm_test_result = True
+    pm_test_result = True 
     if FLAG_search_pm_space:
-        convolved_data_pm, _, _, _, _, histog, histog_mask = convolve_pm_histo(gaia_table, region_radius, radii)
-        pm_test_result = cuts.pm_overdensity_test(convolved_data_pm, histog.shape, region_ra, region_dec, outfile, histog_mask, num_sigma=sigma_threshhold_pm, repetition=minimum_count_pm)
+        convolved_data_pm, x_edges_pm, y_edges_pm, _, _, histog, histog_mask = convolve_pm_histo(gaia_table, region_radius, radii)
+        passing_pm_x, passing_pm_y = cuts.pm_overdensity_test(convolved_data_pm, histog.shape, region_ra, region_dec, outfile, histog_mask, num_sigma=sigma_threshhold_pm, repetition=minimum_count_pm)
+
+        if len(passing_pm_x) == 0:
+            pm_test_result = False
+
+        successful_object_ids = get_gaia_ids(gaia_table, xedges[passing_indices_x], yedges[passing_indices_y], x_edges_pm[passing_pm_x], y_edges_pm[passing_pm_y], min(radii), min(pm_radii))
+        np.savetxt(outfile.strip('.txt') + '_ids.txt', successful_object_ids, header=f'# ids of objects in overdense bins for {name}')
+
+    min_radius = min(radii)
+    passing_x = xedges[passing_indices_x] + min_radius / 2  # coordinate of center of bins
+    passing_y = yedges[passing_indices_y] + min_radius / 2
 
     if pm_test_result is True & od_test_result is True:
         # Coordinate transform back to coordinates on the sky
