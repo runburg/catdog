@@ -38,7 +38,7 @@ def histogram_overdensity_test(convolved_data, histo_shape, region_ra, region_de
             print("Error with normalization")
             print(f"Potential boundary issue at ({region_ra}, {region_dec})")
             print(hist_data)
-            mean = midpoints[len(midpoints)//2]
+            return [], []
         sd = np.sqrt(np.average((midpoints - mean)**2, weights=hist_data))
 
         # Add the overdensities to the test array
@@ -59,14 +59,13 @@ def pm_overdensity_test(convolved_data, histo_shape, region_ra, region_dec, outf
 
     # For every radius probed, calculate the mean and sd of the histogram bins.
     for radius, convolved_array in convolved_data:
-        hist_data, bins = np.histogram(convolved_array.flatten()[mask.flatten()], density=False, bins=101)
-        midpoints = 0.5*(bins[1:] + bins[:-1])
+        hist_data, bins = np.histogram(convolved_array.flatten()[~np.isnan(convolved_array).flatten()], density=False, bins=101, range=(0, np.nanmax(convolved_array)))
+        midpoints = 0.5 * (bins[1:] + bins[:-1])
         try:
             mean = np.average(midpoints, weights=hist_data)
         except ZeroDivisionError:
             print("Error with normalization")
-            print(hist_data)
-            mean = midpoints[len(midpoints)//2]
+            continue
 
         sd = np.sqrt(np.average((midpoints - mean)**2, weights=hist_data))
 

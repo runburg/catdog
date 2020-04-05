@@ -82,12 +82,12 @@ def convolve_pm_histo(gaia_table, region_radius, radii):
     # Bin data at finest resolution
     min_radius = min(radii)
     pm_max_mag = 5
-    histo, xedges, yedges = np.histogram2d(gaia_table['pmra'], gaia_table['pmdec'], bins=int(pm_max_mag/min_radius))
+    histo, xedges, yedges = np.histogram2d(gaia_table['pmra'], gaia_table['pmdec'], bins=int(pm_max_mag / min_radius))
     # print(histo)
 
     # Set bins for plotting
     X, Y = np.meshgrid(xedges, yedges)
-    histo_mask = np.less(X[:-1, :-1]**2 + Y[:-1, :-1]**2, pm_max_mag**2)
+    histo_mask = ~np.less(X[:-1, :-1]**2 + Y[:-1, :-1]**2, pm_max_mag**2)
 
     print("Convolving pm")
 
@@ -95,7 +95,6 @@ def convolve_pm_histo(gaia_table, region_radius, radii):
     convolved_data = []
     for radius in radii:
         convolution_kernel = convolution.Tophat2DKernel(radius//min_radius)
-        histo_mask = np.less(X[:-1, :-1]**2 + Y[:-1, :-1]**2, pm_max_mag**2)
         convolved_array = convolution.convolve(histo, convolution_kernel, mask=histo_mask, preserve_nan=True, normalize_kernel=False)
         # All convolved data is stored here
         convolved_data.append((radius, convolved_array))

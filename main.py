@@ -48,18 +48,18 @@ def get_gaia_ids(gaia_table, passing_spatial_x, passing_spatial_y, passing_pm_x,
     pm_ra = gaia_table['pmra']
     pm_dec = gaia_table['pmdec']
 
-    good_indices_spatial = np.zeros(len(ids))
-    good_indices_pm = np.ones(len(ids))
+    good_indices_spatial = np.zeros(len(ids), dtype=bool)
+    good_indices_pm = np.zeros(len(ids), dtype=bool)
 
     for x, y in zip(passing_spatial_x, passing_spatial_y):
-        good_indices_spatial = good_indices_spatial | ((gaia_x > passing_spatial_x) & (gaia_x < passing_spatial_x + bin_size_spatial) & (gaia_y > passing_spatial_y) & (gaia_y < passing_spatial_y + bin_size_spatial))
+        good_indices_spatial = good_indices_spatial | ((gaia_x > x) & (gaia_x < x + bin_size_spatial) & (gaia_y > y) & (gaia_y < y + bin_size_spatial))
 
     for x, y in zip(passing_pm_x, passing_pm_y):
-        good_indices_pm = good_indices_pm | ((pm_ra > passing_pm_x) & (pm_ra < passing_pm_x + bin_size_pm) & (pm_dec > passing_pm_y) & (pm_dec < passing_pm_y + bin_size_pm))
+        good_indices_pm = good_indices_pm | ((pm_ra > x) & (pm_ra < x + bin_size_pm) & (pm_dec > y) & (pm_dec < y + bin_size_pm))
 
     good_indices = good_indices_spatial & good_indices_pm
 
-    return good_indices
+    return ids[good_indices]
 
 
 def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=None, minimum_count_spatial=3, sigma_threshhold_spatial=3, minimum_count_pm=3, sigma_threshhold_pm=3, FLAG_search_pm_space=True, FLAG_plot=True, candidate_file_prefix='./candidates/', data_table_prefix='./candidates/regions'):
@@ -105,27 +105,32 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
 
     # Perform search in pm space if desired
     pm_test_result = True 
+    passing_pm_x = passing_indices_x[:]
+    passing_pm_y = passing_indices_y[:]
     if FLAG_search_pm_space:
-        convolved_data_pm, x_edges_pm, y_edges_pm, _, _, histog, histog_mask = convolve_pm_histo(gaia_table, region_radius, radii)
+        convolved_data_pm, x_edges_pm, y_edges_pm, _, _, histog, histog_mask = convolve_pm_histo(gaia_table, region_radius, pm_radii)
         passing_pm_x, passing_pm_y = cuts.pm_overdensity_test(convolved_data_pm, histog.shape, region_ra, region_dec, outfile, histog_mask, num_sigma=sigma_threshhold_pm, repetition=minimum_count_pm)
 
         if len(passing_pm_x) == 0:
             pm_test_result = False
 
-        successful_object_ids = get_gaia_ids(gaia_table, xedges[passing_indices_x], yedges[passing_indices_y], x_edges_pm[passing_pm_x], y_edges_pm[passing_pm_y], min(radii), min(pm_radii))
-        np.savetxt(outfile.strip('.txt') + '_ids.txt', successful_object_ids, header=f'# ids of objects in overdense bins for {name}')
-
     min_radius = min(radii)
     passing_x = xedges[passing_indices_x] + min_radius / 2  # coordinate of center of bins
     passing_y = yedges[passing_indices_y] + min_radius / 2
 
+    overdense_objects = 0
     if pm_test_result is True & od_test_result is True:
+        successful_object_ids = get_gaia_ids(gaia_table, xedges[passing_indices_x], yedges[passing_indices_y], x_edges_pm[passing_pm_x], y_edges_pm[passing_pm_y], min(radii), min(pm_radii))
+        np.savetxt(outfile.rstrip('.txt') + '_ids.txt', successful_object_ids, header=f'# ids of objects in overdense bins for {name}')
+
+        if len(successful_object_ids) > 0:
+            overdense_objects = 1
         # Coordinate transform back to coordinates on the sky
         passing_ra, passing_dec = inverse_azimuthal_equidistant_coordinates(np.deg2rad(passing_x), np.deg2rad(passing_y), np.deg2rad(region_ra), np.deg2rad(region_dec))
 
         # Create output file
         with open(outfile, 'w') as fil:
-            fil.write(f'# successful candidates for region at ({region_ra}, {region_dec}) and radius {region_radius}')
+            fil.write(f'# successful candidates for region at {name} and radius {region_radius}')
 
         # Write successful sky coordinates
         with open(outfile, 'a') as outfl:
@@ -137,7 +142,7 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
         convolved_histograms(convolved_data, (X, Y, histo), passingxy=[passing_x, passing_y], name=name, region_radius=region_radius)
         convolved_histograms_1d(convolved_data, (X, Y, histo), name=name, mask=histo_mask, region_radius=region_radius)
 
-    return od_test_result, pm_test_result
+    return od_test_result, pm_test_result, overdense_objects
 
 
 def main(main_args, input_file):
@@ -149,6 +154,7 @@ def main(main_args, input_file):
     count_pass_pm = 0
     count_pass_both = 0
     count_total = 0
+    count_od_objs = 0
 
     known_dwarf_names = np.loadtxt("./the_search/tuning/tuning_known_dwarfs.txt", delimiter=",", dtype=str)[:, 0]
 
@@ -183,7 +189,8 @@ def main(main_args, input_file):
         main_args["region_ra"] = ra
         main_args["region_dec"] = dec
 
-        sp_pass, pm_pass = cone_search(**main_args)
+        sp_pass, pm_pass, overdense_objects = cone_search(**main_args)
+        count_od_objs += overdense_objects
 
         if sp_pass is True:
             count_pass_spatial += 1
@@ -201,6 +208,11 @@ def main(main_args, input_file):
             print(f"Success: both tests passed")
             with open(main_args['candidate_file_prefix'] + "successful_candidates.txt", 'a') as outfile:
                 outfile.write(f"{ra} {dec}\n")
+
+        if overdense_objects == 1:
+            with open(main_args['candidate_file_prefix'] + "successful_candidates_with_overlap.txt", 'a') as outfile:
+                outfile.write(f"{ra} {dec}\n")
+
         count_total += 1
         print(f"finished with dwarf {name}\t\t ({i}/{len(dwarfs)}) \n\n\n")
 
@@ -214,6 +226,7 @@ def main(main_args, input_file):
     print(f"spatial {count_pass_spatial}/{count_total} = {count_pass_spatial/count_total}")
     print(f"PM count {count_pass_pm}/{count_total} = {count_pass_pm/count_total}")
     print(f"Both count {count_pass_both}/{count_total} = {count_pass_both/count_total}")
+    print(f"Pass rate with overlapping objs in pm/spat bins {count_od_objs}/{count_total} = {count_od_objs/count_total}")
 
     print(f'\n\nAll results saved in {main_args["candidate_file_prefix"]}')
 
@@ -222,23 +235,24 @@ def main(main_args, input_file):
 
 if __name__ == "__main__":
     main_args = {
-                    "region_radius": 1.0,
-                    "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
-                    "pm_radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
+                    "region_radius": 3.16,
+                    "radii": [1.0, 0.316, 0.1, 0.0316, 0.01],
+                    "pm_radii": [1.0, 0.5, 0.1, 0.05, 0.01],
                     "minimum_count_spatial": 3,
-                    "sigma_threshhold_spatial": 3,
+                    "sigma_threshhold_spatial": 2,
                     "minimum_count_pm": 3,
                     "sigma_threshhold_pm": 3,
                     "FLAG_search_pm_space": True,
                     "FLAG_plot": False,
-                    "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
+                    # "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
+                    "data_table_prefix": './candidates/regions/'
                 }
 
-    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}/"
+    main_args["candidate_file_prefix"] = f"./candidates/testing_trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}/"
+    # main_args['candidate_file_prefix'] = './candidates/'
 
     main(main_args, sys.argv[1])
 
     gal_plane_setting = 18
     # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
     # filter_then_plot(['successful_candidates.txt'], prefix=main_args['candidate_file_prefix', gal_plane_setting=gal_plane_setting)
-
