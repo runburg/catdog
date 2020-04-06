@@ -104,7 +104,7 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
         od_test_result = True
 
     # Perform search in pm space if desired
-    pm_test_result = True 
+    pm_test_result = True
     passing_pm_x = passing_indices_x[:]
     passing_pm_y = passing_indices_y[:]
     if FLAG_search_pm_space:
@@ -235,8 +235,8 @@ def main(main_args, input_file):
 
 if __name__ == "__main__":
     main_args = {
-                    "region_radius": 3.16,
-                    "radii": [1.0, 0.316, 0.1, 0.0316, 0.01],
+                    "region_radius": 1.0,
+                    "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
                     "pm_radii": [1.0, 0.5, 0.1, 0.05, 0.01],
                     "minimum_count_spatial": 3,
                     "sigma_threshhold_spatial": 2,
