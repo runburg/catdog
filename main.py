@@ -19,11 +19,11 @@ from the_search.plots import convolved_histograms, convolved_histograms_1d, new_
 warnings.filterwarnings("ignore")
 
 
-def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15):
+def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radius=3.16):
     """Create all sky plot and filter candidates."""
     from the_search.utils import cut_out_candidates_close_to_plane_and_slmc
 
-    region_rad = 3.16
+    region_rad = radius
     coord_list = np.concatenate([np.loadtxt(prefix + infile, delimiter=" ") for infile in infiles])
 
     filtered_cand_file = prefix + "successful_candidates_filtered.txt"
@@ -251,8 +251,8 @@ if __name__ == "__main__":
     main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
-    main(main_args, sys.argv[1])
+    # main(main_args, sys.argv[1])
 
     gal_plane_setting = 18
     # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
-    # filter_then_plot(['successful_candidates.txt'], prefix=main_args['candidate_file_prefix', gal_plane_setting=gal_plane_setting)
+    filter_then_plot(['successful_candidates_with_overlap.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'])
