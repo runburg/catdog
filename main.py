@@ -123,8 +123,8 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
         successful_object_ids = get_gaia_ids(gaia_table, xedges[passing_indices_x], yedges[passing_indices_y], x_edges_pm[passing_pm_x], y_edges_pm[passing_pm_y], min(radii), min(pm_radii))
         np.savetxt(outfile.rstrip('.txt') + '_ids.txt', successful_object_ids, header=f'# ids of objects in overdense bins for {name}')
 
-        if len(successful_object_ids) > 0:
-            overdense_objects = 1
+        overdense_objects = len(successful_object_ids)
+
         # Coordinate transform back to coordinates on the sky
         passing_ra, passing_dec = inverse_azimuthal_equidistant_coordinates(np.deg2rad(passing_x), np.deg2rad(passing_y), np.deg2rad(region_ra), np.deg2rad(region_dec))
 
@@ -154,7 +154,7 @@ def main(main_args, input_file):
     count_pass_pm = 0
     count_pass_both = 0
     count_total = 0
-    count_od_objs = 0
+    count_od_intersection = 0
 
     known_dwarf_names = np.loadtxt("./the_search/tuning/tuning_known_dwarfs.txt", delimiter=",", dtype=str)[:, 0]
 
@@ -190,7 +190,8 @@ def main(main_args, input_file):
         main_args["region_dec"] = dec
 
         sp_pass, pm_pass, overdense_objects = cone_search(**main_args)
-        count_od_objs += overdense_objects
+        if overdense_objects > 0: 
+            count_od_intersection += 1
 
         if sp_pass is True:
             count_pass_spatial += 1
@@ -209,9 +210,10 @@ def main(main_args, input_file):
             with open(main_args['candidate_file_prefix'] + "successful_candidates.txt", 'a') as outfile:
                 outfile.write(f"{ra} {dec}\n")
 
-        if overdense_objects == 1:
-            with open(main_args['candidate_file_prefix'] + "successful_candidates_with_overlap.txt", 'a') as outfile:
-                outfile.write(f"{ra} {dec}\n")
+        for intersection_minimum in main_args['intersection_minima']:
+            if overdense_objects >= intersection_minimum:
+                with open(main_args['candidate_file_prefix'] + f"successful_candidates_with_overlap_gte{intersection_minimum}.txt", 'a') as outfile:
+                    outfile.write(f"{ra} {dec}\n")
 
         count_total += 1
         print(f"finished with dwarf {name}\t\t ({i}/{len(dwarfs)}) \n\n\n")
@@ -226,7 +228,7 @@ def main(main_args, input_file):
     print(f"spatial {count_pass_spatial}/{count_total} = {count_pass_spatial/count_total}")
     print(f"PM count {count_pass_pm}/{count_total} = {count_pass_pm/count_total}")
     print(f"Both count {count_pass_both}/{count_total} = {count_pass_both/count_total}")
-    print(f"Pass rate with overlapping objs in pm/spat bins {count_od_objs}/{count_total} = {count_od_objs/count_total}")
+    print(f"Pass rate with overlapping objs in pm/spat bins {count_od_intersection}/{count_total} = {count_od_intersection/count_total}")
 
     print(f'\n\nAll results saved in {main_args["candidate_file_prefix"]}')
 
@@ -244,6 +246,7 @@ if __name__ == "__main__":
                     "sigma_threshhold_pm": 3,
                     "FLAG_search_pm_space": True,
                     "FLAG_plot": False,
+                    "intersection_minima": [1, 2, 5, 10],
                     "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
                     # "data_table_prefix": './candidates/regions/'
                 }
@@ -255,4 +258,4 @@ if __name__ == "__main__":
 
     gal_plane_setting = 18
     # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
-    filter_then_plot(['successful_candidates_with_overlap.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'])
+    # filter_then_plot(['successful_candidates_with_overlap.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'])
