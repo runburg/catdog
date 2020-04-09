@@ -226,7 +226,7 @@ def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None,
     fig.savefig(f'./candidates/histos/{name}_histo_1d_{round(region_radius*100)}.png')
 
 
-def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15):
+def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15, outfile='all_sky_plot'):
     """Plot candidates without Milky Way background."""
     ##############################
     # SET UP
@@ -351,7 +351,7 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
             ax.scatter(ra.radian, dec.radian, color=color, s=2, zorder=500)
 
     # save plot
-    fig.savefig(prefix + f'all_sky_candidates_{region_rad_str}.{file_type}')
+    fig.savefig(prefix + outfile + file_type)
 
 
 def get_points_of_circle(ra_center, dec_center, radius):
