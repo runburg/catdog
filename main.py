@@ -62,7 +62,7 @@ def get_gaia_ids(gaia_table, passing_spatial_x, passing_spatial_y, passing_pm_x,
     return ids[good_indices]
 
 
-def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=None, minimum_count_spatial=3, sigma_threshhold_spatial=3, minimum_count_pm=3, sigma_threshhold_pm=3, FLAG_search_pm_space=True, FLAG_plot=True, candidate_file_prefix='./candidates/', data_table_prefix='./candidates/regions'):
+def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=None, minimum_count_spatial=3, sigma_threshhold_spatial=3, minimum_count_pm=3, sigma_threshhold_pm=3, FLAG_search_pm_space=True, FLAG_plot=True, candidate_file_prefix='./candidates/', data_table_prefix='./candidates/regions', intersection_minima=[]):
     """Search region of sky."""
     # Set file paths
     infile = data_table_prefix + f'region_ra{round(region_ra*100)}_dec{round(region_dec*100)}_rad{round(region_radius*100)}.vot'
@@ -241,9 +241,9 @@ if __name__ == "__main__":
                     "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
                     "pm_radii": [1.0, 0.5, 0.1, 0.05, 0.01],
                     "minimum_count_spatial": 3,
-                    "sigma_threshhold_spatial": 3,
+                    "sigma_threshhold_spatial": 2,
                     "minimum_count_pm": 3,
-                    "sigma_threshhold_pm": 3,
+                    "sigma_threshhold_pm": 2,
                     "FLAG_search_pm_space": True,
                     "FLAG_plot": False,
                     "intersection_minima": [1, 2, 5, 10],
@@ -254,7 +254,7 @@ if __name__ == "__main__":
     main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
-    # main(main_args, sys.argv[1])
+    main(main_args, sys.argv[1])
 
     gal_plane_setting = 18
     # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])

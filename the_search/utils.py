@@ -234,11 +234,11 @@ def generate_full_sky_cones(cone_radius, galactic_plane=15, hemi='north', out_to
     ra, dec = galactic_to_icrs(ra_gal, dec_gal)
 
     if out_to_file is True:
-        candidate_per_file = 250
+        candidate_per_file = 200
         for i in range(1, len(ra)//candidate_per_file+1):
             with open(output_directory + f"region{i}.txt", 'w') as outfile:
                 outfile.write("# candidates for full sky search of dsph\n")
-                np.savetxt(outfile, np.array([ra[candidate_per_file*(i-1):candidate_per_file*i], dec[candidate_per_file*(i-1):candidate_per_file*i]]).T, delimiter=" ", comments='#')
+                np.savetxt(outfile, np.nan_to_num(np.array([ra[candidate_per_file*(i-1):candidate_per_file*i], dec[candidate_per_file*(i-1):candidate_per_file*i]])).T, delimiter=" ", comments='#')
     else:
         return ra, dec
 
