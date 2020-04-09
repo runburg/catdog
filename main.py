@@ -19,7 +19,7 @@ from the_search.plots import convolved_histograms, convolved_histograms_1d, new_
 warnings.filterwarnings("ignore")
 
 
-def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radius=3.16):
+def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radius=3.16, outfile='all_sky_plot.pdf'):
     """Create all sky plot and filter candidates."""
     from the_search.utils import cut_out_candidates_close_to_plane_and_slmc
 
@@ -37,7 +37,7 @@ def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radi
 
     print(len(far_file_list))
 
-    new_all_sky(far_file_list, region_rad, near_plane_files=near_file_list, gal_plane_setting=gal_plane_setting, prefix=prefix)
+    new_all_sky(far_file_list, region_rad, near_plane_files=near_file_list, gal_plane_setting=gal_plane_setting, prefix=prefix, outfile=outfile)
 
 
 def get_gaia_ids(gaia_table, passing_spatial_x, passing_spatial_y, passing_pm_x, passing_pm_y, bin_size_spatial, bin_size_pm):
@@ -241,9 +241,9 @@ if __name__ == "__main__":
                     "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
                     "pm_radii": [1.0, 0.5, 0.1, 0.05, 0.01],
                     "minimum_count_spatial": 3,
-                    "sigma_threshhold_spatial": 2,
+                    "sigma_threshhold_spatial": 3,
                     "minimum_count_pm": 3,
-                    "sigma_threshhold_pm": 2,
+                    "sigma_threshhold_pm": 3,
                     "FLAG_search_pm_space": True,
                     "FLAG_plot": False,
                     "intersection_minima": [1, 2, 5, 10],
@@ -254,10 +254,10 @@ if __name__ == "__main__":
     main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
-    main(main_args, sys.argv[1])
+    # main(main_args, sys.argv[1])
 
     gal_plane_setting = 18
     # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
     outfile = f"{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}"
 
-    filter_then_plot(['successful_candidates_with_overlap.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection_gte1')
+    filter_then_plot(['successful_candidates_with_overlap_gte10.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection_gte1')
