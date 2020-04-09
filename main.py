@@ -239,14 +239,14 @@ if __name__ == "__main__":
     main_args = {
                     "region_radius": 1.0,
                     "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
-                    "pm_radii": [1.0, 0.5, 0.1, 0.05, 0.01],
+                    "pm_radii": [1.5, 1.0, 0.5, 0.15],
                     "minimum_count_spatial": 3,
                     "sigma_threshhold_spatial": 3,
-                    "minimum_count_pm": 3,
+                    "minimum_count_pm": 2,
                     "sigma_threshhold_pm": 3,
                     "FLAG_search_pm_space": True,
                     "FLAG_plot": False,
-                    "intersection_minima": [1, 2, 5, 10],
+                    "intersection_minima": [1, 5, 10, 50],
                     "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
                     # "data_table_prefix": './candidates/regions/'
                 }

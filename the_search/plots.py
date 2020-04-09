@@ -351,7 +351,7 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
             ax.scatter(ra.radian, dec.radian, color=color, s=2, zorder=500)
 
     # save plot
-    fig.savefig(prefix + outfile + file_type)
+    fig.savefig(f"{prefix}{outfile}.{file_type}")
 
 
 def get_points_of_circle(ra_center, dec_center, radius):
