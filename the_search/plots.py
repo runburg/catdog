@@ -171,7 +171,7 @@ def convolved_histograms(convolved_data, histo_data, passingxy=None, name='dwarf
     fig.colorbar(cm.ScalarMappable(norm=normalize, cmap=cmap), ax=axs.ravel().tolist())
 
     # Save plot
-    outfile = f'./candidates/histos/{name}_histo_{round(region_radius*100)}.png'
+    outfile = f'./candidates/histos/{name}_histo_spatial.png'
     fig.savefig(outfile)
 
     print("saved to", outfile)
@@ -219,8 +219,8 @@ def convolved_pm_histograms(convolved_data, histo_data, passingxy=None, name='dw
 
         # Label plot
         ax.set_title(f"2D tophat, radius={2*radius}")
-        ax.set_xlabel("pmra [deg]")
-        ax.set_ylabel("pmdec [deg]")
+        ax.set_xlabel("pmra [mas/yr]")
+        ax.set_ylabel("pmdec [mas/yr]")
 
         # Overlay passing coordinates if any
         if passingxy is not None and ax == axs[-2]:
@@ -235,7 +235,7 @@ def convolved_pm_histograms(convolved_data, histo_data, passingxy=None, name='dw
     fig.colorbar(cm.ScalarMappable(norm=normalize, cmap=cmap), ax=axs.ravel().tolist())
 
     # Save plot
-    outfile = f'./candidates/histos/{name}_histo_{round(region_radius*100)}_pm.png'
+    outfile = f'./candidates/histos_2/{name}_histo_pm.png'
     fig.savefig(outfile)
 
     print("saved to", outfile)
@@ -290,7 +290,7 @@ def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None,
     fig.suptitle(f"1D Histogram for {name}")
 
     # Save figure
-    fig.savefig(f'./candidates/histos/{name}_histo_1d_{round(region_radius*100)}.png')
+    fig.savefig(f'./candidates/histos/{name}_histo_1d.png')
 
 
 def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15, outfile='all_sky_plot'):
