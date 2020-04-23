@@ -113,7 +113,7 @@ def plot_setup(rows, cols, d=0, buffer=(0.4, 0.4)):
     return fig, axs
 
 
-def convolved_histograms(convolved_data, histo_data, passingxy=None, name='dwarf', region_radius=0):
+def convolved_histograms(convolved_data, histo_data, passingxy=None, name='dwarf', region_radius=0, candidate_file_prefix=''):
     """Make 2d histograms of convolved data.
 
     Create histograms of the objects in a given region as they are convolved.
@@ -171,13 +171,13 @@ def convolved_histograms(convolved_data, histo_data, passingxy=None, name='dwarf
     fig.colorbar(cm.ScalarMappable(norm=normalize, cmap=cmap), ax=axs.ravel().tolist())
 
     # Save plot
-    outfile = f'./candidates/histos_2/{name}_histo_spatial.png'
+    outfile = candidate_file_prefix + f'histos/{name}_histo_spatial.png'
     fig.savefig(outfile)
 
     print("saved to", outfile)
 
 
-def convolved_pm_histograms(convolved_data, histo_data, passingxy=None, name='dwarf', region_radius=0):
+def convolved_pm_histograms(convolved_data, histo_data, passingxy=None, name='dwarf', region_radius=0, candidate_file_prefix=''):
     """Make 2d histograms of convolved data.
 
     Create histograms of the objects in a given region as they are convolved.
@@ -235,13 +235,13 @@ def convolved_pm_histograms(convolved_data, histo_data, passingxy=None, name='dw
     fig.colorbar(cm.ScalarMappable(norm=normalize, cmap=cmap), ax=axs.ravel().tolist())
 
     # Save plot
-    outfile = f'./candidates/histos_2/{name}_histo_pm.png'
+    outfile = candidate_file_prefix + f'histos/{name}_histo_pm.png'
     fig.savefig(outfile)
 
     print("saved to", outfile)
 
 
-def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None, region_radius=0):
+def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None, region_radius=0, candidate_file_prefix=''):
     """Make 1d histogram of convolved data.
 
     Make plots of the 1d histogram of convolved data to visualize the overdensity.
@@ -290,7 +290,7 @@ def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None,
     fig.suptitle(f"1D Histogram for {name}")
 
     # Save figure
-    fig.savefig(f'./candidates/histos_2/{name}_histo_1d.png')
+    fig.savefig(candidate_file_prefix + f'histos/{name}_histo_1d.png')
 
 
 def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15, outfile='all_sky_plot'):
