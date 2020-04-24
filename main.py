@@ -40,15 +40,16 @@ def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radi
     new_all_sky(far_file_list, region_rad, near_plane_files=near_file_list, gal_plane_setting=gal_plane_setting, prefix=prefix, outfile=outfile)
 
 
-def extend_overdensity_bins(passing_indices_x, passing_indices_y, bin_range=5):
+def extend_overdensity_bins(passing_indices_x, passing_indices_y, bin_range=5, maximum_range=1000):
     """Extend the list of spatial overdensities to the bins around overdense bins within range."""
     expanded_indices = [(x, y) for x in np.arange(-bin_range, bin_range + 1, dtype=int) for y in np.arange(-bin_range, bin_range + 1, dtype=int) if (x**2 + y**2 <= bin_range**2)]
 
     new_x, new_y = [], []
     for x, y in zip(passing_indices_x, passing_indices_y):
         for expanded_x, expanded_y in expanded_indices:
-            new_x.append(expanded_x + x)
-            new_y.append(expanded_y + y)
+            if (expanded_x < maximum_range) & (expanded_y > maximum_range):
+                new_x.append(expanded_x + x)
+                new_y.append(expanded_y + y)
 
     passing_indices_x = np.concatenate((passing_indices_x, np.array(new_x, dtype=int)))
     passing_indices_y = np.concatenate((passing_indices_y, np.array(new_y, dtype=int)))
@@ -114,7 +115,7 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
 
     # Get the convolved data for all radii
     convolved_data, xedges, yedges, X, Y, histo, histo_mask = convolve_spatial_histo(gaia_table, region_radius, radii)
-
+    
     # Get passing candidate coordinates in projected (non-sky) coordinates
     passing_indices_x, passing_indices_y = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, outfile, histo_mask, num_sigma=sigma_threshhold_spatial, repetition=minimum_count_spatial)
 
@@ -129,7 +130,7 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
 
     # Only search for pm overdensities using spatial overdensity objects
     if FLAG_restrict_pm is True:
-        passing_indices_x, passing_indices_y = extend_overdensity_bins(passing_indices_x, passing_indices_y, bin_range=radii[-2]//radii[-1])
+        passing_indices_x, passing_indices_y = extend_overdensity_bins(passing_indices_x, passing_indices_y, bin_range=radii[-2]//radii[-1], maximum_range=len(xedges))
         extended_spatial_indices = get_gaia_ids(gaia_table, xedges[passing_indices_x], yedges[passing_indices_y], passing_indices_pm_x, passing_indices_pm_y, just_spatial_indices=True, bin_size_spatial=min(radii), bin_size_pm=min(pm_radii))
         gaia_table = gaia_table[extended_spatial_indices]
 
@@ -281,7 +282,7 @@ if __name__ == "__main__":
                     "minimum_count_spatial": 3,
                     "sigma_threshhold_spatial": 3,
                     "minimum_count_pm": 3,
-                    "sigma_threshhold_pm": 2,
+                    "sigma_threshhold_pm": 3,
                     "FLAG_search_pm_space": True,
                     "FLAG_plot": False,
                     "FLAG_restrict_pm": True,
