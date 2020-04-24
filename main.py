@@ -283,14 +283,14 @@ if __name__ == "__main__":
                     "minimum_count_pm": 3,
                     "sigma_threshhold_pm": 2,
                     "FLAG_search_pm_space": True,
-                    "FLAG_plot": True,
+                    "FLAG_plot": False,
                     "FLAG_restrict_pm": True,
-                    "intersection_minima": [1, 5, 10, 50],
-                    # "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
-                    "data_table_prefix": './candidates/regions/'
+                    "intersection_minima": [1, 2, 5, 10, 50],
+                    "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
+                    # "data_table_prefix": './candidates/regions/'
                 }
 
-    main_args["candidate_file_prefix"] = f"./candidates/testing_trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm/"
+    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
     main(main_args, sys.argv[1])
