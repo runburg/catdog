@@ -130,7 +130,7 @@ def gaia_region_search(ra, dec, outfile, radius=10, sigma=3, pm_threshold=5, bp_
                                 gaia_source.bp_rp, gaia_source.phot_g_mean_mag \
                                 FROM gaiadr2.gaia_source \
                                 WHERE \
-                                CONTAINS(POINT('ICRS',gaiadr2.gaia_source.ra,gaiadr2.gaia_source.dec),BOX('ICRS',{coords.ra.degree},{coords.dec.degree},{2*radius},{2*radius}))=1 AND  (gaiadr2.gaia_source.parallax - gaiadr2.gaia_source.parallax_error * {sigma} <= 0) AND (SQRT(POWER(gaiadr2.gaia_source.pmra, 2) + POWER(gaiadr2.gaia_source.pmdec, 2)) <= {pm_threshold}) AND (gaiadr2.gaia_source.bp_rp <= {bp_rp_threshold})", dump_to_file=dump_to_file, output_file=outfile, verbose=True)
+                                CONTAINS(POINT('ICRS',gaiadr2.gaia_source.ra,gaiadr2.gaia_source.dec),CIRCLE('ICRS',{coords.ra.degree},{coords.dec.degree},{radius}))=1 AND  (gaiadr2.gaia_source.parallax - gaiadr2.gaia_source.parallax_error * {sigma} <= 0) AND (SQRT(POWER(gaiadr2.gaia_source.pmra, 2) + POWER(gaiadr2.gaia_source.pmdec, 2)) <= {pm_threshold}) AND (gaiadr2.gaia_source.bp_rp <= {bp_rp_threshold})", dump_to_file=dump_to_file, output_file=outfile, verbose=True)
 
     return job
 
@@ -138,7 +138,7 @@ def gaia_region_search(ra, dec, outfile, radius=10, sigma=3, pm_threshold=5, bp_
 def azimuthal_equidistant_coordinates(gaia_table, region_ra, region_dec):
     """Return cartesian coordinates from GAIA table using azimuthal equidistant projection.
 
-    Project the sphere onto a 2D surface without distorting the regions near the center of projection too much. 
+    Project the sphere onto a 2D surface without distorting the regions near the center of projection too much.
 
 
     Inputs:
