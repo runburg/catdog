@@ -291,8 +291,7 @@ if __name__ == "__main__":
                     # "data_table_prefix": './candidates/regions/'
                 }
 
-    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm/"
-    # main_args['candidate_file_prefix'] = './candidates/'
+    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm/" # main_args['candidate_file_prefix'] = './candidates/'
 
     main(main_args, sys.argv[1])
 
