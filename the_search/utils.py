@@ -289,10 +289,10 @@ def angular_distance(ra, dec, ra_cone, dec_cone):
     return ang_dist
 
 
-def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True, far_file=None, near_file=None):
+def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True, far_file=None, near_file=None, multiple_data_sets=[]):
     """Reduce candidate list by separating out regions near the galactic plane.
 
-    
+
     Inputs:
         - ra: list of ra of candidates
         - dec: list of dec of candidates
@@ -303,7 +303,7 @@ def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True
     """
     l_gal, b_gal = icrs_to_galactic(ra, dec)
 
-    indices_too_close_to_plane = np.logical_and(np.less(b_gal.value, latitude), np.less(-latitude, b_gal.value))
+    indices_too_close_to_plane = np.less(abs(b_gal.value), latitude)
 
     indices_too_close_to_mag_cloud = np.logical_or(np.less(np.rad2deg(angular_distance(ra, dec, 80.89, -69.76)), 13), np.less(np.rad2deg(angular_distance(ra, dec, 13.16, -72.8)), 9))
 
@@ -319,7 +319,15 @@ def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True
         with open(near_file, 'w') as outfile:
             np.savetxt(outfile, np.array([ra_close, dec_close]).T, delimiter=" ")
 
-    return ra_far, dec_far, ra_close, dec_close
+    if len(multiple_data_sets) > 0:
+        multiple_data_sets = np.cumsum(multiple_data_sets)
+        # print('here', len(ra))
+        # print(multiple_data_sets)
+        for i, (first, second) in enumerate(zip(np.concatenate(([0], multiple_data_sets[:-1])), multiple_data_sets[:])):
+            # print(first, second)
+            multiple_data_sets[i] = np.sum(~near_indices[first:second])
+
+    return ra_far, dec_far, ra_close, dec_close, multiple_data_sets
 
 
 def fibonnaci_sphere(num_points, limit=16, point_start=0, point_end=None):
@@ -357,9 +365,9 @@ if __name__ == '__main__':
 
     fig = plt.figure(figsize=(20, 10))
     ax = fig.add_subplot(111, projection="hammer")
-    ra, dec = generate_full_sky_cones(3.16, out_to_file=False, hemi='both')
+    ra, dec = generate_full_sky_cones(1.0, out_to_file=False, hemi='both')
     ra = coord.Angle(ra)
     ra = ra.wrap_at(180*u.deg)
     dec = coord.Angle(dec)
-    ax.scatter(ra.radian, dec.radian, color='xkcd:light grey blue')
+    ax.scatter(ra.radian, dec.radian, color='xkcd:light grey blue', s=.1)
     fig.savefig("allsampleconesplot.pdf")

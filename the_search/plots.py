@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib as mpl
 import glob
+import matplotlib.patches as mpatches
 try:
     from utils import inverse_azimuthal_equidistant_coordinates
 except ModuleNotFoundError:
@@ -293,7 +294,7 @@ def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None,
     fig.savefig(candidate_file_prefix + f'histos/{name}_histo_1d.png')
 
 
-def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15, outfile='all_sky_plot'):
+def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15, outfile='all_sky_plot', multiple_data_sets=[], labs=[]):
     """Plot candidates without Milky Way background."""
     ##############################
     # SET UP
@@ -305,7 +306,7 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
     FLAG_plot_circles = False
     # FLAG_plot_region = False
     # FLAG_regions_from_file = True
-    file_type = "pdf"
+    file_type = "png"
 
     region_rad_str = str(round(region_radius*100))
     # set up plot
@@ -375,9 +376,25 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
 
     # Get all the files with candidates
     file_list = success_files + near_plane_files
-    colors = ['xkcd:coral']*len(success_files) + ['xkcd:steel gray']*len(near_plane_files)
+    print(np.sum(multiple_data_sets))
+    if len(multiple_data_sets) > 0:
+        # col_list = ['xkcd:coral', 'xkcd:mint green', 'xkcd:tangerine']
+        col_list = cm.viridis(np.linspace(0.25, 1, num=len(multiple_data_sets)))
+        colors = []
+        for limit, color in zip(multiple_data_sets, col_list):
+            colors += [color] * limit
+        handles, labels = ax.get_legend_handles_labels()
+        for lab, col in zip(labs, col_list):
+            patch = mpatches.Patch(color=col, label=f'Overlap count > {lab}')
+            handles.append(patch)
+        ax.legend(handles=handles, loc='upper right')
+    else:
+        colors = ['xkcd:coral'] * len(success_files)
+
+    colors += ['xkcd:steel gray'] * len(near_plane_files)
 
     # Plot all the candidates in each file
+    zorder = 500
     for color, file in zip(colors, file_list):
         candidate_list = np.loadtxt(file, delimiter=" ")
         # print(file)
@@ -415,8 +432,8 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
             ra = coord.Angle(candidate_list[:, 0]*u.degree)
             ra = ra.wrap_at(180*u.degree)
             dec = coord.Angle(candidate_list[:, 1]*u.degree)
-            ax.scatter(ra.radian, dec.radian, color=color, s=2, zorder=500)
-
+            ax.scatter(ra.radian, dec.radian, color=color, s=2, zorder=zorder)
+        zorder += 1
     # save plot
     fig.savefig(f"{prefix}{outfile}.{file_type}")
 
