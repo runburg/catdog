@@ -295,7 +295,7 @@ if __name__ == "__main__":
             "sigma_threshhold_pm": 3,
             "extend_range": 3,
             "FLAG_search_pm_space": True,
-            "FLAG_plot": True,
+            "FLAG_plot": False,
             "FLAG_restrict_pm": True,
             "intersection_minima": [1, 2, 5, 10, 50],
             "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
