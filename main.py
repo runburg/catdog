@@ -293,7 +293,7 @@ if __name__ == "__main__":
             "sigma_threshhold_spatial": 3,
             "minimum_count_pm": 3,
             "sigma_threshhold_pm": 3,
-            "extend_range": 3,
+            "extend_range": 5,
             "FLAG_search_pm_space": True,
             "FLAG_plot": False,
             "FLAG_restrict_pm": True,
