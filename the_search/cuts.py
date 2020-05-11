@@ -52,6 +52,16 @@ def histogram_overdensity_test(convolved_data, histo_shape, region_ra, region_de
     return passing_indices_x, passing_indices_y
 
 
+def pm_xi2_test(pm, error_pm):
+    """Calculate Xi^2 for pmra and pmdec."""
+    mean = np.mean(pm)
+
+    dof = len(pm)
+    chi2 = np.sum((pm - mean)**2 / error_pm**2)
+
+    return chi2 / dof
+
+
 def pm_overdensity_test(convolved_data, histo_shape, region_ra, region_dec, outfile, mask, num_sigma=2, repetition=2):
     """Return coordinates with overdensities for all convolutions."""
     # Create zero array to search for overdensities

@@ -294,6 +294,26 @@ def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None,
     fig.savefig(candidate_file_prefix + f'histos/{name}_histo_1d.png')
 
 
+def xi2_plot(xira_files, xidec_files, labels=['Known dwarfs', 'Random cones'], output_path='./'):
+    """Plot xi2 of pmra and pmdec for give files."""
+    fig, ax = plot_setup(1, 1)
+
+    colors = ['xkcd:grapefruit', 'xkcd:denim blue']
+
+    for ra, dec, color, label in zip(xira_files, xidec_files, colors, labels):
+        xi2_ra = np.loadtxt(ra)
+        xi2_dec = np.loadtxt(dec)
+
+        ax.scatter(xi2_ra, xi2_dec, c=color, label=label, s=2)
+
+    ax.set_xlabel(r'$\chi^2_{\mu_\mathrm{ra}}/dof$')
+    ax.set_ylabel(r'$\chi^2_{\mu_\mathrm{dec}}/dof$')
+    ax.set_title(r"Comparison of $\chi^2$ in pmra and pmdec")
+    ax.legend()
+
+    fig.savefig(output_path + 'xi2_comp.png')
+
+
 def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15, outfile='all_sky_plot', multiple_data_sets=[], labs=[]):
     """Plot candidates without Milky Way background."""
     ##############################
