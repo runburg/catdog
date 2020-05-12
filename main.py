@@ -219,11 +219,7 @@ def main(main_args, input_file):
     try:
         os.mkdir(main_args['candidate_file_prefix'])
     except OSError:
-        for fil in glob.glob(main_args['candidate_file_prefix'] + 'successful_candidates*.txt'):
-            os.remove(fil)
-
-        for fil in glob.glob(main_args['candidate_file_prefix'] + f'xi2_{lab}*.txt'):
-            os.remove(fil)
+        pass
 
     try:
         os.mkdir(main_args['data_table_prefix'])
@@ -340,4 +336,6 @@ if __name__ == "__main__":
     # filter_then_plot(['successful_candidates_with_overlap_gte10.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection_10')
     counts = [1, 2, 5, 10, 50]
     # filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts)
-    xi2_plot(glob.glob((pth:=main_args['candidate_file_prefix']) + "region_candidates/" + '*ra.txt'), glob.glob(pth + "region_candidates/" + '*dec.txt'), labels=['Random', 'Known'], output_path=pth)
+    # xi2_plot(glob.glob((pth:=main_args['candidate_file_prefix']) + '*ra.txt'), glob.glob(pth + '*dec.txt'), labels=['Random', 'Known'], output_path=pth)
+
+    xi2_plot([main_args['candidate_file_prefix'] + f'xi2_{num}_ra.txt' for num in counts], [main_args['candidate_file_prefix'] + f'xi2_{num}_dec.txt' for num in counts], labels=[rf"Counts $\geq$ {count}" for count in counts], output_path=main_args['candidate_file_prefix'])
