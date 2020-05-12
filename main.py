@@ -211,10 +211,18 @@ def main(main_args, input_file):
 
     passing_dwarfs = []
 
+    if input_file == 'the_search/tuning/tuning_known_dwarfs_no_name.txt':
+        lab = 'known_'
+    else:
+        lab = ''
+
     try:
         os.mkdir(main_args['candidate_file_prefix'])
     except OSError:
-        for fil in glob.glob(main_args['candidate_file_prefix'] + '*.txt'):
+        for fil in glob.glob(main_args['candidate_file_prefix'] + 'successful_candidates*.txt'):
+            os.remove(fil)
+
+        for fil in glob.glob(main_args['candidate_file_prefix'] + f'xi2_{lab}*.txt'):
             os.remove(fil)
 
     try:
@@ -231,17 +239,6 @@ def main(main_args, input_file):
         os.mkdir(main_args['candidate_file_prefix'] + 'histos/')
     except OSError:
         pass
-
-    if input_file == 'the_search/tuning/tuning_known_dwarfs_no_name.txt':
-        lab = 'known'
-    else:
-        lab = ''
-
-    with open(main_args['candidate_file_prefix'] + "region_candidates/" + f"xi2_{lab}_ra.txt", 'w') as outfile:
-        outfile.write("# xi2 ra values for run")
-
-    with open(main_args['candidate_file_prefix'] + "region_candidates/" + f"xi2_{lab}_dec.txt", 'w') as outfile:
-        outfile.write("# xi2 dec values for run")
 
     for i, (ra, dec) in enumerate(dwarfs[:]):
         ra = float(ra)
@@ -280,10 +277,16 @@ def main(main_args, input_file):
                 with open(main_args['candidate_file_prefix'] + f"successful_candidates_with_overlap_gte{intersection_minimum}.txt", 'a') as outfile:
                     outfile.write(f"{ra} {dec}\n")
 
-        with open(main_args['candidate_file_prefix'] + "region_candidates/" + f"xi2_{lab}_ra.txt", 'a') as outfile:
+                with open(main_args['candidate_file_prefix'] + f"xi2_{lab}{int(intersection_minimum)}_ra.txt", 'a') as outfile:
+                    outfile.write(f"{xi2[0]}\n")
+                with open(main_args['candidate_file_prefix'] + f"xi2_{lab}{int(intersection_minimum)}_dec.txt", 'a') as outfile:
+                    outfile.write(f"{xi2[1]}\n")
+
+
+        with open(main_args['candidate_file_prefix'] + "region_candidates/" + f"xi2_{lab}ra.txt", 'a') as outfile:
             outfile.write(f"{xi2[0]}\n")
 
-        with open(main_args['candidate_file_prefix'] + "region_candidates/" + f"xi2_{lab}_dec.txt", 'a') as outfile:
+        with open(main_args['candidate_file_prefix'] + "region_candidates/" + f"xi2_{lab}dec.txt", 'a') as outfile:
             outfile.write(f"{xi2[1]}\n")
 
         count_total += 1
@@ -321,11 +324,11 @@ if __name__ == "__main__":
         "FLAG_plot": False,
         "FLAG_restrict_pm": True,
         "intersection_minima": [1, 2, 5, 10, 50],
-        # "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
-        "data_table_prefix": './candidates/regions/'
+        "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
+        # "data_table_prefix": './candidates/regions/'
     }
 
-    main_args["candidate_file_prefix"] = f"./candidates/testing_trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
+    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
     # main(main_args, sys.argv[1])
