@@ -298,6 +298,7 @@ def xi2_plot(xira_files, xidec_files, labels=['Known dwarfs', 'Random cones'], o
     """Plot xi2 of pmra and pmdec for give files."""
     fig, ax = plot_setup(1, 1)
 
+    print(xira_files, xidec_files)
     print(len(xira_files), len(xidec_files))
     # colors = ['xkcd:grapefruit', 'xkcd:denim blue']
     colors = cm.plasma(np.linspace(0.2, 1, num=len(labels)))
@@ -307,10 +308,19 @@ def xi2_plot(xira_files, xidec_files, labels=['Known dwarfs', 'Random cones'], o
         xi2_dec = np.loadtxt(dec)
         print(len(xi2_ra), len(xi2_dec))
 
-        ax.scatter(xi2_ra, xi2_dec, c=color, label=label, s=2)
+        ax.scatter(xi2_ra, xi2_dec, c=color, label=label, marker=',', s=1)
 
     ax.set_xlabel(r'$\chi^2_{\mu_\mathrm{ra}}/dof$')
     ax.set_ylabel(r'$\chi^2_{\mu_\mathrm{dec}}/dof$')
+
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+
+    ax.set_xlim(left=1e-3, right=1e3)
+    ax.set_ylim(bottom=1e-3, top=1e3)
+
+    ax.set_facecolor('xkcd:almost black')
+
     ax.set_title(r"Comparison of $\chi^2$ in pmra and pmdec")
     ax.legend()
 

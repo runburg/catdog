@@ -56,7 +56,7 @@ def pm_xi2_test(pm, error_pm):
     """Calculate Xi^2 for pmra and pmdec."""
     mean = np.mean(pm)
 
-    dof = len(pm)
+    dof = len(pm) - 1
     chi2 = np.sum((pm - mean)**2 / error_pm**2)
 
     return chi2 / dof

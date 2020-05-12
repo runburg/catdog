@@ -320,11 +320,11 @@ if __name__ == "__main__":
         "FLAG_plot": False,
         "FLAG_restrict_pm": True,
         "intersection_minima": [1, 2, 5, 10, 50],
-        "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
-        # "data_table_prefix": './candidates/regions/'
+        # "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
+        "data_table_prefix": './candidates/regions/'
     }
 
-    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
+    main_args["candidate_file_prefix"] = f"./candidates/testing_trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
     main(main_args, sys.argv[1])
@@ -337,5 +337,6 @@ if __name__ == "__main__":
     counts = [1, 2, 5, 10, 50]
     # filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts)
     # xi2_plot(glob.glob((pth:=main_args['candidate_file_prefix']) + '*ra.txt'), glob.glob(pth + '*dec.txt'), labels=['Random', 'Known'], output_path=pth)
-
-    # xi2_plot([main_args['candidate_file_prefix'] + f'xi2_{num}_ra.txt' for num in counts], [main_args['candidate_file_prefix'] + f'xi2_{num}_dec.txt' for num in counts], labels=[rf"Counts $\geq$ {count}" for count in counts], output_path=main_args['candidate_file_prefix'])
+    rafiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_ra.txt' for num in counts]+["/Users/runburg/github/catdog/candidates/testing_trial3333_rad100_small_pm_range3/region_candidates/xi2_known_ra.txt"]
+    decfiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_dec.txt' for num in counts]+ ["/Users/runburg/github/catdog/candidates/testing_trial3333_rad100_small_pm_range3/region_candidates/xi2_known_dec.txt"]
+    # xi2_plot(rafiles, decfiles, labels=[rf"Counts $\geq$ {count}" for count in counts]+['Known dwarfs'], output_path=main_args['candidate_file_prefix'])
