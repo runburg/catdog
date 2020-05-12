@@ -314,7 +314,7 @@ if __name__ == "__main__":
         "minimum_count_spatial": 3,
         "sigma_threshhold_spatial": 3,
         "minimum_count_pm": 3,
-        "sigma_threshhold_pm": 3,
+        "sigma_threshhold_pm": 4,
         "extend_range": 3,
         "FLAG_search_pm_space": True,
         "FLAG_plot": False,
