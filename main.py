@@ -328,7 +328,7 @@ if __name__ == "__main__":
     main_args["candidate_file_prefix"] = f"./candidates/testing_trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
-    main(main_args, sys.argv[1])
+    # main(main_args, sys.argv[1])
 
     gal_plane_setting = 18
     # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
@@ -337,4 +337,4 @@ if __name__ == "__main__":
     # filter_then_plot(['successful_candidates_with_overlap_gte10.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection_10')
     counts = [1, 2, 5, 10, 50]
     # filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts)
-    # xi2_plot(glob.glob((pth:=main_args['candidate_file_prefix']) + "region_candidates/" + '*ra.txt'), glob.glob(pth + "region_candidates/" + '*dec.txt'), labels=['Random', 'Known'], output_path=pth)
+    xi2_plot(glob.glob((pth:=main_args['candidate_file_prefix']) + "region_candidates/" + '*ra.txt'), glob.glob(pth + "region_candidates/" + '*dec.txt'), labels=['Random', 'Known'], output_path=pth)
