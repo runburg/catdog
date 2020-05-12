@@ -298,11 +298,14 @@ def xi2_plot(xira_files, xidec_files, labels=['Known dwarfs', 'Random cones'], o
     """Plot xi2 of pmra and pmdec for give files."""
     fig, ax = plot_setup(1, 1)
 
-    colors = ['xkcd:grapefruit', 'xkcd:denim blue']
+    print(len(xira_files), len(xidec_files))
+    # colors = ['xkcd:grapefruit', 'xkcd:denim blue']
+    colors = cm.plasma(np.linspace(0.2, 1, num=len(labels)))
 
     for ra, dec, color, label in zip(xira_files, xidec_files, colors, labels):
         xi2_ra = np.loadtxt(ra)
         xi2_dec = np.loadtxt(dec)
+        print(len(xi2_ra), len(xi2_dec))
 
         ax.scatter(xi2_ra, xi2_dec, c=color, label=label, s=2)
 
