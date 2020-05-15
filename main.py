@@ -273,6 +273,9 @@ def main(main_args, input_file):
                 with open(main_args['candidate_file_prefix'] + f"successful_candidates_with_overlap_gte{intersection_minimum}.txt", 'a') as outfile:
                     outfile.write(f"{ra} {dec}\n")
 
+                with open(main_args['candidate_file_prefix'] + f"successful_candidates_with_overlap_gte{intersection_minimum}_withcounts.txt", 'a') as outfile:
+                    outfile.write(f"{ra} {dec} {overdense_objects}\n")
+
                 with open(main_args['candidate_file_prefix'] + f"xi2_{lab}{int(intersection_minimum)}_ra.txt", 'a') as outfile:
                     outfile.write(f"{xi2[0]}\n")
                 with open(main_args['candidate_file_prefix'] + f"xi2_{lab}{int(intersection_minimum)}_dec.txt", 'a') as outfile:
@@ -327,16 +330,16 @@ if __name__ == "__main__":
     main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
-    main(main_args, sys.argv[1])
+    # main(main_args, sys.argv[1])
 
     gal_plane_setting = 18
     # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
     outfile = f"{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_"
 
     # filter_then_plot(['successful_candidates_with_overlap_gte10.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection_10')
-    counts = [1, 2, 5, 10, 50]
-    # filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts)
+    counts = [2, 5, 10, 50]
+    filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts)
     # xi2_plot(glob.glob((pth:=main_args['candidate_file_prefix']) + '*ra.txt'), glob.glob(pth + '*dec.txt'), labels=['Random', 'Known'], output_path=pth)
-    rafiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_ra.txt' for num in counts]+["/Users/runburg/github/catdog/candidates/testing_trial3333_rad100_small_pm_range3/region_candidates/xi2_known_ra.txt"]
-    decfiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_dec.txt' for num in counts]+ ["/Users/runburg/github/catdog/candidates/testing_trial3333_rad100_small_pm_range3/region_candidates/xi2_known_dec.txt"]
+    rafiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_ra.txt' for num in counts]+["/Users/runburg/github/catdog/candidates/testing_trial3334_rad100_small_pm_range3/region_candidates/xi2_known_ra.txt"]
+    decfiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_dec.txt' for num in counts]+ ["/Users/runburg/github/catdog/candidates/testing_trial3334_rad100_small_pm_range3/region_candidates/xi2_known_dec.txt"]
     # xi2_plot(rafiles, decfiles, labels=[rf"Counts $\geq$ {count}" for count in counts]+['Known dwarfs'], output_path=main_args['candidate_file_prefix'])
