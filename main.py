@@ -67,10 +67,13 @@ def extend_overdensity_bins(passing_indices_x, passing_indices_y, bin_range=5, m
     return passing_indices_x, passing_indices_y
 
 
-def get_gaia_ids(gaia_table, passing_spatial_x, passing_spatial_y, passing_pm_x, passing_pm_y, bin_size_spatial, bin_size_pm, just_spatial_indices=False):
+def get_gaia_ids(gaia_table, passing_spatial_x, passing_spatial_y, passing_pm_x, passing_pm_y, bin_size_spatial, bin_size_pm, just_spatial_indices=False, which='both'):
     """Find and write GAIA ids of candidate objects."""
     ids = gaia_table['source_id']
+    # bin_size_pm *= 180 / np.pi
+    # bin_size_spatial *= 180 / np.pi
     gaia_x = gaia_table['x'] * 180 / np.pi
+    # print(passing_spatial_x, gaia_x)
     gaia_y = gaia_table['y'] * 180 / np.pi
     pm_ra = gaia_table['pmra']
     pm_dec = gaia_table['pmdec']
@@ -88,6 +91,12 @@ def get_gaia_ids(gaia_table, passing_spatial_x, passing_spatial_y, passing_pm_x,
         return good_indices_spatial
 
     good_indices = good_indices_spatial & good_indices_pm
+
+    if which == 'spatial':
+        return ids[good_indices_spatial]
+
+    if which == 'pm':
+        return ids[good_indices_pm]
 
     return ids[good_indices]
 
@@ -135,27 +144,32 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
 
     # Perform search in pm space if desired
     pm_test_result = False
-    passing_indices_pm_x = []
-    passing_indices_pm_y = []
+    passing_indices_pm_x = [0]
+    passing_indices_pm_y = [0]
 
     # Only search for pm overdensities using spatial overdensity objects
     gaia_table_restricted = gaia_table[:]
     if FLAG_restrict_pm is True:
         passing_indices_x, passing_indices_y = extend_overdensity_bins(passing_indices_x, passing_indices_y, bin_range=extend_range, maximum_range=len(xedges))
-        extended_spatial_indices = get_gaia_ids(gaia_table, xedges[passing_indices_x], yedges[passing_indices_y], passing_indices_pm_x, passing_indices_pm_y, just_spatial_indices=True, bin_size_spatial=min(radii), bin_size_pm=min(pm_radii))
+        extended_spatial_indices = get_gaia_ids(gaia_table, xedges[passing_indices_x], yedges[passing_indices_y], passing_indices_pm_x, passing_indices_pm_y, just_spatial_indices=True, bin_size_spatial=xedges[1]-xedges[0], bin_size_pm=min(pm_radii))
         gaia_table_restricted = gaia_table[extended_spatial_indices]
+        print('number of objects in extended spatial:', len(gaia_table_restricted))
+              #len(get_gaia_ids(gaia_table, xedges[passing_indices_x], yedges[passing_indices_y], passing_indices_pm_x, passing_indices_pm_y, bin_size_spatial=min(radii), bin_size_pm=min(pm_radii), which='spatial')))
 
     # Search pm space for overdensities
     xi2_ra = 0
     xi2_dec = 0
-    if FLAG_search_pm_space:
+    x_edges_pm = np.array([0])
+    y_edges_pm = np.array([0])
+    if FLAG_search_pm_space is True:
         convolved_data_pm, x_edges_pm, y_edges_pm, X_pm, Y_pm, histog, histog_mask = convolve_pm_histo(gaia_table_restricted, region_radius, pm_radii)
         passing_indices_pm_x, passing_indices_pm_y = cuts.pm_overdensity_test(convolved_data_pm, histog.shape, region_ra, region_dec, outfile, histog_mask, num_sigma=sigma_threshhold_pm, repetition=minimum_count_pm)
 
         xi2_ra = cuts.pm_xi2_test(gaia_table_restricted['pmra'], gaia_table_restricted['pmra_error'])
         xi2_dec = cuts.pm_xi2_test(gaia_table_restricted['pmdec'], gaia_table_restricted['pmdec_error'])
-        if len(passing_indices_pm_x) > 0:
+        if len(passing_indices_pm_x) > 1:
             pm_test_result = True
+            # print(passing_indices_x)
 
     # coordinate of center of bins
     min_radius = min(radii)
@@ -167,10 +181,11 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
 
     overdense_objects = 0
     if pm_test_result is True & od_test_result is True:
-        successful_object_ids = get_gaia_ids(gaia_table, xedges[passing_indices_x], yedges[passing_indices_y], x_edges_pm[passing_indices_pm_x], y_edges_pm[passing_indices_pm_y], min(radii), min(pm_radii))
+        successful_object_ids = get_gaia_ids(gaia_table, xedges[passing_indices_x], yedges[passing_indices_y], x_edges_pm[passing_indices_pm_x], y_edges_pm[passing_indices_pm_y], bin_size_spatial=xedges[1]-xedges[0], bin_size_pm=x_edges_pm[1]-x_edges_pm[0])
         np.savetxt(outfile.rstrip('.txt') + '_ids.txt', successful_object_ids, header=f'# ids of objects in overdense bins for {name}\n')
 
         overdense_objects = len(successful_object_ids)
+        print(f'num indices pm: {len(passing_indices_pm_x)}\nnum od obj: {overdense_objects}')
 
         # Coordinate transform back to coordinates on the sky
         passing_ra, passing_dec = inverse_azimuthal_equidistant_coordinates(np.deg2rad(passing_x), np.deg2rad(passing_y), np.deg2rad(region_ra), np.deg2rad(region_dec))
@@ -317,20 +332,20 @@ if __name__ == "__main__":
         "minimum_count_spatial": 3,
         "sigma_threshhold_spatial": 3,
         "minimum_count_pm": 3,
-        "sigma_threshhold_pm": 3,
+        "sigma_threshhold_pm": 5,
         "extend_range": 3,
         "FLAG_search_pm_space": True,
-        "FLAG_plot": False,
+        "FLAG_plot": True,
         "FLAG_restrict_pm": True,
         "intersection_minima": [1, 2, 5, 10, 50],
         # "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
         "data_table_prefix": './candidates/regions/'
     }
 
-    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
+    main_args["candidate_file_prefix"] = f"./candidates/testing_trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
-    # main(main_args, sys.argv[1])
+    main(main_args, sys.argv[1])
 
     gal_plane_setting = 18
     # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
@@ -338,8 +353,11 @@ if __name__ == "__main__":
 
     # filter_then_plot(['successful_candidates_with_overlap_gte10.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection_10')
     counts = [2, 5, 10, 50]
-    filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts)
-    # xi2_plot(glob.glob((pth:=main_args['candidate_file_prefix']) + '*ra.txt'), glob.glob(pth + '*dec.txt'), labels=['Random', 'Known'], output_path=pth)
+    # filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts)
+    # pth = main_args['candidate_file_prefix']
+    # ra_files = [pth + 'xi2_known_1_ra.txt', pth + 'xi2_1_ra.txt']
+    # dec_files = [pth + 'xi2_known_1_dec.txt', pth + 'xi2_1_dec.txt']
+    # xi2_plot(ra_files, dec_files, labels=['Known', 'Random'], output_path=pth)
     rafiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_ra.txt' for num in counts]+["/Users/runburg/github/catdog/candidates/testing_trial3334_rad100_small_pm_range3/region_candidates/xi2_known_ra.txt"]
     decfiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_dec.txt' for num in counts]+ ["/Users/runburg/github/catdog/candidates/testing_trial3334_rad100_small_pm_range3/region_candidates/xi2_known_dec.txt"]
-    # xi2_plot(rafiles, decfiles, labels=[rf"Counts $\geq$ {count}" for count in counts]+['Known dwarfs'], output_path=main_args['candidate_file_prefix'])
+    xi2_plot(rafiles, decfiles, labels=[rf"Counts $\geq$ {count}" for count in counts]+['Known dwarfs'], output_path=main_args['candidate_file_prefix'])
