@@ -1,0 +1,4280 @@
+Requirement already satisfied: numpy in /home/runburg/.local/lib/python3.7/site-packages (1.17.2)
+Requirement already satisfied: matplotlib in /home/runburg/.local/lib/python3.7/site-packages (3.1.1)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.1 in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from matplotlib) (2.3.1)
+Requirement already satisfied: python-dateutil>=2.1 in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from matplotlib) (2.8.0)
+Requirement already satisfied: cycler>=0.10 in /home/runburg/.local/lib/python3.7/site-packages (from matplotlib) (0.10.0)
+Requirement already satisfied: numpy>=1.11 in /home/runburg/.local/lib/python3.7/site-packages (from matplotlib) (1.17.2)
+Requirement already satisfied: kiwisolver>=1.0.1 in /home/runburg/.local/lib/python3.7/site-packages (from matplotlib) (1.1.0)
+Requirement already satisfied: six>=1.5 in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from python-dateutil>=2.1->matplotlib) (1.12.0)
+Requirement already satisfied: setuptools in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from kiwisolver>=1.0.1->matplotlib) (40.8.0)
+Requirement already satisfied: astropy in /home/runburg/.local/lib/python3.7/site-packages (3.2.1)
+Requirement already satisfied: numpy>=1.13 in /home/runburg/.local/lib/python3.7/site-packages (from astropy) (1.17.2)
+Requirement already up-to-date: astroquery in /home/runburg/.local/lib/python3.7/site-packages (0.4)
+Requirement already satisfied, skipping upgrade: keyring>=4.0 in /home/runburg/.local/lib/python3.7/site-packages (from astroquery) (19.2.0)
+Requirement already satisfied, skipping upgrade: beautifulsoup4>=4.3.2 in /home/runburg/.local/lib/python3.7/site-packages (from astroquery) (4.8.0)
+Requirement already satisfied, skipping upgrade: html5lib>=0.999 in /home/runburg/.local/lib/python3.7/site-packages (from astroquery) (1.0.1)
+Requirement already satisfied, skipping upgrade: six in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from astroquery) (1.12.0)
+Requirement already satisfied, skipping upgrade: requests>=2.4.3 in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from astroquery) (2.21.0)
+Requirement already satisfied, skipping upgrade: astropy>=2.0 in /home/runburg/.local/lib/python3.7/site-packages (from astroquery) (3.2.1)
+Requirement already satisfied, skipping upgrade: secretstorage; sys_platform == "linux" in /home/runburg/.local/lib/python3.7/site-packages (from keyring>=4.0->astroquery) (3.1.1)
+Requirement already satisfied, skipping upgrade: entrypoints in /home/runburg/.local/lib/python3.7/site-packages (from keyring>=4.0->astroquery) (0.3)
+Requirement already satisfied, skipping upgrade: soupsieve>=1.2 in /home/runburg/.local/lib/python3.7/site-packages (from beautifulsoup4>=4.3.2->astroquery) (1.9.3)
+Requirement already satisfied, skipping upgrade: webencodings in /home/runburg/.local/lib/python3.7/site-packages (from html5lib>=0.999->astroquery) (0.5.1)
+Requirement already satisfied, skipping upgrade: idna<2.9,>=2.5 in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from requests>=2.4.3->astroquery) (2.8)
+Requirement already satisfied, skipping upgrade: urllib3<1.25,>=1.21.1 in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from requests>=2.4.3->astroquery) (1.24.1)
+Requirement already satisfied, skipping upgrade: chardet<3.1.0,>=3.0.2 in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from requests>=2.4.3->astroquery) (3.0.4)
+Requirement already satisfied, skipping upgrade: certifi>=2017.4.17 in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from requests>=2.4.3->astroquery) (2019.3.9)
+Requirement already satisfied, skipping upgrade: numpy>=1.13 in /home/runburg/.local/lib/python3.7/site-packages (from astropy>=2.0->astroquery) (1.17.2)
+Requirement already satisfied, skipping upgrade: jeepney in /home/runburg/.local/lib/python3.7/site-packages (from secretstorage; sys_platform == "linux"->keyring>=4.0->astroquery) (0.4.1)
+Requirement already satisfied, skipping upgrade: cryptography in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from secretstorage; sys_platform == "linux"->keyring>=4.0->astroquery) (2.6.1)
+Requirement already satisfied, skipping upgrade: cffi!=1.11.3,>=1.8 in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from cryptography->secretstorage; sys_platform == "linux"->keyring>=4.0->astroquery) (1.12.2)
+Requirement already satisfied, skipping upgrade: asn1crypto>=0.21.0 in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from cryptography->secretstorage; sys_platform == "linux"->keyring>=4.0->astroquery) (0.24.0)
+Requirement already satisfied, skipping upgrade: pycparser in /opt/apps/software/lang/Python/3.7.2-intel-2018.5.274/lib/python3.7/site-packages (from cffi!=1.11.3,>=1.8->cryptography->secretstorage; sys_platform == "linux"->keyring>=4.0->astroquery) (2.19)
+Finished installing packages
+Created TAP+ (v1.2.1) - Connection:
+	Host: gea.esac.esa.int
+	Use HTTPS: True
+	Port: 443
+	SSL Port: 443
+Created TAP+ (v1.2.1) - Connection:
+	Host: geadata.esac.esa.int
+	Use HTTPS: True
+	Port: 443
+	SSL Port: 443
+[[139.57146571 -20.53479919]
+ [138.98831966 -21.3444653 ]
+ [314.0701004   74.14025716]
+ [311.7208987   74.89068826]
+ [309.14853834  75.6170549 ]
+ [306.32661974  76.31553844]
+ [303.22727378  76.98166615]
+ [299.8223285   77.61023678]
+ [296.08525645  78.19527061]
+ [291.99412776  78.73000956]
+ [287.53569755  79.20700249]
+ [282.71049141  79.61831687]
+ [277.53827015  79.95591379]
+ [272.06261038  80.2121985 ]
+ [266.35280131  80.38070857]
+ [260.50130678  80.45683459]
+ [254.61608325  80.43841329]
+ [248.80891978  80.32603002]
+ [243.18273133  80.12293813]
+ [237.82123817  79.83462023]
+ [232.7833427   79.46812115]
+ [228.10255536  79.03132287]
+ [223.79021101  78.53230335]
+ [219.8406014   77.97885637]
+ [216.2364005   77.37818669]
+ [212.95338822  76.73675527]
+ [209.96407549  76.06023395]
+ [207.24022622  75.35352985]
+ [204.75445996  74.62084826]
+ [202.48116887  73.86577225]
+ [200.39696249  73.0913456 ]
+ [198.48080827  72.30015151]
+ [196.71398901  71.49438345]
+ [195.07995909  70.67590697]
+ [193.56415224  69.84631251]
+ [192.15377322  69.00695988]
+ [190.83759228  68.1590156 ]
+ [189.60575252  67.30348382]
+ [188.44959486  66.44123213]
+ [187.36150224  65.57301291]
+ [186.33476258  64.69948111]
+ [185.36344955  63.821209  ]
+ [184.4423191   62.93869846]
+ [183.56672028  62.05239127]
+ [182.7325183   61.16267769]
+ [181.93602833  60.26990373]
+ [181.17395851  59.37437719]
+ [180.44336087  58.47637286]
+ [179.74158894  57.57613686]
+ [179.06626127  56.67389035]
+ [178.41522975  55.76983272]
+ [177.78655224  54.86414429]
+ [177.17846879  53.95698866]
+ [176.58938095  53.04851472]
+ [176.01783371  52.13885839]
+ [175.46249979  51.22814409]
+ [174.92216578  50.31648612]
+ [174.39572009  49.40398973]
+ [173.88214226  48.4907522 ]
+ [173.38049363  47.57686364]
+ [172.889909    46.66240781]
+ [172.40958934  45.74746277]
+ [171.93879526  44.83210152]
+ [171.47684125  43.91639251]
+ [171.02309054  43.00040009]
+ [170.57695048  42.084185  ]
+ [170.13786846  41.16780467]
+ [169.70532823  40.25131362]
+ [169.2788466   39.33476372]
+ [168.85797045  38.4182045 ]
+ [168.44227412  37.50168338]
+ [168.03135691  36.58524589]
+ [167.62484097  35.66893589]
+ [167.2223693   34.75279573]
+ [166.82360393  33.83686644]
+ [166.42822435  32.92118789]
+ [166.03592595  32.00579891]
+ [165.64641874  31.09073744]
+ [165.25942606  30.17604066]
+ [164.87468345  29.26174507]
+ [164.49193763  28.34788662]
+ [164.11094553  27.43450082]
+ [163.73147341  26.52162279]
+ [163.35329604  25.60928741]
+ [162.97619594  24.69752933]
+ [162.59996272  23.78638311]
+ [162.22439239  22.87588327]
+ [161.84928676  21.96606436]
+ [161.4744529   21.05696104]
+ [161.0997026   20.14860812]
+ [160.72485187  19.24104068]
+ [160.34972048  18.33429406]
+ [159.97413154  17.428404  ]
+ [159.59791104  16.52340665]
+ [159.22088753  15.61933864]
+ [158.84289166  14.71623715]
+ [158.4637559   13.81413996]
+ [158.08331418  12.91308554]
+ [157.70140153  12.01311307]
+ [157.31785382  11.11426253]
+ [156.93250742  10.21657473]
+ [156.54519893   9.32009142]
+ [156.15576489   8.42485532]
+ [155.76404149   7.5309102 ]
+ [155.36986433   6.63830093]
+ [154.97306814   5.74707357]
+ [154.57348652   4.85727542]
+ [154.17095169   3.96895511]
+ [153.76529425   3.08216269]
+ [153.35634289   2.19694964]
+ [152.9439242    1.31336903]
+ [152.52786237   0.43147557]
+ [152.10797899  -0.44867432]
+ [151.68409276  -1.3270224 ]
+ [151.25601929  -2.20350851]
+ [150.82357082  -3.07807052]
+ [150.38655597  -3.95064414]
+ [149.94477953  -4.82116291]
+ [149.49804217  -5.68955804]
+ [149.04614018  -6.5557583 ]
+ [148.58886527  -7.4196899 ]
+ [148.12600425  -8.28127638]
+ [147.65733881  -9.14043846]
+ [147.18264523  -9.99709391]
+ [146.70169415 -10.85115743]
+ [146.21425027 -11.70254046]
+ [145.72007211 -12.55115104]
+ [145.21891171 -13.39689368]
+ [144.71051441 -14.23966913]
+ [144.1946185  -15.07937425]
+ [143.67095504 -15.9159018 ]
+ [143.13924754 -16.74914025]
+ [142.5992117  -17.57897358]
+ [142.05055515 -18.40528106]
+ [141.49297722 -19.22793704]
+ [140.92616865 -20.0468107 ]
+ [140.34981138 -20.86176584]
+ [139.76357834 -21.6726606 ]
+ [139.16713318 -22.47934719]
+ [311.62799674  73.7380483 ]
+ [309.20723385  74.45934757]
+ [306.57228435  75.15442397]
+ [303.7014497   75.81943337]
+ [300.57288881  76.44996263]
+ [297.1659084   77.04099448]
+ [293.46285868  77.58690486]
+ [289.45171341  78.0815135 ]
+ [285.12928919  78.51821275]
+ [280.50483299  78.89019846]
+ [275.60338726  79.19081686]
+ [270.46801841  79.41401819]
+ [265.15985094  79.55487274]
+ [259.75510938  79.6100675 ]
+ [254.33912544  79.57827994]
+ [248.99830019  79.46033715]
+ [243.81181602  79.25911828]
+ [238.84499669  78.97922609]
+ [234.14555155  78.62651025]
+ [229.74291113  78.20754677]
+ [225.65000185  77.72916288]
+ [221.86642202  77.19806155]
+ [218.38204268  76.62056249]
+ [215.1803563   76.00245027]
+ [212.24122871  75.34890701]
+ [209.54296263  74.6645043 ]
+ [207.06372921  73.95323224]
+ [204.78248676  73.21854875]
+ [202.67951658  72.46343738]
+ [200.73669036  71.69046644]
+ [198.93755963  70.90184507]
+ [197.26733368  70.09947422]
+ [195.71279245  69.28499172]
+ [194.26216557  68.45981136]
+ [192.90499751  67.62515644]
+ [191.63201115  66.78208826]
+ [190.43497711  65.93153027]
+ [189.30659247  65.07428841]
+ [188.24037071  64.21106832]
+ [187.23054319  63.34248978]
+ [186.27197189  62.46909892]
+ [185.36007258  61.59137852]
+ [184.4907475   60.70975669]
+ [183.66032652  59.82461433]
+ [182.86551587  58.93629134]
+ [182.1033534   58.04509199]
+ [181.37116963  57.15128948]
+ [180.66655377  56.25512984]
+ [179.98732409  55.35683531]
+ [179.33150203  54.4566072 ]
+ [178.69728957  53.55462841]
+ [178.08304945  52.65106556]
+ [177.48728772  51.7460709 ]
+ [176.9086385   50.83978391]
+ [176.34585056  49.93233275]
+ [175.79777544  49.02383548]
+ [175.26335697  48.11440119]
+ [174.74162204  47.20413092]
+ [174.23167238  46.29311854]
+ [173.73267721  45.3814515 ]
+ [173.24386685  44.46921145]]
+['region_ra13957_dec-2053_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra13957_dec-2053_rad100.vot
+Number of objects: 10182
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (139.57146570783365, -20.53479919228319)		 (0/200) 
+
+
+
+['region_ra13899_dec-2134_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra13899_dec-2134_rad100.vot
+Number of objects: 11721
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (138.98831966124104, -21.34446530388358)		 (1/200) 
+
+
+
+['region_ra31407_dec7414_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra31407_dec7414_rad100.vot
+Number of objects: 10029
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (314.07010040195354, 74.1402571585093)		 (2/200) 
+
+
+
+['region_ra31172_dec7489_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra31172_dec7489_rad100.vot
+Number of objects: 11322
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (311.72089869798884, 74.89068826447186)		 (3/200) 
+
+
+
+['region_ra30915_dec7562_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra30915_dec7562_rad100.vot
+Number of objects: 12160
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (309.1485383354502, 75.61705490190246)		 (4/200) 
+
+
+
+['region_ra30633_dec7632_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra30633_dec7632_rad100.vot
+Number of objects: 11040
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (306.32661974210833, 76.31553843612075)		 (5/200) 
+
+
+
+['region_ra30323_dec7698_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra30323_dec7698_rad100.vot
+Number of objects: 9862
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (303.22727377992675, 76.98166614858464)		 (6/200) 
+
+
+
+['region_ra29982_dec7761_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra29982_dec7761_rad100.vot
+Number of objects: 9137
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (299.8223285026553, 77.61023677974873)		 (7/200) 
+
+
+
+['region_ra29609_dec7820_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra29609_dec7820_rad100.vot
+Number of objects: 8655
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (296.08525644762864, 78.1952706061666)		 (8/200) 
+
+
+
+['region_ra29199_dec7873_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra29199_dec7873_rad100.vot
+Number of objects: 7968
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (291.9941277584786, 78.73000956000087)		 (9/200) 
+
+
+
+['region_ra28754_dec7921_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra28754_dec7921_rad100.vot
+Number of objects: 7113
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (287.53569754575966, 79.20700248818726)		 (10/200) 
+
+
+
+['region_ra28271_dec7962_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra28271_dec7962_rad100.vot
+Number of objects: 6382
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (282.71049140915835, 79.61831686686895)		 (11/200) 
+
+
+
+['region_ra27754_dec7996_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra27754_dec7996_rad100.vot
+Number of objects: 5939
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (277.5382701468609, 79.95591379143625)		 (12/200) 
+
+
+
+['region_ra27206_dec8021_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra27206_dec8021_rad100.vot
+Number of objects: 5309
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (272.0626103769659, 80.21219850226119)		 (13/200) 
+
+
+
+['region_ra26635_dec8038_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra26635_dec8038_rad100.vot
+Number of objects: 4802
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (266.35280130855534, 80.38070856679204)		 (14/200) 
+
+
+
+['region_ra26050_dec8046_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra26050_dec8046_rad100.vot
+Number of objects: 4482
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (260.5013067755218, 80.45683459139953)		 (15/200) 
+
+
+
+['region_ra25462_dec8044_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra25462_dec8044_rad100.vot
+Number of objects: 4266
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (254.61608325331315, 80.4384132913919)		 (16/200) 
+
+
+
+['region_ra24881_dec8033_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra24881_dec8033_rad100.vot
+Number of objects: 4072
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (248.80891978288602, 80.32603002314731)		 (17/200) 
+
+
+
+['region_ra24318_dec8012_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra24318_dec8012_rad100.vot
+Number of objects: 3809
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (243.18273132986585, 80.12293812890132)		 (18/200) 
+
+
+
+['region_ra23782_dec7983_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra23782_dec7983_rad100.vot
+Number of objects: 3681
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (237.82123817149105, 79.83462022877157)		 (19/200) 
+
+
+
+['region_ra23278_dec7947_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra23278_dec7947_rad100.vot
+Number of objects: 3213
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (232.7833427025646, 79.46812114911407)		 (20/200) 
+
+
+
+['region_ra22810_dec7903_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra22810_dec7903_rad100.vot
+Number of objects: 3026
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (228.10255536144302, 79.03132286640388)		 (21/200) 
+
+
+
+['region_ra22379_dec7853_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra22379_dec7853_rad100.vot
+Number of objects: 2772
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (223.79021101478233, 78.53230334978626)		 (22/200) 
+
+
+
+['region_ra21984_dec7798_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra21984_dec7798_rad100.vot
+Number of objects: 2482
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (219.840601402047, 77.97885637170683)		 (23/200) 
+
+
+
+['region_ra21624_dec7738_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra21624_dec7738_rad100.vot
+Number of objects: 2362
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (216.2364004953513, 77.37818668865503)		 (24/200) 
+
+
+
+['region_ra21295_dec7674_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra21295_dec7674_rad100.vot
+Number of objects: 2271
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (212.9533882230549, 76.73675526966007)		 (25/200) 
+
+
+
+['region_ra20996_dec7606_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra20996_dec7606_rad100.vot
+Number of objects: 2104
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (209.96407549334648, 76.06023394796878)		 (26/200) 
+
+
+
+['region_ra20724_dec7535_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra20724_dec7535_rad100.vot
+Number of objects: 1907
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (207.24022621958443, 75.35352984928751)		 (27/200) 
+
+
+
+['region_ra20475_dec7462_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra20475_dec7462_rad100.vot
+Number of objects: 1893
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (204.75445995828798, 74.62084825788483)		 (28/200) 
+
+
+
+['region_ra20248_dec7387_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra20248_dec7387_rad100.vot
+Number of objects: 1859
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (202.48116887434716, 73.86577224696043)		 (29/200) 
+
+
+
+['region_ra20040_dec7309_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra20040_dec7309_rad100.vot
+Number of objects: 1771
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (200.39696249261956, 73.09134560042001)		 (30/200) 
+
+
+
+['region_ra19848_dec7230_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19848_dec7230_rad100.vot
+Number of objects: 1649
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (198.48080826691674, 72.30015151138183)		 (31/200) 
+
+
+
+['region_ra19671_dec7149_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19671_dec7149_rad100.vot
+Number of objects: 1557
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (196.71398900561599, 71.49438345221976)		 (32/200) 
+
+
+
+['region_ra19508_dec7068_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19508_dec7068_rad100.vot
+Number of objects: 1538
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (195.0799590904306, 70.6759069737616)		 (33/200) 
+
+
+
+['region_ra19356_dec6985_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19356_dec6985_rad100.vot
+Number of objects: 1523
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (193.56415224211582, 69.84631250561071)		 (34/200) 
+
+
+
+['region_ra19215_dec6901_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19215_dec6901_rad100.vot
+Number of objects: 1474
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (192.15377321940713, 69.0069598845234)		 (35/200) 
+
+
+
+['region_ra19084_dec6816_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19084_dec6816_rad100.vot
+Number of objects: 1435
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (190.83759227718537, 68.15901560329452)		 (36/200) 
+
+
+
+['region_ra18961_dec6730_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18961_dec6730_rad100.vot
+Number of objects: 1416
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (189.60575251508504, 67.30348382255549)		 (37/200) 
+
+
+
+['region_ra18845_dec6644_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18845_dec6644_rad100.vot
+Number of objects: 1357
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (188.44959486288408, 66.44123212826906)		 (38/200) 
+
+
+
+['region_ra18736_dec6557_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18736_dec6557_rad100.vot
+Number of objects: 1270
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (187.3615022376854, 65.5730129100741)		 (39/200) 
+
+
+
+['region_ra18633_dec6470_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18633_dec6470_rad100.vot
+Number of objects: 1244
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 2
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+num indices pm: 58
+num od obj: 2
+Success: both tests passed
+finished with dwarf (186.33476258414456, 64.6994811139431)		 (40/200) 
+
+
+
+['region_ra18536_dec6382_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18536_dec6382_rad100.vot
+Number of objects: 1243
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (185.36344954855932, 63.821209004339416)		 (41/200) 
+
+
+
+['region_ra18444_dec6294_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18444_dec6294_rad100.vot
+Number of objects: 1123
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (184.44231909987568, 62.93869846422694)		 (42/200) 
+
+
+
+['region_ra18357_dec6205_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18357_dec6205_rad100.vot
+Number of objects: 1103
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (183.5667202789273, 62.052391268706856)		 (43/200) 
+
+
+
+['region_ra18273_dec6116_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18273_dec6116_rad100.vot
+Number of objects: 1089
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (182.73251829630323, 61.162677689846404)		 (44/200) 
+
+
+
+['region_ra18194_dec6027_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18194_dec6027_rad100.vot
+Number of objects: 1121
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (181.9360283264754, 60.269903725250536)		 (45/200) 
+
+
+
+['region_ra18117_dec5937_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18117_dec5937_rad100.vot
+Number of objects: 1145
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (181.1739585118574, 59.37437718944283)		 (46/200) 
+
+
+
+['region_ra18044_dec5848_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18044_dec5848_rad100.vot
+Number of objects: 1149
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (180.44336086678638, 58.47637286340633)		 (47/200) 
+
+
+
+['region_ra17974_dec5758_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17974_dec5758_rad100.vot
+Number of objects: 1181
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (179.74158894234003, 57.57613686204544)		 (48/200) 
+
+
+
+['region_ra17907_dec5667_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17907_dec5667_rad100.vot
+Number of objects: 1103
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (179.0662612704964, 56.67389035041569)		 (49/200) 
+
+
+
+['region_ra17842_dec5577_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17842_dec5577_rad100.vot
+Number of objects: 1046
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (178.41522974707814, 55.76983271609246)		 (50/200) 
+
+
+
+['region_ra17779_dec5486_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17779_dec5486_rad100.vot
+Number of objects: 999
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (177.7865522364927, 54.86414428598682)		 (51/200) 
+
+
+
+['region_ra17718_dec5396_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17718_dec5396_rad100.vot
+Number of objects: 993
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (177.17846878819222, 53.95698866042053)		 (52/200) 
+
+
+
+['region_ra17659_dec5305_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17659_dec5305_rad100.vot
+Number of objects: 1025
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (176.58938094645586, 53.048514724656485)		 (53/200) 
+
+
+
+['region_ra17602_dec5214_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17602_dec5214_rad100.vot
+Number of objects: 1034
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (176.01783371322398, 52.13885838779088)		 (54/200) 
+
+
+
+['region_ra17546_dec5123_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17546_dec5123_rad100.vot
+Number of objects: 1053
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (175.4624997900305, 51.228144090502205)		 (55/200) 
+
+
+
+['region_ra17492_dec5032_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17492_dec5032_rad100.vot
+Number of objects: 1059
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (174.92216578121702, 50.316486116258304)		 (56/200) 
+
+
+
+['region_ra17440_dec4940_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17440_dec4940_rad100.vot
+Number of objects: 1076
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (174.39572008806778, 49.403989734920984)		 (57/200) 
+
+
+
+['region_ra17388_dec4849_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17388_dec4849_rad100.vot
+Number of objects: 992
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (173.88214226358977, 48.49075220302182)		 (58/200) 
+
+
+
+['region_ra17338_dec4758_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17338_dec4758_rad100.vot
+Number of objects: 962
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (173.38049363151958, 47.57686364113019)		 (59/200) 
+
+
+
+['region_ra17289_dec4666_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17289_dec4666_rad100.vot
+Number of objects: 938
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (172.88990900175034, 46.66240780554328)		 (60/200) 
+
+
+
+['region_ra17241_dec4575_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17241_dec4575_rad100.vot
+Number of objects: 957
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (172.40958933856547, 45.747462768875636)		 (61/200) 
+
+
+
+['region_ra17194_dec4483_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17194_dec4483_rad100.vot
+Number of objects: 946
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (171.93879525855192, 44.832101521918865)		 (62/200) 
+
+
+
+['region_ra17148_dec4392_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17148_dec4392_rad100.vot
+Number of objects: 864
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 6
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+num indices pm: 78
+num od obj: 6
+Success: both tests passed
+finished with dwarf (171.47684125242472, 43.91639250729722)		 (63/200) 
+
+
+
+['region_ra17102_dec4300_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17102_dec4300_rad100.vot
+Number of objects: 829
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (171.02309053973653, 43.00040009389951)		 (64/200) 
+
+
+
+['region_ra17058_dec4208_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17058_dec4208_rad100.vot
+Number of objects: 800
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (170.57695047797725, 42.084184999771374)		 (65/200) 
+
+
+
+['region_ra17014_dec4117_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17014_dec4117_rad100.vot
+Number of objects: 802
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (170.13786845824092, 41.16780467005822)		 (66/200) 
+
+
+
+['region_ra16971_dec4025_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16971_dec4025_rad100.vot
+Number of objects: 788
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 8
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+num indices pm: 64
+num od obj: 8
+Success: both tests passed
+finished with dwarf (169.70532822874415, 40.251313615668195)		 (67/200) 
+
+
+
+['region_ra16928_dec3933_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16928_dec3933_rad100.vot
+Number of objects: 788
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (169.27884659526308, 39.334763717542224)		 (68/200) 
+
+
+
+['region_ra16886_dec3842_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16886_dec3842_rad100.vot
+Number of objects: 778
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (168.8579704542197, 38.41820450075702)		 (69/200) 
+
+
+
+['region_ra16844_dec3750_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16844_dec3750_rad100.vot
+Number of objects: 743
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (168.44227411986648, 37.50168338212228)		 (70/200) 
+
+
+
+['region_ra16803_dec3659_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16803_dec3659_rad100.vot
+Number of objects: 751
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (168.03135691193037, 36.58524589445339)		 (71/200) 
+
+
+
+['region_ra16762_dec3567_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16762_dec3567_rad100.vot
+Number of objects: 770
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (167.6248409743102, 35.668935890289966)		 (72/200) 
+
+
+
+['region_ra16722_dec3475_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16722_dec3475_rad100.vot
+Number of objects: 775
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 1
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+num indices pm: 29
+num od obj: 1
+Success: both tests passed
+finished with dwarf (167.22236929907024, 34.752795727479075)		 (73/200) 
+
+
+
+['region_ra16682_dec3384_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16682_dec3384_rad100.vot
+Number of objects: 774
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (166.82360393312746, 33.83686643873924)		 (74/200) 
+
+
+
+['region_ra16643_dec3292_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16643_dec3292_rad100.vot
+Number of objects: 779
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (166.42822434776207, 32.921187887062395)		 (75/200) 
+
+
+
+['region_ra16604_dec3201_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16604_dec3201_rad100.vot
+Number of objects: 741
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (166.03592595344972, 32.00579890858691)		 (76/200) 
+
+
+
+['region_ra16565_dec3109_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16565_dec3109_rad100.vot
+Number of objects: 682
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (165.64641874457274, 31.090737444380906)		 (77/200) 
+
+
+
+['region_ra16526_dec3018_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16526_dec3018_rad100.vot
+Number of objects: 702
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (165.25942606036028, 30.176040662408198)		 (78/200) 
+
+
+
+['region_ra16487_dec2926_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16487_dec2926_rad100.vot
+Number of objects: 812
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (164.87468344996927, 29.26174507080487)		 (79/200) 
+
+
+
+['region_ra16449_dec2835_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16449_dec2835_rad100.vot
+Number of objects: 869
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (164.49193763098438, 28.347886623466827)		 (80/200) 
+
+
+
+['region_ra16411_dec2743_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16411_dec2743_rad100.vot
+Number of objects: 900
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (164.11094553180862, 27.434500818841773)		 (81/200) 
+
+
+
+['region_ra16373_dec2652_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16373_dec2652_rad100.vot
+Number of objects: 907
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (163.73147340946275, 26.5216227927221)		 (82/200) 
+
+
+
+['region_ra16335_dec2561_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16335_dec2561_rad100.vot
+Number of objects: 819
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (163.35329603523112, 25.609287405752198)		 (83/200) 
+
+
+
+['region_ra16298_dec2470_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16298_dec2470_rad100.vot
+Number of objects: 736
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (162.97619594139886, 24.697529326293058)		 (84/200) 
+
+
+
+['region_ra16260_dec2379_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16260_dec2379_rad100.vot
+Number of objects: 696
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (162.5999627230354, 23.78638310922174)		 (85/200) 
+
+
+
+['region_ra16222_dec2288_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16222_dec2288_rad100.vot
+Number of objects: 732
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (162.22439238940837, 22.875883271189185)		 (86/200) 
+
+
+
+['region_ra16185_dec2197_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16185_dec2197_rad100.vot
+Number of objects: 801
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (161.8492867601632, 21.96606436281264)		 (87/200) 
+
+
+
+['region_ra16147_dec2106_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16147_dec2106_rad100.vot
+Number of objects: 752
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (161.47445290189498, 21.05696103823376)		 (88/200) 
+
+
+
+['region_ra16110_dec2015_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16110_dec2015_rad100.vot
+Number of objects: 683
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (161.09970260117134, 20.148608122440656)		 (89/200) 
+
+
+
+['region_ra16072_dec1924_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16072_dec1924_rad100.vot
+Number of objects: 714
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (160.72485187045055, 19.241040676716967)		 (90/200) 
+
+
+
+['region_ra16035_dec1833_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra16035_dec1833_rad100.vot
+Number of objects: 808
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (160.3497204836795, 18.334294062554104)		 (91/200) 
+
+
+
+['region_ra15997_dec1743_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15997_dec1743_rad100.vot
+Number of objects: 995
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (159.9741315386594, 17.42840400433926)		 (92/200) 
+
+
+
+['region_ra15960_dec1652_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15960_dec1652_rad100.vot
+Number of objects: 1036
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (159.5979110435377, 16.523406651109266)		 (93/200) 
+
+
+
+['region_ra15922_dec1562_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15922_dec1562_rad100.vot
+Number of objects: 881
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (159.22088752502475, 15.619338637642912)		 (94/200) 
+
+
+
+['region_ra15884_dec1472_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15884_dec1472_rad100.vot
+Number of objects: 832
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (158.8428916561488, 14.71623714514872)		 (95/200) 
+
+
+
+['region_ra15846_dec1381_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15846_dec1381_rad100.vot
+Number of objects: 836
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 7
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+num indices pm: 35
+num od obj: 7
+Success: both tests passed
+finished with dwarf (158.46375590155424, 13.81413996179156)		 (96/200) 
+
+
+
+['region_ra15808_dec1291_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15808_dec1291_rad100.vot
+Number of objects: 843
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 3
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+num indices pm: 15
+num od obj: 3
+Success: both tests passed
+finished with dwarf (158.08331417852068, 12.91308554328956)		 (97/200) 
+
+
+
+['region_ra15770_dec1201_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15770_dec1201_rad100.vot
+Number of objects: 891
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (157.70140153203275, 12.013113073804728)		 (98/200) 
+
+
+
+['region_ra15732_dec1111_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15732_dec1111_rad100.vot
+Number of objects: 945
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (157.31785382237044, 11.114262527340548)		 (99/200) 
+
+
+
+['region_ra15693_dec1022_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15693_dec1022_rad100.vot
+Number of objects: 1016
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (156.9325074238116, 10.216574729856637)		 (100/200) 
+
+
+
+['region_ra15655_dec932_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15655_dec932_rad100.vot
+Number of objects: 1101
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (156.54519893315228, 9.320091422301461)		 (101/200) 
+
+
+
+['region_ra15616_dec842_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15616_dec842_rad100.vot
+Number of objects: 1107
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (156.1557648868499, 8.42485532476473)		 (102/200) 
+
+
+
+['region_ra15576_dec753_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15576_dec753_rad100.vot
+Number of objects: 1154
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (155.76404148568574, 7.530910201944975)		 (103/200) 
+
+
+
+['region_ra15537_dec664_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15537_dec664_rad100.vot
+Number of objects: 1260
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (155.36986432592653, 6.638300930128721)		 (104/200) 
+
+
+
+['region_ra15497_dec575_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15497_dec575_rad100.vot
+Number of objects: 1149
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (154.9730681360402, 5.7470735658755165)		 (105/200) 
+
+
+
+['region_ra15457_dec486_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15457_dec486_rad100.vot
+Number of objects: 1123
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (154.57348651808942, 4.85727541660469)		 (106/200) 
+
+
+
+['region_ra15417_dec397_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15417_dec397_rad100.vot
+Number of objects: 1288
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (154.1709516929907, 3.968955113280218)		 (107/200) 
+
+
+
+['region_ra15377_dec308_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15377_dec308_rad100.vot
+Number of objects: 1214
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (153.7652942488848, 3.082162685392475)		 (108/200) 
+
+
+
+['region_ra15336_dec220_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15336_dec220_rad100.vot
+Number of objects: 1224
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (153.3563428919197, 2.196949638438165)		 (109/200) 
+
+
+
+['region_ra15294_dec131_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15294_dec131_rad100.vot
+Number of objects: 1415
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (152.94392419879804, 1.3133690341035957)		 (110/200) 
+
+
+
+['region_ra15253_dec43_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15253_dec43_rad100.vot
+Number of objects: 1399
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (152.52786237049014, 0.4314755733605037)		 (111/200) 
+
+
+
+['region_ra15211_dec-45_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15211_dec-45_rad100.vot
+Number of objects: 1274
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (152.1079789865607, -0.44867431731227586)		 (112/200) 
+
+
+
+['region_ra15168_dec-133_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15168_dec-133_rad100.vot
+Number of objects: 1094
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (151.68409275960266, -1.3270223963616592)		 (113/200) 
+
+
+
+['region_ra15126_dec-220_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15126_dec-220_rad100.vot
+Number of objects: 1036
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (151.2560192893163, -2.2035085140227144)		 (114/200) 
+
+
+
+['region_ra15082_dec-308_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15082_dec-308_rad100.vot
+Number of objects: 1186
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (150.82357081581713, -3.0780705153800296)		 (115/200) 
+
+
+
+['region_ra15039_dec-395_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra15039_dec-395_rad100.vot
+Number of objects: 1396
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (150.38655597180104, -3.950644139389313)		 (116/200) 
+
+
+
+['region_ra14994_dec-482_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14994_dec-482_rad100.vot
+Number of objects: 1826
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (149.94477953324255, -4.821162913615541)		 (117/200) 
+
+
+
+['region_ra14950_dec-569_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14950_dec-569_rad100.vot
+Number of objects: 2229
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (149.49804216834963, -5.689558044434244)		 (118/200) 
+
+
+
+['region_ra14905_dec-656_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14905_dec-656_rad100.vot
+Number of objects: 2279
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (149.0461401845515, -6.555758302437562)		 (119/200) 
+
+
+
+['region_ra14859_dec-742_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14859_dec-742_rad100.vot
+Number of objects: 2243
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (148.58886527334946, -7.4196899027769305)		 (120/200) 
+
+
+
+['region_ra14813_dec-828_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14813_dec-828_rad100.vot
+Number of objects: 2395
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (148.12600425292118, -8.281276380168407)		 (121/200) 
+
+
+
+['region_ra14766_dec-914_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14766_dec-914_rad100.vot
+Number of objects: 2649
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (147.65733880843214, -9.140438458278108)		 (122/200) 
+
+
+
+['region_ra14718_dec-1000_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14718_dec-1000_rad100.vot
+Number of objects: 3030
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (147.1826452300798, -9.997093913198045)		 (123/200) 
+
+
+
+['region_ra14670_dec-1085_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14670_dec-1085_rad100.vot
+Number of objects: 3367
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (146.70169414897344, -10.851157430716658)		 (124/200) 
+
+
+
+['region_ra14621_dec-1170_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14621_dec-1170_rad100.vot
+Number of objects: 3667
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (146.21425027103876, -11.702540457081177)		 (125/200) 
+
+
+
+['region_ra14572_dec-1255_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14572_dec-1255_rad100.vot
+Number of objects: 3746
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (145.72007210923252, -12.551151042944062)		 (126/200) 
+
+
+
+['region_ra14522_dec-1340_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14522_dec-1340_rad100.vot
+Number of objects: 3909
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (145.21891171445913, -13.396893680180861)		 (127/200) 
+
+
+
+['region_ra14471_dec-1424_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14471_dec-1424_rad100.vot
+Number of objects: 4100
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (144.71051440569954, -14.239669131264392)		 (128/200) 
+
+
+
+['region_ra14419_dec-1508_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14419_dec-1508_rad100.vot
+Number of objects: 4554
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (144.19461849999837, -15.079374250878539)		 (129/200) 
+
+
+
+['region_ra14367_dec-1592_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14367_dec-1592_rad100.vot
+Number of objects: 5221
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (143.67095504310012, -15.915901799454938)		 (130/200) 
+
+
+
+['region_ra14314_dec-1675_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14314_dec-1675_rad100.vot
+Number of objects: 5726
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (143.13924754169548, -16.749140248320124)		 (131/200) 
+
+
+
+['region_ra14260_dec-1758_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14260_dec-1758_rad100.vot
+Number of objects: 6460
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (142.59921169842232, -17.578973576145305)		 (132/200) 
+
+
+
+['region_ra14205_dec-1841_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14205_dec-1841_rad100.vot
+Number of objects: 7214
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (142.05055515097428, -18.40528105640199)		 (133/200) 
+
+
+
+['region_ra14149_dec-1923_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14149_dec-1923_rad100.vot
+Number of objects: 8575
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (141.49297721690115, -19.22793703553899)		 (134/200) 
+
+
+
+['region_ra14093_dec-2005_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14093_dec-2005_rad100.vot
+Number of objects: 9075
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (140.92616864594453, -20.04681070161633)		 (135/200) 
+
+
+
+['region_ra14035_dec-2086_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra14035_dec-2086_rad100.vot
+Number of objects: 9682
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (140.3498113820368, -20.861765843154473)		 (136/200) 
+
+
+
+['region_ra13976_dec-2167_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra13976_dec-2167_rad100.vot
+Number of objects: 11259
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (139.76357833741324, -21.672660597989797)		 (137/200) 
+
+
+
+['region_ra13917_dec-2248_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra13917_dec-2248_rad100.vot
+Number of objects: 12454
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (139.16713318163832, -22.479347191964983)		 (138/200) 
+
+
+
+['region_ra31163_dec7374_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra31163_dec7374_rad100.vot
+Number of objects: 9597
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (311.6279967425679, 73.73804829943991)		 (139/200) 
+
+
+
+['region_ra30921_dec7446_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra30921_dec7446_rad100.vot
+Number of objects: 10519
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (309.20723384544715, 74.45934756617964)		 (140/200) 
+
+
+
+['region_ra30657_dec7515_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra30657_dec7515_rad100.vot
+Number of objects: 11403
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (306.57228434728296, 75.15442397120229)		 (141/200) 
+
+
+
+['region_ra30370_dec7582_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra30370_dec7582_rad100.vot
+Number of objects: 10515
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (303.70144969668377, 75.81943337140204)		 (142/200) 
+
+
+
+['region_ra30057_dec7645_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra30057_dec7645_rad100.vot
+Number of objects: 9339
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (300.57288881294767, 76.44996262547167)		 (143/200) 
+
+
+
+['region_ra29717_dec7704_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra29717_dec7704_rad100.vot
+Number of objects: 8885
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (297.1659083998706, 77.04099447743523)		 (144/200) 
+
+
+
+['region_ra29346_dec7759_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra29346_dec7759_rad100.vot
+Number of objects: 8532
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (293.4628586845333, 77.58690485546512)		 (145/200) 
+
+
+
+['region_ra28945_dec7808_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra28945_dec7808_rad100.vot
+Number of objects: 7886
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (289.451713406809, 78.08151349969765)		 (146/200) 
+
+
+
+['region_ra28513_dec7852_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra28513_dec7852_rad100.vot
+Number of objects: 6882
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (285.1292891896344, 78.51821275062154)		 (147/200) 
+
+
+
+['region_ra28050_dec7889_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra28050_dec7889_rad100.vot
+Number of objects: 6055
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (280.50483299155115, 78.89019845915065)		 (148/200) 
+
+
+
+['region_ra27560_dec7919_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra27560_dec7919_rad100.vot
+Number of objects: 5588
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (275.6033872565609, 79.19081686099932)		 (149/200) 
+
+
+
+['region_ra27047_dec7941_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra27047_dec7941_rad100.vot
+Number of objects: 5043
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (270.468018405147, 79.41401819342325)		 (150/200) 
+
+
+
+['region_ra26516_dec7955_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra26516_dec7955_rad100.vot
+Number of objects: 4692
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (265.1598509364616, 79.55487274091651)		 (151/200) 
+
+
+
+['region_ra25976_dec7961_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra25976_dec7961_rad100.vot
+Number of objects: 4420
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (259.755109380271, 79.61006750469404)		 (152/200) 
+
+
+
+['region_ra25434_dec7958_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra25434_dec7958_rad100.vot
+Number of objects: 4141
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (254.3391254401939, 79.5782799379044)		 (153/200) 
+
+
+
+['region_ra24900_dec7946_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra24900_dec7946_rad100.vot
+Number of objects: 3938
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (248.99830018864697, 79.46033715065074)		 (154/200) 
+
+
+
+['region_ra24381_dec7926_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra24381_dec7926_rad100.vot
+Number of objects: 3726
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (243.81181601860405, 79.25911828427468)		 (155/200) 
+
+
+
+['region_ra23884_dec7898_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra23884_dec7898_rad100.vot
+Number of objects: 3403
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (238.84499668784255, 78.97922608774033)		 (156/200) 
+
+
+
+['region_ra23415_dec7863_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra23415_dec7863_rad100.vot
+Number of objects: 3199
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (234.14555154828454, 78.6265102496212)		 (157/200) 
+
+
+
+['region_ra22974_dec7821_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra22974_dec7821_rad100.vot
+Number of objects: 2934
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (229.74291112986555, 78.20754676860082)		 (158/200) 
+
+
+
+['region_ra22565_dec7773_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra22565_dec7773_rad100.vot
+Number of objects: 2684
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (225.65000185016262, 77.72916288208604)		 (159/200) 
+
+
+
+['region_ra22187_dec7720_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra22187_dec7720_rad100.vot
+Number of objects: 2519
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (221.86642201542742, 77.1980615506183)		 (160/200) 
+
+
+
+['region_ra21838_dec7662_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra21838_dec7662_rad100.vot
+Number of objects: 2430
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (218.38204267617456, 76.62056248551097)		 (161/200) 
+
+
+
+['region_ra21518_dec7600_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra21518_dec7600_rad100.vot
+Number of objects: 2283
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (215.18035630309132, 76.00245026745367)		 (162/200) 
+
+
+
+['region_ra21224_dec7535_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra21224_dec7535_rad100.vot
+Number of objects: 2128
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (212.24122870816143, 75.34890701013195)		 (163/200) 
+
+
+
+['region_ra20954_dec7466_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra20954_dec7466_rad100.vot
+Number of objects: 1925
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (209.54296262722528, 74.66450429854096)		 (164/200) 
+
+
+
+['region_ra20706_dec7395_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra20706_dec7395_rad100.vot
+Number of objects: 1884
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (207.06372921053767, 73.95323224172063)		 (165/200) 
+
+
+
+['region_ra20478_dec7322_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra20478_dec7322_rad100.vot
+Number of objects: 1781
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (204.78248676416496, 73.21854874754106)		 (166/200) 
+
+
+
+['region_ra20268_dec7246_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra20268_dec7246_rad100.vot
+Number of objects: 1661
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (202.6795165812953, 72.46343737848387)		 (167/200) 
+
+
+
+['region_ra20074_dec7169_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra20074_dec7169_rad100.vot
+Number of objects: 1598
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (200.73669036205635, 71.69046643846512)		 (168/200) 
+
+
+
+['region_ra19894_dec7090_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19894_dec7090_rad100.vot
+Number of objects: 1542
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 2
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+num indices pm: 58
+num od obj: 2
+Success: both tests passed
+finished with dwarf (198.9375596331378, 70.90184506719598)		 (169/200) 
+
+
+
+['region_ra19727_dec7010_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19727_dec7010_rad100.vot
+Number of objects: 1549
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (197.26733367817926, 70.09947421869592)		 (170/200) 
+
+
+
+['region_ra19571_dec6928_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19571_dec6928_rad100.vot
+Number of objects: 1482
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (195.71279244818956, 69.2849917181826)		 (171/200) 
+
+
+
+['region_ra19426_dec6846_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19426_dec6846_rad100.vot
+Number of objects: 1426
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (194.26216557364393, 68.4598113627746)		 (172/200) 
+
+
+
+['region_ra19290_dec6763_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19290_dec6763_rad100.vot
+Number of objects: 1389
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (192.90499750898095, 67.62515644451139)		 (173/200) 
+
+
+
+['region_ra19163_dec6678_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19163_dec6678_rad100.vot
+Number of objects: 1353
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (191.6320111507212, 66.78208826464989)		 (174/200) 
+
+
+
+['region_ra19043_dec6593_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra19043_dec6593_rad100.vot
+Number of objects: 1304
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 3
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+num indices pm: 15
+num od obj: 3
+Success: both tests passed
+finished with dwarf (190.43497711167413, 65.93153026741497)		 (175/200) 
+
+
+
+['region_ra18931_dec6507_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18931_dec6507_rad100.vot
+Number of objects: 1251
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (189.30659247275688, 65.0742884080522)		 (176/200) 
+
+
+
+['region_ra18824_dec6421_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18824_dec6421_rad100.vot
+Number of objects: 1232
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (188.24037070890756, 64.2110683203262)		 (177/200) 
+
+
+
+['region_ra18723_dec6334_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18723_dec6334_rad100.vot
+Number of objects: 1185
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (187.23054318852215, 63.342489783919795)		 (178/200) 
+
+
+
+['region_ra18627_dec6247_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18627_dec6247_rad100.vot
+Number of objects: 1161
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (186.27197189137283, 62.46909892456692)		 (179/200) 
+
+
+
+['region_ra18536_dec6159_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18536_dec6159_rad100.vot
+Number of objects: 1152
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (185.36007258340578, 61.59137851552796)		 (180/200) 
+
+
+
+['region_ra18449_dec6071_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18449_dec6071_rad100.vot
+Number of objects: 1065
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (184.49074749807252, 60.70975669112652)		 (181/200) 
+
+
+
+['region_ra18366_dec5982_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18366_dec5982_rad100.vot
+Number of objects: 1151
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (183.66032651743473, 59.824614332522174)		 (182/200) 
+
+
+
+['region_ra18287_dec5894_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18287_dec5894_rad100.vot
+Number of objects: 1198
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (182.86551586691445, 58.93629134265128)		 (183/200) 
+
+
+
+['region_ra18210_dec5805_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18210_dec5805_rad100.vot
+Number of objects: 1059
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (182.10335340010562, 58.045091990768974)		 (184/200) 
+
+
+
+['region_ra18137_dec5715_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18137_dec5715_rad100.vot
+Number of objects: 1069
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (181.3711696326361, 57.15128947649347)		 (185/200) 
+
+
+
+['region_ra18067_dec5626_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra18067_dec5626_rad100.vot
+Number of objects: 1052
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (180.66655377339313, 56.25512983786551)		 (186/200) 
+
+
+
+['region_ra17999_dec5536_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17999_dec5536_rad100.vot
+Number of objects: 998
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (179.98732408975783, 55.356835306897736)		 (187/200) 
+
+
+
+['region_ra17933_dec5446_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17933_dec5446_rad100.vot
+Number of objects: 998
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (179.3315020265976, 54.45660719870172)		 (188/200) 
+
+
+
+['region_ra17870_dec5355_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17870_dec5355_rad100.vot
+Number of objects: 1046
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (178.6972895745573, 53.5546284059156)		 (189/200) 
+
+
+
+['region_ra17808_dec5265_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17808_dec5265_rad100.vot
+Number of objects: 1053
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (178.08304945093002, 52.65106555829802)		 (190/200) 
+
+
+
+['region_ra17749_dec5175_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17749_dec5175_rad100.vot
+Number of objects: 1083
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (177.48728771609115, 51.746070897554354)		 (191/200) 
+
+
+
+['region_ra17691_dec5084_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17691_dec5084_rad100.vot
+Number of objects: 1022
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (176.90863850059125, 50.839783909358104)		 (192/200) 
+
+
+
+['region_ra17635_dec4993_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17635_dec4993_rad100.vot
+Number of objects: 1021
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (176.34585056317997, 49.93233274782064)		 (193/200) 
+
+
+
+['region_ra17580_dec4902_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17580_dec4902_rad100.vot
+Number of objects: 1078
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (175.797775439012, 49.02383548209369)		 (194/200) 
+
+
+
+['region_ra17526_dec4811_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17526_dec4811_rad100.vot
+Number of objects: 1023
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (175.2633569708084, 48.114401190163754)		 (195/200) 
+
+
+
+['region_ra17474_dec4720_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17474_dec4720_rad100.vot
+Number of objects: 1009
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (174.7416220445109, 47.20413092104396)		 (196/200) 
+
+
+
+['region_ra17423_dec4629_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17423_dec4629_rad100.vot
+Number of objects: 994
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (174.23167237562004, 46.293118543352485)		 (197/200) 
+
+
+
+['region_ra17373_dec4538_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17373_dec4538_rad100.vot
+Number of objects: 990
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (173.73267721352212, 45.38145149557756)		 (198/200) 
+
+
+
+['region_ra17324_dec4447_rad100.vot']
+Table loaded from: /home/runburg/nfs_fs02/runburg/candidates/regions/region_ra17324_dec4447_rad100.vot
+Number of objects: 982
+Convolving spatial
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished 0.00316
+number of objects in extended spatial: 0
+Convolving pm
+finished 1.0
+finished 0.316
+finished 0.1
+finished 0.0316
+finished 0.01
+finished with dwarf (173.24386684918832, 44.46921145107334)		 (199/200) 
+
+
+
+Search parameters:
+spatial count: 3; spatial sigma: 3; pm count: 3; pm sigma: 3; range: 3
+Passing dwarfs:
+[('(186.33476258414456, 64.6994811139431)', 2), ('(171.47684125242472, 43.91639250729722)', 6), ('(169.70532822874415, 40.251313615668195)', 8), ('(167.22236929907024, 34.752795727479075)', 1), ('(158.46375590155424, 13.81413996179156)', 7), ('(158.08331417852068, 12.91308554328956)', 3), ('(198.9375596331378, 70.90184506719598)', 2), ('(190.43497711167413, 65.93153026741497)', 3)]
+Dwarf pass rate is
+spatial 8/200 = 0.04
+PM count 8/200 = 0.04
+Both count 8/200 = 0.04
+Pass rate with overlapping objs in pm/spat bins 8/200 = 0.04
+
+
+All results saved in ./candidates/trial3333_rad100_small_pm_range3/
+--- 1823.682728767395 seconds ---

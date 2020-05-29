@@ -332,17 +332,17 @@ if __name__ == "__main__":
         "minimum_count_spatial": 3,
         "sigma_threshhold_spatial": 3,
         "minimum_count_pm": 3,
-        "sigma_threshhold_pm": 5,
+        "sigma_threshhold_pm": 3,
         "extend_range": 3,
         "FLAG_search_pm_space": True,
-        "FLAG_plot": True,
+        "FLAG_plot": False,
         "FLAG_restrict_pm": True,
         "intersection_minima": [1, 2, 5, 10, 50],
         "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
         # "data_table_prefix": './candidates/regions/'
     }
 
-    main_args["candidate_file_prefix"] = f"./candidates/testing_trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
+    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
     main(main_args, sys.argv[1])
@@ -360,4 +360,4 @@ if __name__ == "__main__":
     # xi2_plot(ra_files, dec_files, labels=['Known', 'Random'], output_path=pth)
     rafiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_ra.txt' for num in counts]+["/Users/runburg/github/catdog/candidates/testing_trial3334_rad100_small_pm_range3/region_candidates/xi2_known_ra.txt"]
     decfiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_dec.txt' for num in counts]+ ["/Users/runburg/github/catdog/candidates/testing_trial3334_rad100_small_pm_range3/region_candidates/xi2_known_dec.txt"]
-    xi2_plot(rafiles, decfiles, labels=[rf"Counts $\geq$ {count}" for count in counts]+['Known dwarfs'], output_path=main_args['candidate_file_prefix'])
+    # xi2_plot(rafiles, decfiles, labels=[rf"Counts $\geq$ {count}" for count in counts]+['Known dwarfs'], output_path=main_args['candidate_file_prefix'])
