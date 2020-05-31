@@ -327,7 +327,7 @@ def xi2_plot(xira_files, xidec_files, labels=['Known dwarfs', 'Random cones'], o
     fig.savefig(output_path + 'xi2_comp.png')
 
 
-def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15, outfile='all_sky_plot', multiple_data_sets=[], labs=[]):
+def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15, outfile='all_sky_plot', multiple_data_sets=[], labs=[], colormap_counts=False):
     """Plot candidates without Milky Way background."""
     ##############################
     # SET UP
@@ -411,16 +411,20 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
     file_list = success_files + near_plane_files
     print(np.sum(multiple_data_sets))
     if len(multiple_data_sets) > 0:
-        # col_list = ['xkcd:coral', 'xkcd:mint green', 'xkcd:tangerine']
-        col_list = cm.viridis(np.linspace(0.25, 1, num=len(multiple_data_sets)))
-        colors = []
-        for limit, color in zip(multiple_data_sets, col_list):
-            colors += [color] * limit
-        handles, labels = ax.get_legend_handles_labels()
-        for lab, col in zip(labs, col_list):
-            patch = mpatches.Patch(color=col, label=f'Overlap count > {lab}')
-            handles.append(patch)
-        ax.legend(handles=handles, loc='upper right')
+        if colormap_counts is True:
+            multiple_data_sets /= max(multiple_data_sets)
+            colors = list(cm.viridis(multiple_data_sets)
+        else:
+            # col_list = ['xkcd:coral', 'xkcd:mint green', 'xkcd:tangerine']
+            col_list = cm.viridis(np.linspace(0.25, 1, num=len(multiple_data_sets)))
+            colors = []
+            for limit, color in zip(multiple_data_sets, col_list):
+                colors += [color] * limit
+            handles, labels = ax.get_legend_handles_labels()
+            for lab, col in zip(labs, col_list):
+                patch = mpatches.Patch(color=col, label=f'Overlap count > {lab}')
+                handles.append(patch)
+            ax.legend(handles=handles, loc='upper right')
     else:
         colors = ['xkcd:coral'] * len(success_files)
 
