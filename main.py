@@ -16,11 +16,12 @@ from astropy.table import Table
 from the_search import cuts
 from the_search.utils import gaia_region_search, azimuthal_equidistant_coordinates, inverse_azimuthal_equidistant_coordinates, convolve_spatial_histo, convolve_pm_histo, outside_of_galactic_plane
 from the_search.plots import convolved_histograms, convolved_histograms_1d, new_all_sky, convolved_pm_histograms, xi2_plot
+from the_search.fofskygitfiles import group_with_fof
 
 warnings.filterwarnings("ignore")
 
 
-def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radius=3.16, outfile='all_sky_plot.pdf', dif_file_dif_color=False, counts_included=False, labs=[]):
+def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radius=3.16, outfile='all_sky_plot.pdf', dif_file_dif_color=False, counts_included=False, labs=[], group_cones=False):
     """Create all sky plot and filter candidates."""
     from the_search.utils import cut_out_candidates_close_to_plane_and_slmc
 
@@ -35,23 +36,26 @@ def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radi
    # print(new_color_at)
     coord_list = np.concatenate(coord_list)
 
+    if group_cones is True:
+        coord_list = group_with_fof(coord_list)
+
     if dif_file_dif_color is True:
         multiple_data_sets = new_color_at
     elif counts_included is True:
-        multiple_data_sets = coord_list[:, 3]
+        multiple_data_sets = coord_list[:, 2]
         colormap_counts = True
 
     filtered_cand_file = prefix + "successful_candidates_filtered.txt"
     near_cand_file = prefix + "successful_candidates_near.txt"
 
-    ra_suc, dec_suc, ra_near, dec_near, new_color_at = cut_out_candidates_close_to_plane_and_slmc(coord_list[:, 0], coord_list[:, 1], far_file=filtered_cand_file, near_file=near_cand_file, latitude=27, multiple_data_sets=multiple_data_sets)
+    ra_suc, dec_suc, ra_near, dec_near, new_color_at = cut_out_candidates_close_to_plane_and_slmc(coord_list[:, 0], coord_list[:, 1], far_file=filtered_cand_file, near_file=near_cand_file, latitude=25, multiple_data_sets=multiple_data_sets, counts_included=counts_included)
 
     far_file_list = [prefix + f'region_candidates/region_ra{int(round(ra*100))}_dec{int(round(dec*100))}_rad{int(round(region_rad*100))}_candidates.txt' for (ra, dec) in zip(ra_suc, dec_suc)]
 
     near_file_list = [prefix + f'region_candidates/region_ra{int(round(ra*100))}_dec{int(round(dec*100))}_rad{int(round(region_rad*100))}_candidates.txt' for (ra, dec) in zip(ra_near, dec_near)]
 
-    print(len(far_file_list))
-    print(new_color_at)
+    # print(len(far_file_list))
+    # print(new_color_at)
 
     new_all_sky(far_file_list, region_rad, near_plane_files=near_file_list, gal_plane_setting=gal_plane_setting, prefix=prefix, outfile=outfile, multiple_data_sets=new_color_at, labs=labs, colormap_counts=colormap_counts)
 
@@ -358,10 +362,10 @@ if __name__ == "__main__":
     outfile = f"{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_"
 
     # filter_then_plot(['successful_candidates_with_overlap_gte10.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection_10')
-    counts = [2, 5, 10, 50]
-    filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts, dif_file_dif_color=True)
+    counts = [1, 2, 5, 10, 50]
+    filter_then_plot([f'successful_candidates_with_overlap_gte{count}_withcounts.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_cmap', labs=counts, dif_file_dif_color=False, group_cones=True, counts_included=True)
     # pth = main_args['candidate_file_prefix']
-    filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts, counts_included=True)
+    # filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts, counts_included=True)
     # ra_files = [pth + 'xi2_known_1_ra.txt', pth + 'xi2_1_ra.txt']
     # dec_files = [pth + 'xi2_known_1_dec.txt', pth + 'xi2_1_dec.txt']
     # xi2_plot(ra_files, dec_files, labels=['Known', 'Random'], output_path=pth)
