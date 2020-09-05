@@ -14,7 +14,7 @@ import os
 from zipfile import ZipFile, ZIP_DEFLATED
 from astropy.table import Table
 from the_search import cuts
-from the_search.utils import gaia_region_search, azimuthal_equidistant_coordinates, inverse_azimuthal_equidistant_coordinates, convolve_spatial_histo, convolve_pm_histo, outside_of_galactic_plane
+from the_search.utils import gaia_region_search, azimuthal_equidistant_coordinates, inverse_azimuthal_equidistant_coordinates, convolve_spatial_histo, convolve_pm_histo, outside_of_galactic_plane, gaia_pm_chi2
 from the_search.plots import convolved_histograms, convolved_histograms_1d, new_all_sky, convolved_pm_histograms, xi2_plot
 from the_search.fofskygitfiles import group_with_fof
 
@@ -62,6 +62,9 @@ def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radi
 
 def extend_overdensity_bins(passing_indices_x, passing_indices_y, bin_range=5, maximum_range=1000):
     """Extend the list of spatial overdensities to the bins around overdense bins within range."""
+    if bin_range == 0:
+        return passing_indices_x, passing_indices_y
+
     expanded_indices = [(x, y) for x in np.arange(-bin_range, bin_range + 1, dtype=int) for y in np.arange(-bin_range, bin_range + 1, dtype=int) if (x**2 + y**2 <= bin_range**2)]
 
     new_x, new_y = [], []
@@ -127,10 +130,12 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
         print(f"Number of objects: {len(gaia_table)}")
     except FileNotFoundError:
         # If it can't be found, query GAIA and download then filter the table.
-        job = gaia_region_search(region_ra, region_dec, outfile=infile, radius=region_radius)
+        job = gaia_region_search(region_ra, region_dec, outfile=infile, radius=region_radius, bp_rp_threshold=(0.8, 1.5), pm_threshold=2)
         gaia_table = job.get_results()
         print("Finished querying Gaia")
+
         gaia_table = gaia_table[outside_of_galactic_plane(gaia_table['ra'], gaia_table['dec'])]
+        gaia_table = gaia_table[gaia_pm_chi2(gaia_table)]
         print("Finished filtering Gaia table")
         # x-y values are projected coordinates (i.e. not sky coordinates)
         gaia_table['x'], gaia_table['y'] = azimuthal_equidistant_coordinates(gaia_table, region_ra, region_dec)
@@ -146,7 +151,7 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
     convolved_data, xedges, yedges, X, Y, histo, histo_mask = convolve_spatial_histo(gaia_table, region_radius, radii)
 
     # Get passing candidate coordinates in projected (non-sky) coordinates
-    passing_indices_x, passing_indices_y = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, outfile, histo_mask, num_sigma=sigma_threshhold_spatial, repetition=minimum_count_spatial)
+    passing_indices_x, passing_indices_y = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, region_radius, outfile, histo_mask, num_sigma=sigma_threshhold_spatial, repetition=minimum_count_spatial)
 
     od_test_result = False
     if len(passing_indices_x) > 0:
@@ -229,7 +234,7 @@ def main(main_args, input_file):
     count_total = 0
     count_od_intersection = 0
 
-    known_dwarf_names = np.loadtxt("./the_search/tuning/tuning_known_dwarfs.txt", delimiter=",", dtype=str)[1:, 0]
+    known_dwarf_names = np.loadtxt("./the_search/tuning/tuning_known_dwarfs.txt", delimiter=",", dtype=str)[:, 0]
 
     dwarfs = np.loadtxt(input_file, delimiter=" ", dtype=np.float64, comments='#')
     print(dwarfs)
@@ -339,23 +344,23 @@ if __name__ == "__main__":
         "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
         # "pm_radii": [1.5, 1.0, 0.5, 0.15],
         "pm_radii": [1.0, 0.316, 0.1, 0.0316, 0.01],
-        "minimum_count_spatial": 3,
+        "minimum_count_spatial": 1,
         "sigma_threshhold_spatial": 3,
         "minimum_count_pm": 3,
         "sigma_threshhold_pm": 3,
-        "extend_range": 3,
+        "extend_range": 0,
         "FLAG_search_pm_space": True,
-        "FLAG_plot": False,
+        "FLAG_plot": True,
         "FLAG_restrict_pm": True,
         "intersection_minima": [1, 2, 5, 10, 50],
-        "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
-        # "data_table_prefix": './candidates/regions/'
+        # "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
+        "data_table_prefix": './candidates/regions/'
     }
 
-    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
+    main_args["candidate_file_prefix"] = f"./candidates/new_trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
-    # main(main_args, sys.argv[1])
+    main(main_args, sys.argv[1])
 
     gal_plane_setting = 18
     # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
@@ -363,12 +368,15 @@ if __name__ == "__main__":
 
     # filter_then_plot(['successful_candidates_with_overlap_gte10.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection_10')
     counts = [1, 2, 5, 10, 50]
-    filter_then_plot([f'successful_candidates_with_overlap_gte{count}_withcounts.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_cmap', labs=counts, dif_file_dif_color=False, group_cones=True, counts_included=True)
+    # filter_then_plot([f'successful_candidates_with_overlap_gte{count}_withcounts.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_cmap', labs=counts, dif_file_dif_color=False, group_cones=True, counts_included=True)
     # pth = main_args['candidate_file_prefix']
     # filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts, counts_included=True)
     # ra_files = [pth + 'xi2_known_1_ra.txt', pth + 'xi2_1_ra.txt']
     # dec_files = [pth + 'xi2_known_1_dec.txt', pth + 'xi2_1_dec.txt']
     # xi2_plot(ra_files, dec_files, labels=['Known', 'Random'], output_path=pth)
-    rafiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_ra.txt' for num in counts]+["/Users/runburg/github/catdog/candidates/testing_trial3334_rad100_small_pm_range3/region_candidates/xi2_known_ra.txt"]
-    decfiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_dec.txt' for num in counts]+ ["/Users/runburg/github/catdog/candidates/testing_trial3334_rad100_small_pm_range3/region_candidates/xi2_known_dec.txt"]
-    # xi2_plot(rafiles, decfiles, labels=[rf"Counts $\geq$ {count}" for count in counts]+['Known dwarfs'], output_path=main_args['candidate_file_prefix'])
+    # rafiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_ra.txt' for num in counts]+[main_args['candidate_file_prefix'] + "region_candidates/xi2_known_ra.txt"]
+    # decfiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_dec.txt' for num in counts]+ ["/Users/runburg/github/catdog/candidates/testing_trial3334_rad100_small_pm_range3/region_candidates/xi2_known_dec.txt"]
+    rafiles = [main_args['candidate_file_prefix'] + "region_candidates/xi2_known_ra.txt", main_args['candidate_file_prefix'] + "region_candidates/xi2_ra.txt"]
+    decfiles = [main_args['candidate_file_prefix'] + "region_candidates/xi2_known_dec.txt", main_args['candidate_file_prefix'] + "region_candidates/xi2_dec.txt"]
+
+    # xi2_plot(rafiles, decfiles, output_path=main_args['candidate_file_prefix'])

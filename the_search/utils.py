@@ -44,8 +44,8 @@ def convolve_spatial_histo(gaia_table, region_radius, radii):
     # Convolve the histogram with different size tophats
     convolved_data = []
     for radius in radii:
-        convolution_kernel = convolution.Tophat2DKernel(radius//min_radius)
-        
+        kern_rad = radius // min_radius
+        convolution_kernel = convolution.Tophat2DKernel(kern_rad) * np.pi * kern_rad**2
         # histo_mask = ~np.less(X[:-1, :-1]**2 + Y[:-1, :-1]**2, region_radius**2)
         # histo_mask = np.ones(histo.shape)
         # histo_mask[histo_mask == 0] *= np.nan
@@ -109,7 +109,7 @@ def convolve_pm_histo(gaia_table, region_radius, radii):
     return convolved_data, xedges, yedges, X, Y, histo, histo_mask
 
 
-def gaia_region_search(ra, dec, outfile, radius=10, sigma=3, pm_threshold=5, bp_rp_threshold=2, dump_to_file=True):
+def gaia_region_search(ra, dec, outfile, radius=10, sigma=3, pm_threshold=5, bp_rp_threshold=(0, 2), dump_to_file=True):
     """Given coordinates, search gaia around a region and populate cones within that region.
 
 
@@ -132,10 +132,10 @@ def gaia_region_search(ra, dec, outfile, radius=10, sigma=3, pm_threshold=5, bp_
                                 gaia_source.source_id,gaia_source.ra,gaia_source.ra_error,gaia_source.dec, \
                                 gaia_source.dec_error,gaia_source.parallax,gaia_source.parallax_error, \
                                 gaia_source.pmra,gaia_source.pmra_error,gaia_source.pmdec,gaia_source.pmdec_error, \
-                                gaia_source.bp_rp, gaia_source.phot_g_mean_mag \
+                                gaia_source.pmra_pmdec_corr, gaia_source.bp_rp, gaia_source.phot_g_mean_mag \
                                 FROM gaiadr2.gaia_source \
                                 WHERE \
-                                CONTAINS(POINT('ICRS',gaiadr2.gaia_source.ra,gaiadr2.gaia_source.dec),CIRCLE('ICRS',{coords.ra.degree},{coords.dec.degree},{radius}))=1 AND  (gaiadr2.gaia_source.parallax - gaiadr2.gaia_source.parallax_error * {sigma} <= 0) AND (SQRT(POWER(gaiadr2.gaia_source.pmra, 2) + POWER(gaiadr2.gaia_source.pmdec, 2)) <= {pm_threshold}) AND (gaiadr2.gaia_source.bp_rp <= {bp_rp_threshold})", dump_to_file=dump_to_file, output_file=outfile, verbose=True)
+                                CONTAINS(POINT('ICRS',gaiadr2.gaia_source.ra,gaiadr2.gaia_source.dec),CIRCLE('ICRS',{coords.ra.degree},{coords.dec.degree},{radius}))=1 AND  (gaiadr2.gaia_source.parallax - gaiadr2.gaia_source.parallax_error * {sigma} <= 0) AND (SQRT(POWER(gaiadr2.gaia_source.pmra, 2) + POWER(gaiadr2.gaia_source.pmdec, 2)) <= {pm_threshold}) AND (gaiadr2.gaia_source.bp_rp >= {bp_rp_threshold[0]}) AND (gaiadr2.gaia_source.bp_rp <= {bp_rp_threshold[1]})", dump_to_file=dump_to_file, output_file=outfile, verbose=True)
 
     return job
 
@@ -196,6 +196,27 @@ def inverse_azimuthal_equidistant_coordinates(x, y, ra_rad, dec_rad):
         lamb = ra_rad + np.arctan2(x*np.sin(c), (c*np.cos(dec_rad)*np.cos(c) - y*np.sin(dec_rad)*np.sin(c)))
 
     return np.rad2deg(lamb), np.rad2deg(phi)
+
+
+def vchi2(dvx,dvy,svx,svy,cvxvy): # dvx,dvx are sample vals, svx,svy=std.dev, cvxvy=correlation coeff
+    # v^T.invCovar.v                                                            
+    svx2 = svx**2; svy2 = svy**2; svxvy = svx*svy*cvxvy
+    return ((svy2*dvx-svxvy*dvy)*dvx+(-svxvy*dvx+svx2*dvy)*dvy)/(svx2*svy2-svxvy**2)
+
+
+def gaia_pm_chi2(gaia_table, conf=0.95, df=2):
+    from scipy import stats
+
+    pmra = gaia_table['pmra']
+    pmdec = gaia_table['pmdec']
+    pmra_err = gaia_table['pmra_error']
+    pmdec_err = gaia_table['pmdec_error']
+    pmrapmdec_corr = gaia_table['pmra_pmdec_corr']
+
+    vchi2cut =  stats.chi2.isf(1-conf,df)
+
+    vchi2data = vchi2(pmra,pmdec,pmra_err,pmdec_err,pmrapmdec_corr) # chi2 for pm speed in model were speed=0
+    return vchi2data < vchi2cut
 
 
 def generate_full_sky_cones(cone_radius, galactic_plane=15, hemi='north', out_to_file=True, output_directory='./region_list/'):

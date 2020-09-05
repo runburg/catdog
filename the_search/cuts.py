@@ -8,13 +8,14 @@ Date: 22-08-2019 14:31
 
 """
 import numpy as np
+from scipy import stats
 try:
     from utils import inverse_azimuthal_equidistant_coordinates
 except ModuleNotFoundError:
     from .utils import inverse_azimuthal_equidistant_coordinates
 
 
-def histogram_overdensity_test(convolved_data, histo_shape, region_ra, region_dec, outfile, mask, num_sigma=2, repetition=2):
+def histogram_overdensity_test(convolved_data, histo_shape, region_ra, region_dec, region_rad, outfile, mask, num_sigma=2, repetition=2, threshold_prob=0.95):
     """Return coordinates with overdensities for all convolutions.
 
     Look for overdensities by looking for large bin counts above the average (background).
@@ -42,7 +43,8 @@ def histogram_overdensity_test(convolved_data, histo_shape, region_ra, region_de
         sd = np.sqrt(np.average((midpoints - mean)**2, weights=hist_data))
 
         # Add the overdensities to the test array
-        passing += np.less(mean + num_sigma * sd, convolved_array)
+        count_pass = stats.poisson.ppf(1 - (1 - threshold_prob) * radius**2 / region_rad**2, mean)
+        passing += np.less(count_pass, convolved_array)
         unique, counts = np.unique(passing, return_counts=True)
         # print(f"radius is {radius} with counts {counts}")
 

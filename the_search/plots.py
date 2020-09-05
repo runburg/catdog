@@ -143,12 +143,18 @@ def convolved_histograms(convolved_data, histo_data, passingxy=None, name='dwarf
 
     # Set bounds for color map
     vmin = 0
-    vmax = np.amax(histo)
+    vmax = np.nanmax(convolved_data[0][1])
+    for _, cd in convolved_data:
+        if np.nanmax(cd) > vmax:
+            vmax = np.nanmax(cd)
     cmap = cm.magma
     normalize = colors.Normalize(vmin=vmin, vmax=vmax)
 
     # Loop through the convolved data and plot
     for ax, (radius, convolved_array) in zip(axs, convolved_data):
+        vmin = 0
+        vmax = np.nanmax(convolved_array)
+        normalize = colors.Normalize(vmin=vmin, vmax=vmax)
         ax.pcolormesh(X, Y, convolved_array.T, norm=normalize, cmap=cmap)
 
         ax.set_xlim(left=min(X[-1]), right=max(X[0]))
@@ -159,6 +165,7 @@ def convolved_histograms(convolved_data, histo_data, passingxy=None, name='dwarf
         ax.set_xlabel("Relative ra [deg]")
         ax.set_ylabel("Relative dec [deg]")
 
+        cbar = colorbar_for_subplot(fig, ax, cmap, cm.ScalarMappable(norm=normalize, cmap=cmap))
         # Overlay passing coordinates if any
         if passingxy is not None and ax == axs[-2]:
             ax.scatter(passingxy[0], passingxy[1], s=1, color='xkcd:bright teal')
@@ -169,7 +176,7 @@ def convolved_histograms(convolved_data, histo_data, passingxy=None, name='dwarf
 
     # Add colorbars
     fig.suptitle(f"Convolved histogram for {name}")
-    fig.colorbar(cm.ScalarMappable(norm=normalize, cmap=cmap), ax=axs.ravel().tolist())
+    # fig.colorbar(cm.ScalarMappable(norm=normalize, cmap=cmap), ax=axs.ravel().tolist())
 
     # Save plot
     outfile = candidate_file_prefix + f'histos/{name}_histo_spatial.png'
