@@ -114,7 +114,7 @@ def get_gaia_ids(gaia_table, passing_spatial_x, passing_spatial_y, passing_pm_x,
     return ids[good_indices]
 
 
-def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=None, minimum_count_spatial=3, sigma_threshhold_spatial=3, minimum_count_pm=3, sigma_threshhold_pm=3, FLAG_search_pm_space=True, FLAG_plot=True, FLAG_restrict_pm=False, candidate_file_prefix='./candidates/', data_table_prefix='./candidates/regions', intersection_minima=[], extend_range=0):
+def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=None, minimum_count_spatial=3, sigma_threshhold_spatial=3, minimum_count_pm=3, sigma_threshhold_pm=3, FLAG_search_pm_space=True, FLAG_plot=True, FLAG_restrict_pm=False, candidate_file_prefix='./candidates/', data_table_prefix='./candidates/regions', intersection_minima=[], extend_range=0, threshold_prob=0.95):
     """Search region of sky."""
     # Set file paths
     infile = data_table_prefix + f'region_ra{round(region_ra*100)}_dec{round(region_dec*100)}_rad{round(region_radius*100)}.vot'
@@ -151,7 +151,7 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, pm_radii, name=N
     convolved_data, xedges, yedges, X, Y, histo, histo_mask = convolve_spatial_histo(gaia_table, region_radius, radii)
 
     # Get passing candidate coordinates in projected (non-sky) coordinates
-    passing_indices_x, passing_indices_y = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, region_radius, outfile, histo_mask, num_sigma=sigma_threshhold_spatial, repetition=minimum_count_spatial)
+    passing_indices_x, passing_indices_y = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, region_radius, outfile, histo_mask, num_sigma=sigma_threshhold_spatial, repetition=minimum_count_spatial, threshold_prob=threshold_prob)
 
     od_test_result = False
     if len(passing_indices_x) > 0:
@@ -322,7 +322,7 @@ def main(main_args, input_file):
         print(f"finished with dwarf {name}\t\t ({i}/{len(dwarfs)}) \n\n\n")
 
     print("Search parameters:")
-    print(f'spatial count: {main_args["minimum_count_spatial"]}; spatial sigma: {main_args["sigma_threshhold_spatial"]}; pm count: {main_args["minimum_count_pm"]}; pm sigma: {main_args["sigma_threshhold_pm"]}; range: {main_args["extend_range"]}')
+    print(f'spatial count: {main_args["minimum_count_spatial"]}; spatial significance: {main_args["threshold_prob"]}; pm count: {main_args["minimum_count_pm"]}; pm sigma: {main_args["sigma_threshhold_pm"]}; range: {main_args["extend_range"]}')
 
     print("Passing dwarfs:")
     print(passing_dwarfs)
@@ -343,11 +343,13 @@ if __name__ == "__main__":
         "region_radius": 1.0,
         "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
         # "pm_radii": [1.5, 1.0, 0.5, 0.15],
-        "pm_radii": [1.0, 0.316, 0.1, 0.0316, 0.01],
+        "pm_radii": [1.0],
+        # "pm_radii": [1.0, 0.316, 0.1, 0.0316, 0.01],
         "minimum_count_spatial": 1,
-        "sigma_threshhold_spatial": 3,
-        "minimum_count_pm": 3,
-        "sigma_threshhold_pm": 3,
+        "sigma_threshhold_spatial": 3.5,
+        "threshold_prob": 0.97,
+        "minimum_count_pm": 0,
+        "sigma_threshhold_pm": 0,
         "extend_range": 0,
         "FLAG_search_pm_space": True,
         "FLAG_plot": True,
@@ -357,7 +359,8 @@ if __name__ == "__main__":
         "data_table_prefix": './candidates/regions/'
     }
 
-    main_args["candidate_file_prefix"] = f"./candidates/new_trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
+    main_args["candidate_file_prefix"] = f"./candidates/new_trial{str(main_args['minimum_count_spatial'])}{str(main_args['threshold_prob'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
+    # main_args["candidate_file_prefix"] = f"./candidates/new_trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
     main(main_args, sys.argv[1])
