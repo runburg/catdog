@@ -247,22 +247,22 @@ def main(main_args, input_file):
         lab = ''
 
     try:
-        os.mkdir(main_args['candidate_file_prefix'])
+        os.makedirs(main_args['candidate_file_prefix'], exist_ok=True)
     except OSError:
         pass
 
     try:
-        os.mkdir(main_args['data_table_prefix'])
+        os.makedirs(main_args['data_table_prefix'], exist_ok=True)
     except OSError:
         pass
 
     try:
-        os.mkdir(main_args['candidate_file_prefix'] + 'region_candidates/')
+        os.makedirs(main_args['candidate_file_prefix'] + 'region_candidates/', exist_ok=True)
     except OSError:
         pass
 
     try:
-        os.mkdir(main_args['candidate_file_prefix'] + 'histos/')
+        os.makedirs(main_args['candidate_file_prefix'] + 'histos/', exist_ok=True)
     except OSError:
         pass
 
@@ -352,11 +352,11 @@ if __name__ == "__main__":
         "sigma_threshhold_pm": 0,
         "extend_range": 0,
         "FLAG_search_pm_space": True,
-        "FLAG_plot": True,
+        "FLAG_plot": False,
         "FLAG_restrict_pm": True,
         "intersection_minima": [1, 2, 5, 10, 50],
-        # "data_table_prefix": '/home/runburg/nfs_fs02/runburg/candidates/regions/'
-        "data_table_prefix": './candidates/regions/'
+        "data_table_prefix": '/mnt/scratch/nfs_fs02/runburg/candidates/regions/'
+        # "data_table_prefix": './candidates/regions/'
     }
 
     main_args["candidate_file_prefix"] = f"./candidates/new_trial{str(main_args['minimum_count_spatial'])}{str(main_args['threshold_prob'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
