@@ -56,7 +56,7 @@ def convolve_spatial_histo(gaia_table, region_radius, radii):
         # print(histo_mask)
         # histo = np.multiply(histo_mask, histo)
 
-        convolved_array = convolution.convolve(histo, convolution_kernel, mask=histo_mask, preserve_nan=True, normalize_kernel=False)
+        convolved_array = convolution.convolve(histo, convolution_kernel, mask=histo_mask, preserve_nan=True, normalize_kernel=False, nan_treatment='fill')
         # print(np.sum(~np.isnan(convolved_array)))
         # print(convolved_array)
 
