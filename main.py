@@ -347,7 +347,7 @@ if __name__ == "__main__":
         # "pm_radii": [1.0, 0.316, 0.1, 0.0316, 0.01],
         "minimum_count_spatial": 1,
         "sigma_threshhold_spatial": 3.5,
-        "threshold_prob": 0.997,
+        "threshold_prob": 0.99,
         "minimum_count_pm": 0,
         "sigma_threshhold_pm": 0,
         "extend_range": 0,
