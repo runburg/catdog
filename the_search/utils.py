@@ -315,7 +315,7 @@ def angular_distance(ra, dec, ra_cone, dec_cone):
     return ang_dist
 
 
-def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True, far_file=None, near_file=None, multiple_data_sets=[], counts_included=False):
+def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True, far_file=None, near_file=None, multiple_data_sets=[]):
     """Reduce candidate list by separating out regions near the galactic plane.
 
 
@@ -338,7 +338,6 @@ def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True
     ra_far, dec_far = ra[~near_indices], dec[~near_indices]
     ra_close, dec_close = ra[near_indices], dec[near_indices]
 
-
     if output is True:
         with open(far_file, 'w') as outfile:
             np.savetxt(outfile, np.array([ra_far, dec_far]).T, delimiter=" ")
@@ -347,16 +346,9 @@ def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True
             np.savetxt(outfile, np.array([ra_close, dec_close]).T, delimiter=" ")
 
     if len(multiple_data_sets) > 0:
-        if counts_included is False:
-            multiple_data_sets = np.cumsum(multiple_data_sets)
-        # print('here', len(ra))
-        # print(multiple_data_sets)
-            for i, (first, second) in enumerate(zip(np.concatenate(([0], multiple_data_sets[:-1])), multiple_data_sets[:])):
-            # print(first, second)
-                multiple_data_sets[i] = np.sum(~near_indices[first:second])
-        else:
-            # print(multiple_data_sets, near_indices)
-            multiple_data_sets = multiple_data_sets[~near_indices]
+        multiple_data_sets = np.cumsum(multiple_data_sets)
+        for i, (first, second) in enumerate(zip(np.concatenate(([0], multiple_data_sets[:-1])), multiple_data_sets[:])):
+            multiple_data_sets[i] = np.sum(~near_indices[first:second])
 
     return ra_far, dec_far, ra_close, dec_close, multiple_data_sets
 

@@ -185,70 +185,6 @@ def convolved_histograms(convolved_data, histo_data, passingxy=None, name='dwarf
     print("saved to", outfile)
 
 
-def convolved_pm_histograms(convolved_data, histo_data, passingxy=None, name='dwarf', region_radius=0, candidate_file_prefix=''):
-    """Make 2d histograms of convolved data.
-
-    Create histograms of the objects in a given region as they are convolved.
-    Meant to visualize the result of successful regions.
-
-
-    Inputs:
-        - convolved_data: list of tuples (radius, convolved_array) of the radius of the convolution kernel and the resulting array
-        - histo_data: tuple (X, Y, histo) from unconvolved histogram
-        - passingxy: list [passingx, passingy] of coordinates that pass the given test
-        - name: name of dwarf/region
-        - region_radius: radius in degrees of the region
-    """
-    from matplotlib import cm, colors
-
-    # Unpack histogram data
-    X, Y, histo = histo_data
-
-    # Setup plot structure
-    cols = 2
-    d = len(convolved_data) + 1
-    rows = d//2 + d % 2
-
-    fig, axs = plot_setup(rows, cols, d)
-    # fig.tight_layout()
-
-    # Set bounds for color map
-    vmin = 0
-    vmax = np.amax(histo)
-    cmap = cm.magma
-    normalize = colors.Normalize(vmin=vmin, vmax=vmax)
-
-    # Loop through the convolved data and plot
-    for ax, (radius, convolved_array) in zip(axs, convolved_data):
-        ax.pcolormesh(X, Y, convolved_array.T, norm=normalize, cmap=cmap)
-
-        ax.set_xlim(left=min(X[-1]), right=max(X[0]))
-        ax.set_ylim(top=max(Y[-1]), bottom=min(Y[0]))
-
-        # Label plot
-        ax.set_title(f"2D tophat, radius={2*radius}")
-        ax.set_xlabel("pmra [mas/yr]")
-        ax.set_ylabel("pmdec [mas/yr]")
-
-        # Overlay passing coordinates if any
-        if passingxy is not None and ax == axs[-2]:
-            ax.scatter(passingxy[0], passingxy[1], s=1, color='xkcd:bright teal')
-
-    # Make the last plot the unconvolved histogram
-    axs.flatten()[-1].pcolormesh(X, Y, histo.T, norm=normalize, cmap=cmap)
-    axs.flatten()[-1].set_title("2D pm histogram, not convolved")
-
-    # Add colorbars
-    fig.suptitle(f"Convolved pm histogram for {name}")
-    fig.colorbar(cm.ScalarMappable(norm=normalize, cmap=cmap), ax=axs.ravel().tolist())
-
-    # Save plot
-    outfile = candidate_file_prefix + f'histos/{name}_histo_pm.png'
-    fig.savefig(outfile)
-
-    print("saved to", outfile)
-
-
 def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None, region_radius=0, candidate_file_prefix=''):
     """Make 1d histogram of convolved data.
 
@@ -301,40 +237,7 @@ def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None,
     fig.savefig(candidate_file_prefix + f'histos/{name}_histo_1d.png')
 
 
-def xi2_plot(xira_files, xidec_files, labels=['Known dwarfs', 'Random cones'], output_path='./'):
-    """Plot xi2 of pmra and pmdec for give files."""
-    fig, ax = plot_setup(1, 1)
-
-    print(xira_files, xidec_files)
-    print(len(xira_files), len(xidec_files))
-    # colors = ['xkcd:grapefruit', 'xkcd:denim blue']
-    colors = cm.plasma(np.linspace(0.2, 1, num=len(labels)))
-
-    for ra, dec, color, label in zip(xira_files, xidec_files, colors, labels):
-        xi2_ra = np.loadtxt(ra)
-        xi2_dec = np.loadtxt(dec)
-        print(len(xi2_ra), len(xi2_dec))
-
-        ax.scatter(xi2_ra, xi2_dec, c=color, label=label, marker=',', s=1)
-
-    ax.set_xlabel(r'$\chi^2_{\mu_\mathrm{ra}}/dof$')
-    ax.set_ylabel(r'$\chi^2_{\mu_\mathrm{dec}}/dof$')
-
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-
-    ax.set_xlim(left=1e-3, right=1e3)
-    ax.set_ylim(bottom=1e-3, top=1e3)
-
-    ax.set_facecolor('xkcd:almost black')
-
-    ax.set_title(r"Comparison of $\chi^2$ in pmra and pmdec")
-    ax.legend()
-
-    fig.savefig(output_path + 'xi2_comp.png')
-
-
-def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15, outfile='all_sky_plot', multiple_data_sets=[], labs=[], colormap_counts=False):
+def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15, outfile='all_sky_plot', multiple_data_sets=[], labs=[]):
     """Plot candidates without Milky Way background."""
     ##############################
     # SET UP
@@ -412,29 +315,15 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
     # PLOT ALL CANDIDATES
     ##############################
     # Plot the number of candidates
-    ax.text(-150, -52, f"No. of candidates: {len(success_files)}")
+    ax.text(-150, -52, f"No. of cones: {len(success_files)}")
 
     # Get all the files with candidates
     file_list = success_files + near_plane_files
-    # print(np.sum(multiple_data_sets))
-    if len(multiple_data_sets) > 0:
-        if colormap_counts is True:
-            colors = list(cm.viridis(np.log10(multiple_data_sets)/np.log10(max(multiple_data_sets))))
-            norm = mpl.colors.Normalize(vmin=0, vmax=np.log10(max(multiple_data_sets)))
-            fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cm.viridis), ax=ax, label="log10 of counts")
-        else:
-            # col_list = ['xkcd:coral', 'xkcd:mint green', 'xkcd:tangerine']
-            col_list = cm.viridis(np.linspace(0.25, 1, num=len(multiple_data_sets)))
-            colors = []
-            for limit, color in zip(multiple_data_sets, col_list):
-                colors += [color] * limit
-            handles, labels = ax.get_legend_handles_labels()
-            for lab, col in zip(labs, col_list):
-                patch = mpatches.Patch(color=col, label=f'Overlap count > {lab}')
-                handles.append(patch)
-            ax.legend(handles=handles, loc='upper right')
-    else:
-        colors = ['xkcd:coral'] * len(success_files)
+
+    # color the succesful cones by counts
+    colors = list(cm.viridis(np.log10(multiple_data_sets)/np.log10(max(multiple_data_sets))))
+    norm = mpl.colors.Normalize(vmin=0, vmax=np.log10(max(multiple_data_sets)))
+    fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cm.viridis), ax=ax, label="log10 of counts")
 
     colors += ['xkcd:steel gray'] * len(near_plane_files)
 
@@ -446,7 +335,7 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
         try:
             candidate_list = np.loadtxt(file, delimiter=" ")
         except OSError:
-            # print(i, file)
+            print('unable to load', file)
             i += 1
             continue
         # print(file)
