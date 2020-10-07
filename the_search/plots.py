@@ -419,9 +419,9 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
     # print(np.sum(multiple_data_sets))
     if len(multiple_data_sets) > 0:
         if colormap_counts is True:
-            colors = list(cm.viridis(multiple_data_sets/max(multiple_data_sets)))
-            norm = mpl.colors.Normalize(vmin=0, vmax=max(multiple_data_sets))
-            fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cm.viridis), ax=ax)
+            colors = list(cm.viridis(np.log10(multiple_data_sets)/np.log10(max(multiple_data_sets))))
+            norm = mpl.colors.Normalize(vmin=0, vmax=np.log10(max(multiple_data_sets)))
+            fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cm.viridis), ax=ax, label="log10 of counts")
         else:
             # col_list = ['xkcd:coral', 'xkcd:mint green', 'xkcd:tangerine']
             col_list = cm.viridis(np.linspace(0.25, 1, num=len(multiple_data_sets)))

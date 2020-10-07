@@ -355,6 +355,7 @@ def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True
             # print(first, second)
                 multiple_data_sets[i] = np.sum(~near_indices[first:second])
         else:
+            # print(multiple_data_sets, near_indices)
             multiple_data_sets = multiple_data_sets[~near_indices]
 
     return ra_far, dec_far, ra_close, dec_close, multiple_data_sets

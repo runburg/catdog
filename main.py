@@ -29,6 +29,7 @@ def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radi
     coord_list = []
     new_color_at = []
     for infile in infiles:
+        print(infile)
         coords = np.loadtxt(prefix + infile, delimiter=" ")
         coord_list.append(coords)
         new_color_at.append(len(coords))
@@ -363,23 +364,23 @@ if __name__ == "__main__":
     # main_args["candidate_file_prefix"] = f"./candidates/new_trial{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_small_pm_range{str(main_args['extend_range'])}/"
     # main_args['candidate_file_prefix'] = './candidates/'
 
-    main(main_args, sys.argv[1])
+    # main(main_args, sys.argv[1])
 
-    gal_plane_setting = 18
+    gal_plane_setting = 25
     # filter_then_plot(['./candidates/successful_candidates_north.txt', './candidates/successful_candidates_south.txt'])
     outfile = f"{str(main_args['minimum_count_spatial'])}{str(main_args['sigma_threshhold_spatial'])}{str(main_args['minimum_count_pm'])}{str(main_args['sigma_threshhold_pm'])}_rad{str(int(main_args['region_radius']*100))}_"
 
     # filter_then_plot(['successful_candidates_with_overlap_gte10.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection_10')
     counts = [1, 2, 5, 10, 50]
-    # filter_then_plot([f'successful_candidates_with_overlap_gte{count}_withcounts.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_cmap', labs=counts, dif_file_dif_color=False, group_cones=True, counts_included=True)
-    # pth = main_args['candidate_file_prefix']
-    # filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts, counts_included=True)
+    filter_then_plot([f'successful_candidates_with_overlap_gte{count}_withcounts.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_cmap', labs=counts, dif_file_dif_color=False, group_cones=True, counts_included=True)
+    pth = main_args['candidate_file_prefix']
+# filter_then_plot([f'successful_candidates_with_overlap_gte{count}.txt' for count in counts], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{outfile}_intersection', labs=counts, counts_included=False)
     # ra_files = [pth + 'xi2_known_1_ra.txt', pth + 'xi2_1_ra.txt']
     # dec_files = [pth + 'xi2_known_1_dec.txt', pth + 'xi2_1_dec.txt']
     # xi2_plot(ra_files, dec_files, labels=['Known', 'Random'], output_path=pth)
-    # rafiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_ra.txt' for num in counts]+[main_args['candidate_file_prefix'] + "region_candidates/xi2_known_ra.txt"]
-    # decfiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_dec.txt' for num in counts]+ ["/Users/runburg/github/catdog/candidates/testing_trial3334_rad100_small_pm_range3/region_candidates/xi2_known_dec.txt"]
-    rafiles = [main_args['candidate_file_prefix'] + "region_candidates/xi2_known_ra.txt", main_args['candidate_file_prefix'] + "region_candidates/xi2_ra.txt"]
-    decfiles = [main_args['candidate_file_prefix'] + "region_candidates/xi2_known_dec.txt", main_args['candidate_file_prefix'] + "region_candidates/xi2_dec.txt"]
+    rafiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_ra.txt' for num in counts]+[main_args['candidate_file_prefix'] + "region_candidates/xi2_known_ra.txt"]
+    decfiles = [main_args['candidate_file_prefix'] + f'xi2_{num}_dec.txt' for num in counts]+[main_args['candidate_file_prefix'] + "region_candidates/xi2_known_dec.txt"] 
+    # rafiles = [main_args['candidate_file_prefix'] + "region_candidates/xi2_known_ra.txt", main_args['candidate_file_prefix'] + "region_candidates/xi2_ra.txt"]
+    # decfiles = [main_args['candidate_file_prefix'] + "region_candidates/xi2_known_dec.txt", main_args['candidate_file_prefix'] + "region_candidates/xi2_dec.txt"]
 
-    # xi2_plot(rafiles, decfiles, output_path=main_args['candidate_file_prefix'])
+    xi2_plot(rafiles, decfiles, output_path=main_args['candidate_file_prefix'])
