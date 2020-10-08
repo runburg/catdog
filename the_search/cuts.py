@@ -15,7 +15,7 @@ except ModuleNotFoundError:
     from .utils import inverse_azimuthal_equidistant_coordinates
 
 
-def histogram_overdensity_test(convolved_data, histo_shape, region_ra, region_dec, region_rad, outfile, mask, num_sigma=2, repetition=2, threshold_prob=0.95):
+def histogram_overdensity_test(convolved_data, histo_shape, region_ra, region_dec, region_rad, outfile, mask, threshold_prob=0.95):
     """Return coordinates with overdensities for all convolutions.
 
     Look for overdensities by looking for large bin counts above the average (background).
@@ -27,7 +27,8 @@ def histogram_overdensity_test(convolved_data, histo_shape, region_ra, region_de
         - region_ra: right ascension in """
     # Create zero array to search for overdensities
     passing = np.zeros(histo_shape)
-
+    passing_x, passing_y = np.array([], dtype=np.int16), np.array([], dtype=np.int16)
+    counts = np.array([])
     # For every radius probed, calculate the mean and sd of the histogram bins.
     for radius, convolved_array in convolved_data:
         hist_data, bins = np.histogram(convolved_array.flatten()[(~np.isnan(convolved_array)).flatten()], density=False, bins=101, range=(0, np.nanmax(convolved_array)))
@@ -40,18 +41,35 @@ def histogram_overdensity_test(convolved_data, histo_shape, region_ra, region_de
             print(f"Potential boundary issue at ({region_ra}, {region_dec})")
             print(hist_data)
             return [], []
-        sd = np.sqrt(np.average((midpoints - mean)**2, weights=hist_data))
 
         # Add the overdensities to the test array
         count_pass = stats.poisson.ppf(1 - (1 - threshold_prob) * radius**2 / region_rad**2, mean)
-        passing += np.less(count_pass, convolved_array)
-        unique, counts = np.unique(passing, return_counts=True)
+        passing = np.less(count_pass, convolved_array)
+        passingx, passingy = np.nonzero(passing)
+        count = convolved_array[passingx, passingy]
+
+        passing_x = np.concatenate((passing_x, passingx))
+        passing_y = np.concatenate((passing_y, passingy))
+
+        counts = np.concatenate((counts, count))
         # print(f"radius is {radius} with counts {counts}")
 
-    # Passing candidates occur {repetition} times in the convolved data
-    passing_indices_x, passing_indices_y = np.argwhere(passing > repetition).T
+    if len(passing_x) == 0:
+        return [], [], []
 
-    return passing_indices_x, passing_indices_y
+    results = np.zeros((len(passing_x), 3))
+    results[:, 0] = passing_x
+    results[:, 1] = passing_y
+    results[:, 2] = counts
+
+    sort_results = results[counts.argsort()[::-1]]
+    uni_res, uni_ind = np.unique(sort_results[:, :-1], return_index=True, axis=0)
+    
+    print('len counts', len(counts), 'len uni', len(uni_ind))
+    passing_x, passing_y, counts = sort_results[uni_ind].T
+    # print(passing_x.dtype, passing_x.shape, passing_x)
+
+    return passing_x.astype(np.int64), passing_y.astype(np.int64), counts
 
 
 def pm_xi2_test(pm, error_pm):

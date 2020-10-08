@@ -40,10 +40,12 @@ def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radi
 
     multiple_data_sets = coord_list[:, 2]
 
+    color_max = max(multiple_data_sets)
+
     filtered_cand_file = prefix + "successful_candidates_filtered.txt"
     near_cand_file = prefix + "successful_candidates_near.txt"
 
-    ra_suc, dec_suc, ra_near, dec_near, multiple_data_sets = cut_out_candidates_close_to_plane_and_slmc(coord_list[:, 0], coord_list[:, 1], far_file=filtered_cand_file, near_file=near_cand_file, latitude=gal_plane_setting+5, multiple_data_sets=multiple_data_sets, counts_included=counts_included)
+    ra_suc, dec_suc, ra_near, dec_near = cut_out_candidates_close_to_plane_and_slmc(coord_list[:, 0], coord_list[:, 1], far_file=filtered_cand_file, near_file=near_cand_file, latitude=gal_plane_setting+5, multiple_data_sets=multiple_data_sets)
 
     far_file_list = [prefix + f'region_candidates/region_ra{int(round(ra*100))}_dec{int(round(dec*100))}_rad{int(round(region_rad*100))}_candidates.txt' for (ra, dec) in zip(ra_suc, dec_suc)]
 
@@ -52,7 +54,7 @@ def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radi
     # print(len(far_file_list))
     # print(new_color_at)
 
-    new_all_sky(far_file_list, region_rad, near_plane_files=near_file_list, gal_plane_setting=gal_plane_setting, prefix=prefix, outfile=outfile, multiple_data_sets=multiple_data_sets, labs=labs)
+    new_all_sky(far_file_list, region_rad, near_plane_files=near_file_list, gal_plane_setting=gal_plane_setting, prefix=prefix, outfile=outfile, multiple_data_sets=multiple_data_sets, labs=labs, color_max=color_max)
 
 
 def cone_search(*, region_ra, region_dec, region_radius, radii, name=None, FLAG_plot=True, candidate_file_prefix='./candidates/', data_table_prefix='./candidates/regions', threshold_prob=0.95):
@@ -92,7 +94,7 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, name=None, FLAG_
     convolved_data, xedges, yedges, X, Y, histo, histo_mask = convolve_spatial_histo(gaia_table, region_radius, radii)
 
     # Get passing candidate coordinates in projected (non-sky) coordinates
-    passing_indices_x, passing_indices_y = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, region_radius, outfile, histo_mask, threshold_prob=threshold_prob)
+    passing_indices_x, passing_indices_y, counts = cuts.histogram_overdensity_test(convolved_data, histo.shape, region_ra, region_dec, region_radius, outfile, histo_mask, threshold_prob=threshold_prob)
 
     od_test_result = False
     if len(passing_indices_x) > 0:
@@ -105,7 +107,7 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, name=None, FLAG_
 
     overdense_objects = 0
     if od_test_result is True:
-        overdense_objects = len(successful_object_ids)
+        overdense_objects = max(counts)
 
         # Coordinate transform back to coordinates on the sky
         passing_ra, passing_dec = inverse_azimuthal_equidistant_coordinates(np.deg2rad(passing_x), np.deg2rad(passing_y), np.deg2rad(region_ra), np.deg2rad(region_dec))
@@ -116,8 +118,8 @@ def cone_search(*, region_ra, region_dec, region_radius, radii, name=None, FLAG_
 
         # Write successful sky coordinates
         with open(outfile, 'a') as outfl:
-            for ra, dec in zip(passing_ra, passing_dec):
-                outfl.write(f"{ra} {dec}\n")
+            for ra, dec, count in zip(passing_ra, passing_dec, counts):
+                outfl.write(f"{ra} {dec} {count}\n")
 
     # plot the convolved data
     if FLAG_plot is True:
@@ -134,6 +136,7 @@ def main(main_args, input_file):
 
     count_pass_spatial = 0
     count_od_intersection = 0
+    count_total = 0
 
     known_dwarf_names = np.loadtxt("./the_search/tuning/tuning_known_dwarfs.txt", delimiter=",", dtype=str)[:, 0]
 
@@ -184,8 +187,12 @@ def main(main_args, input_file):
 
         if sp_pass is True:
             count_pass_spatial += 1
+            passing_dwarfs.append(name)
+            print("Spatial test passed")
             with open(main_args['candidate_file_prefix'] + "successful_candidates_spatial.txt", 'a') as outfile:
-                outfile.write(f"{ra} {dec}\n")
+                outfile.write(f"{ra} {dec} {overdense_objects}\n")
+        else:
+            print("Spatial test failed")
 
         count_total += 1
         print(f"finished with dwarf {name}\t\t ({i}/{len(dwarfs)}) \n\n\n")
@@ -208,15 +215,15 @@ if __name__ == "__main__":
     main_args = {
         "region_radius": 1.0,
         "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
-        "threshold_prob": 0.99,
-        "FLAG_plot": False,
-        "data_table_prefix": '/mnt/scratch/nfs_fs02/runburg/candidates/regions/'
-        # "data_table_prefix": './candidates/regions/'
+        "threshold_prob": 0.995,
+        "FLAG_plot": True,
+        # "data_table_prefix": '/mnt/scratch/nfs_fs02/runburg/candidates/regions/'
+        "data_table_prefix": './candidates/regions/'
     }
 
     main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['threshold_prob'])}_rad{str(int(main_args['region_radius']*100))}/"
 
-    # main(main_args, sys.argv[1])
+    main(main_args, sys.argv[1])
 
     gal_plane_setting = 25
     filter_then_plot(['successful_candidates_spatial.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{str(main_args["threshold_prob"]).split(".")[-1]}_cmap', group_cones=True)

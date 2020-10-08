@@ -345,12 +345,14 @@ def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True
         with open(near_file, 'w') as outfile:
             np.savetxt(outfile, np.array([ra_close, dec_close]).T, delimiter=" ")
 
-    if len(multiple_data_sets) > 0:
-        multiple_data_sets = np.cumsum(multiple_data_sets)
-        for i, (first, second) in enumerate(zip(np.concatenate(([0], multiple_data_sets[:-1])), multiple_data_sets[:])):
-            multiple_data_sets[i] = np.sum(~near_indices[first:second])
+    # if len(multiple_data_sets) > 0:
+    #     multiple_data_sets = np.cumsum(multiple_data_sets)
+    #     for i, (first, second) in enumerate(zip(np.concatenate(([0], multiple_data_sets[:-1])), multiple_data_sets[:])):
+    #         multiple_data_sets[i] = np.sum(~near_indices[first:second])
 
-    return ra_far, dec_far, ra_close, dec_close, multiple_data_sets
+    # return ra_far, dec_far, ra_close, dec_close, multiple_data_sets
+    return ra_far, dec_far, ra_close, dec_close
+    
 
 
 def fibonnaci_sphere(num_points, limit=16, point_start=0, point_end=None):

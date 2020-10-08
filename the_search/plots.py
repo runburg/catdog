@@ -237,8 +237,9 @@ def convolved_histograms_1d(convolved_data, histo_data, name='dwarf', mask=None,
     fig.savefig(candidate_file_prefix + f'histos/{name}_histo_1d.png')
 
 
-def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15, outfile='all_sky_plot', multiple_data_sets=[], labs=[]):
+def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./candidates/', gal_plane_setting=15, outfile='all_sky_plot', multiple_data_sets=[], labs=[], color_max=100):
     """Plot candidates without Milky Way background."""
+    print('plotting from success_files', len(success_files))
     ##############################
     # SET UP
     ##############################
@@ -321,19 +322,24 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
     file_list = success_files + near_plane_files
 
     # color the succesful cones by counts
-    colors = list(cm.viridis(np.log10(multiple_data_sets)/np.log10(max(multiple_data_sets))))
-    norm = mpl.colors.Normalize(vmin=0, vmax=np.log10(max(multiple_data_sets)))
+    norm = mpl.colors.Normalize(vmin=0, vmax=np.log10(color_max))
     fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cm.viridis), ax=ax, label="log10 of counts")
 
-    colors += ['xkcd:steel gray'] * len(near_plane_files)
+    # colors += ['xkcd:steel gray'] * len(near_plane_files)
 
     # Plot all the candidates in each file
     zorder = 500
     # print(len(file_list))
     i = 0
-    for color, file in zip(colors, file_list):
+    for i, file in enumerate(file_list):
+        if i < len(success_files):
+            near = False
+        else:
+            near = True
+    # for color, file in zip(colors, file_list):
         try:
             candidate_list = np.loadtxt(file, delimiter=" ")
+            # print(candidate_list)
         except OSError:
             print('unable to load', file)
             i += 1
@@ -364,7 +370,7 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
             ax.scatter(ra.radian, dec.radian, color=lighten_color(color, amount=1.6), s=0.1, zorder=50)
 
         # plot all the candidates in each file
-        if len(candidate_list) > 1:
+        if len(candidate_list) >= 1:
             try:
                 ra = coord.Angle(candidate_list[:, 0]*u.degree)
             except IndexError:
@@ -373,7 +379,12 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
             ra = coord.Angle(candidate_list[:, 0]*u.degree)
             ra = ra.wrap_at(180*u.degree)
             dec = coord.Angle(candidate_list[:, 1]*u.degree)
-            ax.scatter(ra.radian, dec.radian, color=color, s=2, zorder=zorder)
+            if ~near:
+                colors = list(cm.viridis(np.log10(candidate_list[:, 2])/np.log10(color_max)))
+            else:
+                colors = 'xkcd:steel gray'
+
+            ax.scatter(ra.radian, dec.radian, color=colors, s=2, zorder=zorder)
         zorder += 1
     # save plot
     print('saved', prefix, outfile, file_type)
