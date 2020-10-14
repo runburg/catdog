@@ -189,7 +189,7 @@ def main(main_args, input_file):
             count_pass_spatial += 1
             passing_dwarfs.append(name)
             print("Spatial test passed")
-            with open(main_args['candidate_file_prefix'] + "successful_candidates_spatial.txt", 'a') as outfile:
+            with open(main_args['candidate_file_prefix'] + lab + "successful_candidates_spatial.txt", 'a') as outfile:
                 outfile.write(f"{ra} {dec} {overdense_objects}\n")
         else:
             print("Spatial test failed")
@@ -214,16 +214,16 @@ def main(main_args, input_file):
 if __name__ == "__main__":
     main_args = {
         "region_radius": 1.0,
-        "radii": [0.316, 0.1, 0.0316, 0.01, 0.00316],
-        "threshold_prob": 0.995,
-        "FLAG_plot": True,
-        # "data_table_prefix": '/mnt/scratch/nfs_fs02/runburg/candidates/regions/'
-        "data_table_prefix": './candidates/regions/'
+        "radii": [0.1, 0.0316, 0.01, 0.00316],
+        "threshold_prob": 0.997,
+        "FLAG_plot": False,
+        "data_table_prefix": '/mnt/scratch/nfs_fs02/runburg/candidates/regions/'
+        # "data_table_prefix": './candidates/regions/'
     }
 
-    main_args["candidate_file_prefix"] = f"./candidates/trial{str(main_args['threshold_prob'])}_rad{str(int(main_args['region_radius']*100))}/"
+    main_args["candidate_file_prefix"] = f"./candidates/fullsky_trial{str(main_args['threshold_prob'])}_rad{str(int(main_args['region_radius']*100))}/"
 
     main(main_args, sys.argv[1])
 
     gal_plane_setting = 25
-    filter_then_plot(['successful_candidates_spatial.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{str(main_args["threshold_prob"]).split(".")[-1]}_cmap', group_cones=True)
+    # filter_then_plot(['successful_candidates_spatial.txt', 'known_successful_candidates_spatial.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{str(main_args["threshold_prob"]).split(".")[-1]}_cmap', group_cones=True)
