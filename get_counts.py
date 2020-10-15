@@ -3,13 +3,13 @@ import subprocess
 import os
 import glob
 
-counts = {'spatial':0, 'pm':0, 'both':0, 'overlap':0}
+counts = {'spatial':0}
 total = 0
 for fil in glob.glob('*.log'):
     print(fil)
     lines = subprocess.check_output(['tail', '-n', '8', fil], universal_newlines=True, text=True)
     # print(lines)
-    line_list = lines.split('\n')[:4]
+    line_list = [lines.split('\n')[3]]
     print(line_list)
     for key, line in zip(counts, line_list):
         print(line.split(' ')[-3].split('/')[0])
