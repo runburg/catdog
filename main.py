@@ -40,12 +40,10 @@ def filter_then_plot(infiles, prefix='./candidates/', gal_plane_setting=15, radi
 
     multiple_data_sets = coord_list[:, 2]
 
-    color_max = max(multiple_data_sets)
-
     filtered_cand_file = prefix + "successful_candidates_filtered.txt"
     near_cand_file = prefix + "successful_candidates_near.txt"
 
-    ra_suc, dec_suc, ra_near, dec_near = cut_out_candidates_close_to_plane_and_slmc(coord_list[:, 0], coord_list[:, 1], far_file=filtered_cand_file, near_file=near_cand_file, latitude=gal_plane_setting+5, multiple_data_sets=multiple_data_sets)
+    ra_suc, dec_suc, ra_near, dec_near, color_max = cut_out_candidates_close_to_plane_and_slmc(coord_list[:, 0], coord_list[:, 1], far_file=filtered_cand_file, near_file=near_cand_file, latitude=gal_plane_setting, multiple_data_sets=multiple_data_sets)
 
     far_file_list = [prefix + f'region_candidates/region_ra{int(round(ra*100))}_dec{int(round(dec*100))}_rad{int(round(region_rad*100))}_candidates.txt' for (ra, dec) in zip(ra_suc, dec_suc)]
 
@@ -223,7 +221,8 @@ if __name__ == "__main__":
 
     main_args["candidate_file_prefix"] = f"./candidates/fullsky_trial{str(main_args['threshold_prob'])}_rad{str(int(main_args['region_radius']*100))}/"
 
-    main(main_args, sys.argv[1])
+    # main(main_args, sys.argv[1])
 
-    gal_plane_setting = 25
+    gal_plane_setting = 15
+    filter_then_plot(['successful_candidates_spatial.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{str(main_args["threshold_prob"]).split(".")[-1]}_cmap', group_cones=True)
     # filter_then_plot(['successful_candidates_spatial.txt', 'known_successful_candidates_spatial.txt'], prefix=main_args['candidate_file_prefix'], gal_plane_setting=gal_plane_setting, radius=main_args['region_radius'], outfile=f'all_sky_plot_{str(main_args["threshold_prob"]).split(".")[-1]}_cmap', group_cones=True)

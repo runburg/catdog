@@ -321,6 +321,7 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
     # Get all the files with candidates
     file_list = success_files + near_plane_files
 
+    print(len(success_files), len(near_plane_files))
     # color the succesful cones by counts
     norm = mpl.colors.Normalize(vmin=0, vmax=np.log10(color_max))
     fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cm.viridis), ax=ax, label="log10 of counts")
@@ -342,7 +343,6 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
             # print(candidate_list)
         except OSError:
             print('unable to load', file)
-            i += 1
             continue
         # print(file)
         # print(len(candidate_list))
@@ -379,7 +379,7 @@ def new_all_sky(success_files, region_radius, near_plane_files=[], prefix='./can
             ra = coord.Angle(candidate_list[:, 0]*u.degree)
             ra = ra.wrap_at(180*u.degree)
             dec = coord.Angle(candidate_list[:, 1]*u.degree)
-            if ~near:
+            if i < len(success_files):
                 colors = list(cm.viridis(np.log10(candidate_list[:, 2])/np.log10(color_max)))
             else:
                 colors = 'xkcd:steel gray'

@@ -338,6 +338,8 @@ def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True
     ra_far, dec_far = ra[~near_indices], dec[~near_indices]
     ra_close, dec_close = ra[near_indices], dec[near_indices]
 
+    colormax = multiple_data_sets[~near_indices].max()
+
     if output is True:
         with open(far_file, 'w') as outfile:
             np.savetxt(outfile, np.array([ra_far, dec_far]).T, delimiter=" ")
@@ -351,7 +353,7 @@ def cut_out_candidates_close_to_plane_and_slmc(ra, dec, latitude=20, output=True
     #         multiple_data_sets[i] = np.sum(~near_indices[first:second])
 
     # return ra_far, dec_far, ra_close, dec_close, multiple_data_sets
-    return ra_far, dec_far, ra_close, dec_close
+    return ra_far, dec_far, ra_close, dec_close, colormax
     
 
 
